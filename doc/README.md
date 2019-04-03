@@ -54,3 +54,7 @@ html : <http://www.runoob.com/html/html-tutorial.html>
 ### 数据库
 
 这个晚点再说
+
+### How to use git?
+
+<https://github.com/livoras/blog/issues/7>
