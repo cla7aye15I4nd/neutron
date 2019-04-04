@@ -37,7 +37,7 @@ html : <http://www.runoob.com/html/html-tutorial.html>
 
 <https://tornado-zh.readthedocs.io/zh/latest/>
 
-我现在还是决定使用flask，WWflask很好上手，也易于开发。
+我现在还是决定使用tornado,这是一个有趣的尝试。
 
 以下为能想到的可以做的任务(带*的为可选任务):
 
