@@ -16,6 +16,7 @@ def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
         (r"/login", LoginHandler),
+        (r"/logout", LogoutHandler)
     ], **config.app_settings)
 
 if __name__ == "__main__":

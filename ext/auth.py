@@ -11,7 +11,7 @@ class LoginHandler(BaseHandler):
         self.render('login.html', title = 'Login')
         
     def post(self):
-        self.set_current_user(self.get_argument("username"))
+        self.set_current_user(self.get_argument("username", None))
         self.redirect(self.get_argument('next', '/'))
 
 class LogoutHandler(BaseHandler):
