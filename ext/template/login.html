@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="/login" method="POST">
+                        {% raw xsrf_form_html() %}
+                        <div class="form-group form-group-lg">
+                            <input type="text" class="form-control left-border-none" name="username"
+                                placeholder="Username">
+                        </div>
+                        <div class="form-group form-group-lg">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="save"> Remember me
+                            </label>
+                        </div>
+                        <button type="signin" class="btn btn-warning btn-lg btn-block">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+{% end %}
