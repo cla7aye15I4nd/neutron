@@ -1,20 +1,20 @@
 import tornado.httpserver
 import tornado.ioloop
 
-from auth import *
+from auth import BaseHandler, LoginHandler, LogoutHandler
 from tornado.options import define, options
 import config
 
 define("port", **config.global_settings)
 
-class MainHandler(BaseHandler):
+class IndexHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.render('index.html', title = 'index', user=self.current_user)
         
 def make_app():
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r"/", IndexHandler),
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler)
     ], **config.app_settings)

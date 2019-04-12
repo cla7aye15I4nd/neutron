@@ -3,7 +3,8 @@ import tornado.options
 
 global_settings = {
     "default" : 8000,
-    "help" : "debug version"
+    "help"    : "debug version",
+    "type"    : int
 }
 
 app_settings = {
