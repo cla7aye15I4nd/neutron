@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form action="/login" method="POST">
+<section class="section">
+    <div class="container">
+        <div id="loginhint" class="alert alert-danger" role="alert" hidden></div>
+        <div class="row">
+            <div class="container container--mini" style="max-width: 380px; margin-top: 50px;">
+                <div class="panel panel-default" style="margin-top: 10px;">
+
+                    <img class="avatar" style="margin-top: 15px; margin-left: 135px;" src="/static/img/avatar.jpg">
+                    <div class="mb-1 text-center">
+                        <h1>Sign in</h1>
+                    </div>
+                    <div class="panel-body">
                         {% raw xsrf_form_html() %}
                         <div class="form-group form-group-lg">
+                            <label>Username</label>
                             <input type="text" class="form-control left-border-none" name="username"
                                 placeholder="Username">
                         </div>
                         <div class="form-group form-group-lg">
+                            <label>Password</label>
                             <input type="password" class="form-control" name="password" placeholder="Password">
                         </div>
                         <div class="checkbox">
@@ -20,12 +27,12 @@
                                 <input type="checkbox" name="save"> Remember me
                             </label>
                         </div>
-                        <button type="signin" class="btn btn-warning btn-lg btn-block">Sign In</button>
-                    </form>
+                        <button id="login" class="btn btn-block btn-lg" style="background: #a880e4; color:white">Sign
+                            In</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4"></div>
     </div>
-</div>
+</section>
 {% end %}
