@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+        <div class="container">
+            <div id="loginhint" class="alert alert-danger" role="alert" hidden></div>
+            <div class="row">
+                <div class="container container--mini" style="max-width: 380px; margin-top: 50px; margin-bottom: 400px">
+                    <div class="panel panel-default" style="margin-top: 10px;">
+                        <img class="avatar" style="margin-top: 15px; margin-left: 135px;" src="/static/img/avatar.jpg">
+    
+                        <div class="panel-body">
+                            {% raw xsrf_form_html() %}
+                            <div class="form-group ">
+                                <input type="text" class="form-control left-border-none" name="username"
+                                    placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="save"> Remember me
+                                </label>
+                            </div>
+                            <button id="login" class="btn btn-block btn-lg" style="background: #a880e4; color:white">Sign
+                                In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% end %}
