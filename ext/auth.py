@@ -1,3 +1,4 @@
+import json
 import tornado.web
 from forms import LoginForm
 
@@ -15,12 +16,15 @@ class LoginHandler(BaseHandler):
         username = self.get_argument("username", None)
 
         form = LoginForm(self.request.arguments)
-        form.validate()
 
-        print (form.errors)
-        if form.errors == {}:
+        if form.validate():
             self.set_current_user(username)
-            self.redirect(self.get_argument('next', '/'))
+            #self.redirect(self.get_argument('next', '/'))
+        self.finish(json.dumps(form.errors))
+
+class RegisterHandler(BaseHandler):
+    def get(self):
+        self.render('register.html', title = 'Register')
 
 class LogoutHandler(BaseHandler):
     def get(self):
