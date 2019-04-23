@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="ui forms">
-    <div class="fields">
-        <div class="five wide field"></div>
-        <div class="five wide field">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form action="/login" method="POST">
+<section class="section">
+    <div class="container">
+        <div id="loginhint" class="alert alert-danger" role="alert" hidden></div>
+        <div class="row">
+            <div class="container container--mini" style="max-width: 380px; margin-top: 50px; margin-bottom: 400px">
+                <div class="panel panel-default" style="margin-top: 10px;">
+                   
+                    <img class="avatar" style="margin-top: 15px; margin-left: 135px;" src="/static/img/avatar.jpg">
+
+                    <div class="panel-body">
                         {% raw xsrf_form_html() %}
-                        <div class="form-group">
+                        <div class="form-group ">
                             <input type="text" class="form-control left-border-none" name="username"
                                 placeholder="Username">
                         </div>
@@ -20,12 +23,12 @@
                                 <input type="checkbox" name="save"> Remember me
                             </label>
                         </div>
-                        <button type="signin" class="btn btn-warning     btn-block">Sign In</button>
-                    </form>
+                        <button id="login" class="btn btn-block btn-lg" style="background: #a880e4; color:white">Sign
+                            In</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="five wide field"></div>
     </div>
-</div>
+</section>
 {% end %}
