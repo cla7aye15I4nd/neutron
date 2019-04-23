@@ -1,13 +1,8 @@
 import json
 import tornado.web
 from forms import LoginForm
+from base import BaseHandler
 
-class BaseHandler(tornado.web.RequestHandler):
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
-    def set_current_user(self, username):
-        self.set_secure_cookie("user", username)
-    
 class LoginHandler(BaseHandler):
     def get(self):
         self.render('login.html', title = 'Login')
@@ -17,10 +12,13 @@ class LoginHandler(BaseHandler):
 
         form = LoginForm(self.request.arguments)
 
+        errors = "Failed"
         if form.validate():
             self.set_current_user(username)
-            #self.redirect(self.get_argument('next', '/'))
-        self.finish(json.dumps(form.errors))
+            errors = "Success"
+        self.set_header("Content-Type","application/json")
+        self.write(json.dumps({"errors" : errors}))
+        self.finish()
 
 class RegisterHandler(BaseHandler):
     def get(self):
