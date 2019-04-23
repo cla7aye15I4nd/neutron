@@ -4,12 +4,12 @@
     <div class="container">
         <div id="loginhint" class="alert alert-danger" role="alert" hidden></div>
         <div class="row">
-            <div class="container container--mini" style="max-width: 500px; margin-top: 50px; margin-bottom: 100px">
+            <div class="container container--mini" style="max-width: 500px; margin-top: 10px; margin-bottom: 100px">
                 <div class="panel panel-default" style="margin-top: 10px;">
                     <h1 class="mb-1 text-center">Sign up</h1>
                     <p class="text-center" style="color:gray"> If it looks right, it is right </p>
 
-                    <div class="panel-body">
+                    <div class="card card-body">
                         {% raw xsrf_form_html() %}
                         <div class="form-group form-group-lg">
                             <label>Username</label>

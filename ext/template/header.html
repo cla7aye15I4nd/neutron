@@ -1,22 +1,26 @@
-<nav class="navbar navbar-default" style="margin-bottom : 0px; border : none">
+<nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#" style="margin-top: 5px; font-size: 35px; color:black">NeutronHub</a>
+            <a class="navbar-brand" href="#">Fuzz.com</a>
         </div>
-        <div class="navbar-right">
-            <a href="login"><button type="button" class="btn btn-lg btn-normal navbar-btn">Sign in</button> </a>
-            <a href="register"><button type="button" class="btn btn-lg btn-info navbar-btn">Sign up</button></a>
+        <div class="ml-auto">
+            <div class="navbar-right">
+                <div class="px-2">
+                    <a href="/login" class="btn btn-raised btn-info" role="button">Sign in</a>
+                    <a href="/register" class="btn btn-outline-info" role="button">Sign up</a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
 
-<nav class="navbar navbar-default" style="margin-bottom : 0px; border : none">
-    <div class="container">
-        <ul class="nav navbar-nav" style="font-size: 16px; color:black">
-            <li class="active"><a href="#"> Home </a></li>
-            <li><a href="#"> Train <span class="sr-only">(current)</span></a></li>
-            <li class="active"><a href="#"> News </a></li>
-            <li><a href="#"> About <span class="sr-only">(current)</span></a></li>
-        </ul>
-    </div>
-</nav>
+<div class="mr-auto">
+    <nav class="navbar navbar-default">
+        <div class="container" style="justify-content: flex-start;">
+            <a href="/" style="margin-right: 10px"> Home </a>
+            <a href="/trains" style="margin-right: 10px"> Train </a>
+            <a href="#" style="margin-right: 10px"> News </a>
+            <a href="#" style="margin-right: 10px"> About </a>
+        </div>
+    </nav>
+</div>
