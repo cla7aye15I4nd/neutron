@@ -4,4 +4,4 @@ from base import BaseHandler
 
 class TrainHandler(BaseHandler):
     def get(self):
-        self.render('trains.html', title='Trains')
+        self.render('trains.html', title='Trains', user = self.current_user)

@@ -2,42 +2,50 @@
 {% block content %}
 <section class="section">
     <div class="container">
-        <div id="loginhint" class="alert alert-danger" role="alert" hidden></div>
         <div class="row">
-            <div class="container container--mini" style="max-width: 500px; margin-top: 10px; margin-bottom: 100px">
-                <div class="panel panel-default" style="margin-top: 10px;">
-                    <h1 class="mb-1 text-center">Sign up</h1>
+            <div class="container" style="max-width: 500px; margin-top: 50px;">
+                <div id="registerhint"></div>
+                <div class="card card-body">
+                    <h1 class="mb-2 text-center">Sign up</h1>
                     <p class="text-center" style="color:gray"> If it looks right, it is right </p>
-
-                    <div class="card card-body">
-                        {% raw xsrf_form_html() %}
-                        <div class="form-group form-group-lg">
-                            <label>Username</label>
-                            <input type="text" class="form-control left-border-none" name="username"
-                                placeholder="Username">
-                        </div>
-                        <div class="form-group form-group-lg">
-                            <label>Email</label>
-                            <input type="text" class="form-control" name="email" placeholder="you@example.com">
-                        </div>
-                        <div class="form-group form-group-lg">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" name="phone" placeholder="Phone number">
-                        </div>
-                        <div class="form-group form-group-lg">
-                            <label>Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-                        <div class="form-group form-group-lg">
-                            <label>Confirm Password</label>
-                            <input type="password" class="form-control" name="confirm" placeholder="Confirm Password">
-                        </div>
-                        <button id="register" class="btn btn-block btn-lg" style="background: #a880e4; color:white">Sign
-                            Up</button>
+                    {% raw xsrf_form_html() %}
+                    <div class="form-group form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control left-border-none" name="username" placeholder="Username"
+                            onkeydown="keyRegister();">
+                        <span name="username" style="color :red"></span>
                     </div>
+                    <div class="form-group form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" name="email" placeholder="you@example.com"
+                            onkeydown="keyRegister();">
+                        <span name="email" style="color :red"></span>
+                    </div>
+                    <div class="form-group form-group">
+                        <label>Phone number</label>
+                        <input type="text" class="form-control" name="phone" placeholder="Phone number"
+                            onkeydown="keyRegister();">
+                        <span name="phone" style="color :red"></span>
+                    </div>
+                    <div class="form-group form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Password"
+                            onkeydown="keyRegister();">
+                        <span name="password" style="color :red"></span>
+                    </div>
+                    <div class="form-group form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm" placeholder="Confirm Password"
+                            onkeydown="keyRegister();">
+                        <span name="confirm" style="color :red"></span>
+                    </div>
+                    <button id="register" class="btn btn-block" style="background: #a880e4; color:white">Sign
+                        Up</button>
+                    <script src="static/js/register.js"></script>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 {% end %}
