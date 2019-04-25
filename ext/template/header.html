@@ -1,26 +1,52 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-light bg-light" style = "z-index : 1000; box-shadow: 0 2px rgba(0,0,0,0.05);">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Fuzz.com</a>
-        </div>
+        <a class="navbar-brand" href="#">Neutron</a>
         <div class="ml-auto">
             <div class="navbar-right">
                 <div class="px-2">
+                    {% if user == None %}
                     <a href="/login" class="btn btn-raised btn-info" role="button">Sign in</a>
                     <a href="/register" class="btn btn-outline-info" role="button">Sign up</a>
+                    {% else %}
+                    <div class="btn-group">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">My Booking</a>
+                                <a class="dropdown-item" href="/profile/{{ user }}">Profile</a>
+                                <hr />
+                                <a class="dropdown-item" href="/logout">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% end %}
                 </div>
             </div>
         </div>
     </div>
 </nav>
 
-<div class="mr-auto">
-    <nav class="navbar navbar-default">
-        <div class="container" style="justify-content: flex-start;">
-            <a href="/" style="margin-right: 10px"> Home </a>
-            <a href="/trains" style="margin-right: 10px"> Train </a>
-            <a href="#" style="margin-right: 10px"> News </a>
-            <a href="#" style="margin-right: 10px"> About </a>
+
+<nav class="navbar navbar-expand navbar-light bg-light" style="line-height: 0.5">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/trains">Train</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> News </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> About </a>
+                </li>
+            </ul>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>

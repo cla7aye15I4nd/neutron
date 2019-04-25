@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    .avatar {
+        text-align: center;
+        width: 5.5em;
+        height: 5.5em;
+        line-height: 2.5em;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+</style>
 <section class="section">
     <div class="container">
         <div class="row">
@@ -28,7 +38,7 @@
                     </div>
                     <button id="login" class="btn btn-block btn-lg" style="background: #a880e4; color:white">Sign
                         In</button>
-                    <script src="static/js/form.js"></script>
+                    <script src="static/js/login.js"></script>
                 </div>
             </div>
         </div>

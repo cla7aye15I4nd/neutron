@@ -2,6 +2,7 @@ import tornado.httpserver
 import tornado.ioloop
 
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler
+from user import ProfileHandler
 from query import TrainHandler
 
 from tornado.options import define, options
@@ -19,6 +20,7 @@ def make_app():
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/register", RegisterHandler),
+        (r"/profile/(?P<username>.*)", ProfileHandler),
         (r"/trains", TrainHandler)
     ], **config.app_settings)
 
