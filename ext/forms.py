@@ -1,5 +1,4 @@
-from wtforms import validators
-from wtforms import ValidationError
+from wtforms import ValidationError, Field, validators
 from wtforms import BooleanField, TextField, PasswordField
 from wtforms_tornado import Form
 
@@ -38,7 +37,7 @@ class UsernameRegisterValidators(object):
         if UserSystem.isExist({'username' : field.data}):
             raise ValidationError(self.invalidMessage)
 
-class EmailValidator():
+class EmailRegisterValidator():
     def __init__(self, message=None):
         if message == None:
             self.message = "The email has been registered"
@@ -47,7 +46,7 @@ class EmailValidator():
         if UserSystem.isExist({'email': field.data}):
             raise ValidationError(self.message)
 
-class PhoneValidator():
+class PhoneRegisterValidator():
     def __init__(self):
         self.illegalMessage = "Please input right phone number"
         self.invalidMessage = "The phone number has been registered"
@@ -83,9 +82,60 @@ class RegisterForm(Form):
     email = TextField('Email', [
         validators.Required(message='Email is required.'),
         validators.Email(),
-        EmailValidator()
+        EmailRegisterValidator()
     ])
     phone = TextField('Phone Number', [
         validators.Required(message='Phone number is required.'),
-        PhoneValidator()
+        PhoneRegisterValidator()
+    ])
+
+class UsernameUpdateValidators(Form):
+    def __init__(self):
+        self.illegalMessage = 'Username contains illegal characters!'
+        self.invalidMessage = 'Username has been used!'
+
+    def __call__(self, form, field):
+        if not str(field.data).isalnum():
+            raise ValidationError(self.illegalMessage)
+
+        if UserSystem.count({'username' : field.data}) != 0 and form.originUsername.data != field.data:
+            raise ValidationError(self.invalidMessage)
+
+class EmailUpdateValidator():
+    def __init__(self, message=None):
+        if message == None:
+            self.message = "The email has been registered"
+    
+    def __call__(self, form, field):
+        if UserSystem.count({'email': field.data}) != 0 and form.originEmail.data != field.data:
+            raise ValidationError(self.message)
+
+class PhoneUpdateValidator():
+    def __init__(self):
+        self.illegalMessage = "Please input right phone number"
+        self.invalidMessage = "The phone number has been registered"
+    
+    def __call__(self, form, field):
+        if not field.data.isnumeric():
+            raise ValidationError(self.illegalMessage)
+        if UserSystem.count({'phone': field.data}) != 0 and form.originPhone.data != field.data:
+            raise ValidationError(self.invalidMessage)
+
+class UpdateForm(Form):
+    originUsername = TextField('Origin username', [])
+    originEmail    = TextField('Origin email', []) 
+    originPhone    = TextField('Origin phone', []) 
+    username = TextField('Username', [
+        validators.Required(message='Username is required.'),
+        validators.Length(min=3, max=25, message='Username must be between 3 and 25 characters long'),
+        UsernameUpdateValidators()
+    ])
+    email = TextField('Email', [
+        validators.Required(message='Email is required.'),
+        validators.Email(),
+        EmailUpdateValidator()
+    ])
+    phone = TextField('Phone Number', [
+        validators.Required(message='Phone number is required.'),
+        PhoneUpdateValidator()
     ])

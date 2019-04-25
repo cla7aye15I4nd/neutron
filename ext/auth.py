@@ -13,7 +13,7 @@ class LoginHandler(BaseHandler):
         form = LoginForm(self.request.arguments)
         errors = "Failed"
         if form.validate():
-            self.set_current_user(username)
+            self.set_current_user(UserSystem.queryByUsername(username).fetchone()[0])
             errors = "Success"
         self.set_header("Content-Type","application/json")
         self.write(json.dumps({"errors" : errors}))
@@ -27,10 +27,10 @@ class RegisterHandler(BaseHandler):
         form = RegisterForm(self.request.arguments)
         errors = "Failed"
         if form.validate():
-            UserSystem.register(self.request.arguments['username'][0], 
-                                self.request.arguments['password'][0],
-                                self.request.arguments['email'][0],
-                                self.request.arguments['phone'][0])
+            UserSystem.register(self.request.arguments['username'][0].decode(), 
+                                self.request.arguments['password'][0].decode(),
+                                self.request.arguments['email'][0].decode(),
+                                self.request.arguments['phone'][0].decode())
             errors = "Success"
         self.set_header("Content-Type","application/json")
 

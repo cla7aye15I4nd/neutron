@@ -2,13 +2,19 @@ import tornado.httpserver
 import tornado.ioloop
 
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler
-from user import ProfileHandler
+from user import ProfileHandler, SettingHandler, BookingHandler
 from query import TrainHandler
 
 from tornado.options import define, options
+
+import time
 import config
+import asyncio
 
 define("port", **config.global_settings)
+
+def sleep(decay):
+    time.sleep(decay)
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -20,8 +26,10 @@ def make_app():
         (r"/login", LoginHandler),
         (r"/logout", LogoutHandler),
         (r"/register", RegisterHandler),
-        (r"/profile/(?P<username>.*)", ProfileHandler),
-        (r"/trains", TrainHandler)
+        (r"/profile", ProfileHandler),
+        (r"/trains", TrainHandler),
+        (r'/setting', SettingHandler),
+        (r'/booking', BookingHandler)
     ], **config.app_settings)
 
 if __name__ == "__main__":

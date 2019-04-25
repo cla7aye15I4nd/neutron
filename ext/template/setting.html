@@ -14,45 +14,38 @@
 </style>
 <div class="container" style="margin-top: 10px">
     <div class="row">
+
         <div class="col-md-3">
             {% include leftbar.html %}
         </div>
         <div class="col-md-9">
-            <div id="updhint" class="d-none" role="alert"> Change Profile Successful! </div>
             <div class="card card-body text-left">
-                <h2> Public Profile </h2>
-                <hr><br />
-                {% raw xsrf_form_html() %}
-                <div class="form">
-                    <label><b>Username</b></label>
-                    <input type="text" class="form-control" name="username" value="{{ info[1] }}"
-                        placeholder="Username">
-                    <span name="username" style="color :red"></span>
-                </div>
-                <br /><br />
-                <div class="form">
-                    <label><b>Email</b></label>
-                    <input type="text" class="form-control" name="email" value="{{ info[3] }}"
-                        placeholder="you@example.com">
-                    <span name="email" style="color :red"></span>
-                </div>
-                <br /><br />
-                <div class="form">
-                    <label><b>Phone number</b></label>
-                    <input type="text" class="form-control" name="phone" value="{{ info[4] }}"
-                        placeholder="Phone number">
-                    <span name="phone" style="color :red"></span>
-                </div>
 
-                <br />
+                <h2> Chnage Password </h2>
+                <hr><br />
+                <div class="form">
+                    <label><b>Old password</b></label>
+                    <input type="password" class="form-control" name="oldpassword" placeholder="Old password">
+                </div>
+                <br /><br />
+                <div class="form">
+                    <label><b>New pasword</b></label>
+                    <input type="password" class="form-control" name="newpassword" placeholder="New password">
+
+                </div>
+                <br /><br />
+                <div class="form">
+                    <label><b>Confirm password</b></label>
+                    <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm password">
+                </div>
+                <br /><br />
                 <div class="row">
                     <div class="col-md-9"></div>
                     <div class="col-md-3">
                         <button id="update" class="btn btn-block" style="background: #a880e4; color:white">Update
-                            Profile</button>
+                            Password</button>
                     </div>
                 </div>
-                <script src="static/js/update.js"></script>
             </div>
         </div>
     </div>

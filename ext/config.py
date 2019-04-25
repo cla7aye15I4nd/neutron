@@ -12,5 +12,6 @@ app_settings = {
     "static_path"   : os.path.join(os.path.dirname(__file__), "static"),
     "cookie_secret" : os.urandom(64),
     "xsrf_cookies"  : True,
-    "login_url"     : "/login"
+    "login_url"     : "/login",
+    "debug"         : True
 }
