@@ -4,12 +4,6 @@ from forms import LoginForm, RegisterForm
 from database import UserSystem
 from base import BaseHandler
 
-
-class AccountHandler(BaseHandler):
-    @tornado.web.authenticated
-    def get(self):
-        self.render('account.html', title = 'Login', user = self.current_user)
-
 class LoginHandler(BaseHandler):
     def get(self):
         self.render('login.html', title = 'Login', user = self.current_user)

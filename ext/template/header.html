@@ -1,6 +1,6 @@
-<nav class="navbar navbar-light bg-light" style = "z-index : 1000; box-shadow: 0 2px rgba(0,0,0,0.05)">
+<nav class="navbar navbar-light bg-light" style = "z-index : 1000; box-shadow: 0 2px rgba(0,0,0,0.05);">
     <div class="container">
-        <a class="navbar-brand" href="#">Moe</a>
+        <a class="navbar-brand" href="#">Neutron</a>
         <div class="ml-auto">
             <div class="navbar-right">
                 <div class="px-2">
@@ -16,7 +16,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="#">My Booking</a>
-                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="/profile/{{ user }}">Profile</a>
                                 <hr />
                                 <a class="dropdown-item" href="/logout">Sign out</a>
                             </div>
@@ -30,7 +30,7 @@
 </nav>
 
 
-<nav class="navbar navbar-expand navbar-light bg-light">
+<nav class="navbar navbar-expand navbar-light bg-light" style="line-height: 0.5">
     <div class="container">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">

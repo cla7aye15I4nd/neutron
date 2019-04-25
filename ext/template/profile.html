@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<style>
+    .avatar {
+        text-align: center;
+        width: 15.5em;
+        height: 15.5em;
+        line-height: 2.5em;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+</style>
+<div class="container" style="margin-top: 10px">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card card-body text-left">
+                <img class="avatar" src="/static/img/avatar.jpg">
+                <hr />
+                <div class="">
+                    <h2> {{ qUser }} </h2>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card card-body text-left">
+                <h2> Public Profile </h2>
+                <hr><br />
+                <div class="form">
+                    <label><b>Username</b></label>
+                    <input type="text" class="form-control" aria-label="Large" name="username" value="{{ info[1] }}"
+                        placeholder="Username">
+                </div>
+                <br /><br />
+                <div class="form">
+                    <label><b>Email</b></label>
+                    <input type="text" class="form-control" name="email" value="{{ info[3] }}"
+                        placeholder="you@example.com">
+
+                </div>
+                <br /><br />
+                <div class="form">
+                    <label><b>Phone number</b></label>
+                    <input type="text" class="form-control" name="phone" value="{{ info[4] }}"
+                        placeholder="Phone number">
+                </div>
+
+
+                {% if user == qUser %}
+                <hr> <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <button id="update" class="btn btn-block"
+                            style="background: #a880e4; color:white">Update</button>
+                    </div>
+                </div>
+                {% end %}
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
