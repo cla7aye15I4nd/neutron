@@ -29,8 +29,26 @@ class UserSystem:
         conn.commit()
 
     @classmethod
+    def update(self, idx, username, email, phone):
+        command = "UPDATE user SET username = '{}', email = '{}', phone = '{}' WHERE id = {}"
+        cursor.execute(command.format(username, email, phone, idx))
+        conn.commit()
+
+    @classmethod
+    def queryByUsername(self, username):
+        return self.queryRaw({'username': username})
+    
+    @classmethod
+    def queryById(self, ID):
+        return self.queryRaw({'ID': ID})
+
+    @classmethod
     def isExist(self, keymap):
         return self.queryRaw(keymap).fetchone() != None
+
+    @classmethod
+    def count(self, keymap):
+        return len(self.queryRaw(keymap).fetchall())
         
     @classmethod
     def checkLogin(self, username, password):
