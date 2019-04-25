@@ -13,9 +13,6 @@ import asyncio
 
 define("port", **config.global_settings)
 
-def sleep(decay):
-    time.sleep(decay)
-
 class IndexHandler(BaseHandler):
     def get(self):
         self.render('index.html', title = 'index', user = self.get_current_user())
