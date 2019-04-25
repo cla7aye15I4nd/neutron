@@ -26,6 +26,6 @@ def make_app():
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
-    http_server = tornado.httpserver.HTTPServer(make_app())
-    http_server.listen(options.port)
+    app = make_app()
+    app.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
