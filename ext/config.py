@@ -15,3 +15,5 @@ app_settings = {
     "login_url"     : "/login",
     "debug"         : True
 }
+
+default_avatar = os.path.join(os.path.dirname(__file__), "private", "img", 'avatar')
