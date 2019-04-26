@@ -1,14 +1,27 @@
+<style>
+    .avatar {
+        text-align: center;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+</style>
 <div class="card card-body text-left">
-        <img class="avatar" src="/static/img/avatar.jpg">
-        <hr />
-        <div class="">
-            <h2> {{ info[1] }} </h2>
-            <p style="color:gray"> 你是第 {{ info[0] }} 位用户</p>
-        </div>
+    <img class="avatar" src="/static/img/avatar.jpg">
+    <hr />
+    <div class="">
+        <h2> {{ info[1] }} </h2>
+        <p style="color:gray"> 你是第 {{ info[0] }} 位用户</p>
     </div>
+</div>
 
 <div class="card card-body text-left" style="margin-top : 10px">
-    <a href="/booking">My Booking</a> <hr/>
-    <a href="/profile">Profile</a> <hr/>
-    <a href="/setting">Setting</a> 
+    <a href="/booking">My Booking</a>
+    <hr />
+    <a href="/profile">Profile</a>
+    <hr />
+    <a href="/setting">Setting</a>
 </div>
