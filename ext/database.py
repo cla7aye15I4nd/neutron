@@ -7,22 +7,6 @@ cursor = conn.cursor()
 
 class UserSystem:
     @classmethod
-    async def _query_raw(self, keymap):
-        command = "SELECT * FROM user"
-        if keymap == None:
-            return cursor.execute(command)
-
-        front = True
-        command += " WHERE"
-        for key, val in keymap.items():
-            if not front:
-                command += " AND"
-            front = False
-            command += " {} = '{}'".format(key, val)
-
-        return cursor.execute(command)
-
-    @classmethod
     def queryRaw(self, keymap):
         command = "SELECT * FROM user"
         if keymap == None:
@@ -49,6 +33,14 @@ class UserSystem:
         cursor = conn.cursor()
         command = "UPDATE user SET username = '{}', email = '{}', phone = '{}' WHERE id = {}"
         cursor.execute(command.format(username, email, phone, idx))
+        conn.commit()
+
+    @classmethod
+    def changePassword(self, idx, password):
+        cursor = conn.cursor()
+        command = "UPDATE user SET password = '{}' WHERE id = {}"
+        command.format(password, idx)
+        cursor.execute(command.format(password, idx))
         conn.commit()
 
     @classmethod

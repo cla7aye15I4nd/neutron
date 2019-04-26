@@ -5,33 +5,31 @@
 
 <div class="container" style="margin-top: 10px">
     <div class="row">
-
+        {% raw xsrf_form_html() %}
         <div class="col-md-3">
             {% include leftbar.html %}
         </div>
         <div class="col-md-9">
+            <div id="updhint" class="d-none" role="alert"> Change Password Successful! </div>
             <div class="card card-body text-left">
-                <h2> Chnage Avatar </h2>
-                <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
-                    　　　<input type="file" name="upload"/> 　　　<input type="submit" name="submit" />
-                </form>
-                <hr><br />
                 <h2> Chnage Password </h2>
                 <hr><br />
                 <div class="form">
                     <label><b>Old password</b></label>
                     <input type="password" class="form-control" name="oldpassword" placeholder="Old password">
+                    <span name="old" style="color :red"></span>
                 </div>
                 <br /><br />
                 <div class="form">
                     <label><b>New pasword</b></label>
                     <input type="password" class="form-control" name="newpassword" placeholder="New password">
-
+                    <span name="new" style="color :red"></span>
                 </div>
                 <br /><br />
                 <div class="form">
                     <label><b>Confirm password</b></label>
                     <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm password">
+                    <span name="confirm" style="color :red"></span>
                 </div>
                 <br /><br />
                 <div class="row">
@@ -41,6 +39,7 @@
                             Password</button>
                     </div>
                 </div>
+                <script src='/static/js/setting.js'></script>
             </div>
         </div>
     </div>

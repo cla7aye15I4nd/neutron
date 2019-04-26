@@ -7,7 +7,7 @@ $(document).ready(function () {
             remember: $("input[name='remember']").val()
         },
             function (data, state) {
-                if (data["errors"] == "Success") {
+                if (data["errors"] != "Failed") {
                     var prevUrl = document.referrer;
                     if (prevUrl == '' || /.*\/login.*/.test(prevUrl) || /.*\/register.*/.test(prevUrl) || /.*\/reset-password.*/.test(prevUrl)) {
                         prevUrl = '/';

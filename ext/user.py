@@ -1,4 +1,5 @@
 import json
+import hashlib
 import tornado.web
 import tornado.gen
 
@@ -7,13 +8,12 @@ from forms import UpdateForm
 from database import UserSystem
 
 
-
 class ProfileHandler(BaseHandler):
     @tornado.gen.coroutine
     @tornado.web.authenticated
     def get(self):
         yield self.render('profile.html', title="profile", user=self.current_user,
-                              info=UserSystem.queryById(self.current_user.decode()).fetchone())
+                          info=UserSystem.queryById(self.current_user.decode()).fetchone())
 
     @tornado.gen.coroutine
     @tornado.web.authenticated
@@ -36,14 +36,13 @@ class ProfileHandler(BaseHandler):
 
             errors = "Failed"
             if form.validate():
-                UserSystem.update(result[0], arg['username'][0].decode(
-                ), arg['email'][0].decode(), arg['phone'][0].decode())
+                yield UserSystem.update(result[0], arg['username'][0].decode(), arg['email'][0].decode(), arg['phone'][0].decode())
                 errors = "Success"
             self.set_header("Content-Type", "application/json")
 
             retval = form.errors
             retval['errors'] = errors
-            self.write(json.dumps(retval))
+            yield self.write(json.dumps(retval))
 
 
 class SettingHandler(BaseHandler):
@@ -53,6 +52,30 @@ class SettingHandler(BaseHandler):
         self.render('setting.html', title="setting", user=self.current_user,
                     info=UserSystem.queryById(self.current_user.decode()).fetchone())
 
+    @tornado.gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        form = self.request.arguments
+        retval = {'errors': 'Failed'}
+
+        if UserSystem.queryById(self.current_user.decode()).fetchone()[2] != hashlib.sha256(form['old'][0]).hexdigest():
+            retval['old'] = 'Wrong Password'
+        elif len(form['new'][0]) < 8:
+            retval['new'] = 'Password too short'
+        elif form['new'] != form['confirm']:
+            retval['confirm'] = 'The two passwords you typed do not match'
+        else:
+            retval['errors'] = 'Success'
+            UserSystem.changePassword(self.current_user.decode(), hashlib.sha256(form['new'][0]).hexdigest())
+
+        self.set_header("Content-Type", "application/json")
+        yield self.write(json.dumps(retval))
+
+class AvatarHandler(BaseHandler):
+    @tornado.gen.coroutine
+    @tornado.web.authenticated
+    def get(self):
+        pass
 
 class BookingHandler(BaseHandler):
     @tornado.gen.coroutine

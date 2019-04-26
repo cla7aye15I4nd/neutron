@@ -21,8 +21,7 @@ class LoginHandler(BaseHandler):
             self.set_current_user(UserSystem.queryByUsername(username).fetchone()[0])
             errors = "Success"
         self.set_header("Content-Type","application/json")
-        self.write(json.dumps({"errors" : errors}))
-        self.finish()
+        yield self.write(json.dumps({"errors" : errors}))
 
 class RegisterHandler(BaseHandler):
     @tornado.gen.coroutine
@@ -38,7 +37,7 @@ class RegisterHandler(BaseHandler):
                                 self.request.arguments['password'][0].decode(),
                                 self.request.arguments['email'][0].decode(),
                                 self.request.arguments['phone'][0].decode())
-            errors = "Success"
+            errors = self.request.arguments['username'][0].decode()
         self.set_header("Content-Type","application/json")
 
         retval = form.errors

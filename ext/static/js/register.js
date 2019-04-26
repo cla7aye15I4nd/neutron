@@ -11,8 +11,9 @@ $(document).ready(function () {
             confirm: $("input[name='confirm']").val()
         },
             function (data, state) {
-                if (data["errors"] == "Success") {
-                    window.location.href = '/login';
+                if (data["errors"] != "Failed") {
+                    $("p[name='success']").text("Welcome you ! " + data["errors"])
+                    $("#registerSuccess").modal()
                 } else {
                     for (var id in profile) {
                         key = profile[id];
