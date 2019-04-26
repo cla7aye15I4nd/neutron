@@ -1,8 +1,10 @@
+import os
 import json
 import hashlib
 import tornado.web
 import tornado.gen
 
+import config
 from base import BaseHandler
 from forms import UpdateForm
 from database import UserSystem
@@ -75,7 +77,17 @@ class AvatarHandler(BaseHandler):
     @tornado.gen.coroutine
     @tornado.web.authenticated
     def get(self):
-        pass
+        file = os.path.join(os.path.dirname(__file__), "private", "img", self.current_user.decode())
+        
+        if not os.path.exists(file):
+            file = config.default_avatar
+
+        with open(file, 'rb') as f:
+            img = f.read()
+
+        self.set_header("Content-Type", "image/png,jpeg")
+        yield self.write(img)
+        
 
 class BookingHandler(BaseHandler):
     @tornado.gen.coroutine

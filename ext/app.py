@@ -8,7 +8,7 @@ from tornado.options import define, options
 
 import config
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler
-from user import ProfileHandler, SettingHandler, BookingHandler
+from user import ProfileHandler, SettingHandler, BookingHandler, AvatarHandler
 from query import TrainHandler
 
 
@@ -28,7 +28,9 @@ def make_app():
         (r"/profile", ProfileHandler),
         (r"/trains", TrainHandler),
         (r'/setting', SettingHandler),
-        (r'/booking', BookingHandler)
+        (r'/booking', BookingHandler),
+        (r'/avatar', AvatarHandler)
+
     ], **config.app_settings)
 
 if __name__ == "__main__":
