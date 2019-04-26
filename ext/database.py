@@ -36,6 +36,14 @@ class UserSystem:
         conn.commit()
 
     @classmethod
+    def changePassword(self, idx, password):
+        cursor = conn.cursor()
+        command = "UPDATE user SET password = '{}' WHERE id = {}"
+        command.format(password, idx)
+        cursor.execute(command.format(password, idx))
+        conn.commit()
+
+    @classmethod
     def queryByUsername(self, username):
         return self.queryRaw({'username': username})
     
