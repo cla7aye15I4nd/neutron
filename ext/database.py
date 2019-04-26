@@ -7,6 +7,22 @@ cursor = conn.cursor()
 
 class UserSystem:
     @classmethod
+    async def _query_raw(self, keymap):
+        command = "SELECT * FROM user"
+        if keymap == None:
+            return cursor.execute(command)
+
+        front = True
+        command += " WHERE"
+        for key, val in keymap.items():
+            if not front:
+                command += " AND"
+            front = False
+            command += " {} = '{}'".format(key, val)
+
+        return cursor.execute(command)
+
+    @classmethod
     def queryRaw(self, keymap):
         command = "SELECT * FROM user"
         if keymap == None:

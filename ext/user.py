@@ -1,17 +1,21 @@
-import tornado.web
-from base import BaseHandler
-
-from database import UserSystem
-from forms import UpdateForm
 import json
+import tornado.web
+import tornado.gen
+
+from base import BaseHandler
+from forms import UpdateForm
+from database import UserSystem
+
 
 
 class ProfileHandler(BaseHandler):
+    @tornado.gen.coroutine
     @tornado.web.authenticated
     def get(self):
-        self.render('profile.html', title="profile", user=self.current_user,
-                    info=UserSystem.queryById(self.current_user.decode()).fetchone())
+        yield self.render('profile.html', title="profile", user=self.current_user,
+                              info=UserSystem.queryById(self.current_user.decode()).fetchone())
 
+    @tornado.gen.coroutine
     @tornado.web.authenticated
     def post(self):
         arg = self.request.arguments
@@ -32,7 +36,8 @@ class ProfileHandler(BaseHandler):
 
             errors = "Failed"
             if form.validate():
-                UserSystem.update(result[0], arg['username'][0].decode(), arg['email'][0].decode(), arg['phone'][0].decode())
+                UserSystem.update(result[0], arg['username'][0].decode(
+                ), arg['email'][0].decode(), arg['phone'][0].decode())
                 errors = "Success"
             self.set_header("Content-Type", "application/json")
 
@@ -42,14 +47,16 @@ class ProfileHandler(BaseHandler):
 
 
 class SettingHandler(BaseHandler):
+    @tornado.gen.coroutine
     @tornado.web.authenticated
     def get(self):
         self.render('setting.html', title="setting", user=self.current_user,
-                    info =  UserSystem.queryById(self.current_user.decode()).fetchone())
+                    info=UserSystem.queryById(self.current_user.decode()).fetchone())
 
 
 class BookingHandler(BaseHandler):
+    @tornado.gen.coroutine
     @tornado.web.authenticated
     def get(self):
         self.render('booking.html', title="my booking", user=self.current_user,
-                    info =  UserSystem.queryById(self.current_user.decode()).fetchone())
+                    info=UserSystem.queryById(self.current_user.decode()).fetchone())

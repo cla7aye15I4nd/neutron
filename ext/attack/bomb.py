@@ -5,14 +5,15 @@ import re
 
 way = re.compile("value=\"(.*)\"")
 
+url = '127.0.0.1'
 for x in range(100000):
     s = req.Session()
-    r = s.get('http://193.112.69.6:8000/register')
+    r = s.get('http://{}:8000/register'.format(url))
 
     xsrf = re.findall(way, r.text)
 
     password = random.randint(10 ** 8, 10 ** 9)
-    r = s.post('http://193.112.69.6:8000/register', {'_xsrf' : xsrf,
+    r = s.post('http://{}/register'.format(url), {'_xsrf' : xsrf,
                                                  'username' : random.randint(10 ** 8, 10 ** 9),
                                                  'password' : password,
                                                  'confirm' :  password,

@@ -1,21 +1,23 @@
+import time
+import asyncio
+
+import tornado.gen
 import tornado.httpserver
 import tornado.ioloop
+from tornado.options import define, options
 
+import config
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler
 from user import ProfileHandler, SettingHandler, BookingHandler
 from query import TrainHandler
 
-from tornado.options import define, options
-
-import time
-import config
-import asyncio
 
 define("port", **config.global_settings)
 
 class IndexHandler(BaseHandler):
+    @tornado.gen.coroutine
     def get(self):
-        self.render('index.html', title = 'index', user = self.get_current_user())
+        yield self.render('index.html', title = 'index', user = self.current_user)
         
 def make_app():
     return tornado.web.Application([
