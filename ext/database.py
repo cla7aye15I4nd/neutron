@@ -30,6 +30,7 @@ class UserSystem:
 
     @classmethod
     def update(self, idx, username, email, phone):
+        cursor = conn.cursor()
         command = "UPDATE user SET username = '{}', email = '{}', phone = '{}' WHERE id = {}"
         cursor.execute(command.format(username, email, phone, idx))
         conn.commit()
