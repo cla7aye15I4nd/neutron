@@ -1,5 +1,7 @@
 import os
 import base64
+import random
+import string
 
 from Crypto.Cipher import AES
 from Crypto import Random
@@ -7,9 +9,11 @@ from captcha.image import ImageCaptcha
 
 from PIL import Image
 
-code_len = 6
+code_len = 4
 verify_secret = os.urandom(16)
 
+def get():
+    return pack(str.encode(''.join([random.choice(string.ascii_lowercase + string.digits) for x in range(code_len)])))
 
 def pack(code):
     assert len(code) == code_len
