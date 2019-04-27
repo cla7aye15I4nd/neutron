@@ -2,12 +2,10 @@ import json
 import tornado.web
 import tornado
 import config
-import random
-import string
 import os
 
 from urllib.parse import urlencode
-from verify import pack, unpack, gen
+from verify import get, pack, unpack, gen
 from base import BaseHandler
 from forms import LoginForm, RegisterForm
 from database import UserSystem
@@ -16,7 +14,7 @@ from database import UserSystem
 class LoginHandler(BaseHandler):
     @tornado.gen.coroutine
     def get(self):
-        code = pack(str.encode(''.join([random.choice(string.ascii_lowercase + string.digits) for x in range(6)])))
+        code = get()
         self.set_secure_cookie("code", code)
         yield self.render('login.html', title = 'Login', user = self.current_user, img_url = urlencode({'secret' : code}))
         
