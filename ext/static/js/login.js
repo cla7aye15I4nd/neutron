@@ -4,10 +4,11 @@ $(document).ready(function () {
             _xsrf: $("input[name='_xsrf']").val(),
             username: $("input[name='username']").val(),
             password: $("input[name='password']").val(),
-            remember: $("input[name='remember']").val()
+            remember: $("input[name='remember']").val(),
+            code    : $("input[name='code']").val()
         },
             function (data, state) {
-                if (data["errors"] != "Failed") {
+                if (data["errors"] == "Success") {
                     var prevUrl = document.referrer;
                     if (prevUrl == '' || /.*\/login.*/.test(prevUrl) || /.*\/register.*/.test(prevUrl) || /.*\/reset-password.*/.test(prevUrl)) {
                         prevUrl = '/';
@@ -18,7 +19,7 @@ $(document).ready(function () {
                         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">",
                         "<span aria-hidden=\"true\">&times;</span></button>",
                         "<strong>Warning!</strong> ",
-                        "<p>Wrong username or password.</p>",
+                        "<p>" + data["errors"] + "</p>",
                         "</div>"].join("");
                     $("#loginhint").html(htmlcode);
                 }

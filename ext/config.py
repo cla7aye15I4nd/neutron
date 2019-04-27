@@ -16,4 +16,5 @@ app_settings = {
     "debug"         : True
 }
 
+thread_count   = 1
 default_avatar = os.path.join(os.path.dirname(__file__), "private", "img", 'avatar')

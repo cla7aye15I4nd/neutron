@@ -31,6 +31,18 @@
                         <input type="password" class="form-control" name="password" placeholder="Password"
                             onkeydown="keyLogin();">
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-group-lg">
+                                <label>Code</label>
+                                <input type="text" class="form-control" name="code" placeholder="Code"
+                                    onkeydown="keyLogin();">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img name="code" src="/verify_code?{{ img_url }}" style="width:140px; height:50px; margin-top: 10px">
+                        </div>
+                    </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="save"> Remember me
@@ -38,7 +50,7 @@
                     </div>
                     <button id="login" class="btn btn-block btn-lg" style="background: #a880e4; color:white">Sign
                         In</button>
-                    <script src="static/js/login.min.js"></script>
+                    <script src="static/js/login.js"></script>
                 </div>
             </div>
         </div>
