@@ -22,7 +22,7 @@ class LoginForm(Form):
     ])
     username = TextField('Username', [
         validators.Required(message='Username is required.'),
-        validators.Length(min=3, max=25, message='Username must be between 3 and 25 characters long'),
+        validators.Length(min=3, max=15, message='Username must be between 3 and 15 characters long'),
         UsernameLoginValidators()
     ])
 
@@ -68,7 +68,7 @@ class ConfirmValidator():
 class RegisterForm(Form):
     username = TextField('Username', [
         validators.Required(message='Username is required.'),
-        validators.Length(min=3, max=25, message='Username must be between 3 and 25 characters long'),
+        validators.Length(min=3, max=15, message='Username must be between 3 and 15 characters long'),
         UsernameRegisterValidators()
     ])
     password = PasswordField('New Password', [
@@ -127,7 +127,7 @@ class UpdateForm(Form):
     originPhone    = TextField('Origin phone', []) 
     username = TextField('Username', [
         validators.Required(message='Username is required.'),
-        validators.Length(min=3, max=25, message='Username must be between 3 and 25 characters long'),
+        validators.Length(min=3, max=15, message='Username must be between 3 and 15 characters long'),
         UsernameUpdateValidators()
     ])
     email = TextField('Email', [

@@ -5,6 +5,7 @@ import tornado.web
 import tornado.gen
 
 import config
+import imghdr
 from base import BaseHandler
 from forms import UpdateForm
 from database import UserSystem
@@ -68,17 +69,20 @@ class SettingHandler(BaseHandler):
             retval['confirm'] = 'The two passwords you typed do not match'
         else:
             retval['errors'] = 'Success'
-            UserSystem.changePassword(self.current_user.decode(), hashlib.sha256(form['new'][0]).hexdigest())
+            UserSystem.changePassword(self.current_user.decode(
+            ), hashlib.sha256(form['new'][0]).hexdigest())
 
         self.set_header("Content-Type", "application/json")
         yield self.write(json.dumps(retval))
+
 
 class AvatarHandler(BaseHandler):
     @tornado.gen.coroutine
     @tornado.web.authenticated
     def get(self):
-        file = os.path.join(os.path.dirname(__file__), "private", "img", self.current_user.decode())
-        
+        file = os.path.join(os.path.dirname(__file__),
+                            "private", "img", self.current_user.decode())
+
         if not os.path.exists(file):
             file = config.default_avatar
 
@@ -87,7 +91,18 @@ class AvatarHandler(BaseHandler):
 
         self.set_header("Content-Type", "image/png,jpeg")
         yield self.write(img)
+
+
+class UploadAvatarHandler(BaseHandler):
+    @tornado.gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        meta = self.request.files.get('file', None)[0]
+        file = os.path.join(os.path.dirname(__file__), "private", "img", self.current_user.decode())
         
+        with open(file, 'wb') as f:
+            f.write(meta['body'])
+
 
 class BookingHandler(BaseHandler):
     @tornado.gen.coroutine
