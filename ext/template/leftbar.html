@@ -10,11 +10,19 @@
     }
 </style>
 <div class="card card-body text-left">
-    <img class="avatar" src="/avatar"></img>
-    <hr />
-    <div class="">
-        <h2> {{ info[1] }} </h2>
-        <p style="color:gray"> 你是第 {{ info[0] }} 位用户</p>
+    <form id='upload' action='upload' enctype="multipart/form-data" method='post'>
+        <input type='file' name='file' onchange="upload()" hidden />
+    </form>
+    <img name="img" class="avatar" src="/avatar">
+    </img>
+</div>
+
+<div class="card card-body text-left">
+    <div class="row">
+        <div class="col-md-9">
+            <h3> {{ info[1] }} </h3>
+            <p style="color:gray"> 你是第 {{ info[0] }} 位用户</p>
+        </div>
     </div>
 </div>
 
@@ -25,3 +33,38 @@
     <hr />
     <a href="/setting">Setting</a>
 </div>
+
+<script>
+    $("img[name='img']").click(function () {
+        $('input[type=file]')[0].click();
+    });
+    function upload() {
+        var form = $('form')[0];
+        var file = $('input[type=file]')[0].files[0];
+        var formData = new FormData(form);
+        formData.append('image', file);
+        formData.append('_xsrf', $("input[name=_xsrf]").val());
+
+        console.log(file.size);
+        if (file.size > 1024 * 10240) {
+            alert("Avatar can not bigger than 10M");
+            return false; 
+        }
+
+        $.ajax({
+            url: '/upload_avatar',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                window.location.reload(true);
+            },
+            error: function (data) {
+                alert('error');
+            }
+        });
+
+        return true;
+    };
+</script>
