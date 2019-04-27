@@ -1,7 +1,13 @@
 import json
 import tornado.web
 import tornado
+import config
+import random
+import string
+import os
 
+from urllib.parse import urlencode
+from verify import pack, unpack, gen
 from base import BaseHandler
 from forms import LoginForm, RegisterForm
 from database import UserSystem
@@ -10,16 +16,22 @@ from database import UserSystem
 class LoginHandler(BaseHandler):
     @tornado.gen.coroutine
     def get(self):
-        yield self.render('login.html', title = 'Login', user = self.current_user)
+        code = pack(str.encode(''.join([random.choice(string.ascii_lowercase + string.digits) for x in range(6)])))
+        self.set_secure_cookie("code", code)
+        yield self.render('login.html', title = 'Login', user = self.current_user, img_url = urlencode({'secret' : code}))
         
     @tornado.gen.coroutine
     def post(self):
         username = self.get_argument("username", None)
         form = LoginForm(self.request.arguments)
-        errors = "Failed"
+        errors = "Wrong username or password."
         if form.validate():
-            self.set_current_user(UserSystem.queryByUsername(username).fetchone()[0])
-            errors = "Success"
+            code = self.get_argument("code", None)
+            if code is None or unpack(self.get_secure_cookie("code")).decode() != code:
+                errors = "Wrong verification code"
+            else:
+                self.set_current_user(UserSystem.queryByUsername(username).fetchone()[0])
+                errors = "Success"
         self.set_header("Content-Type","application/json")
         yield self.write(json.dumps({"errors" : errors}))
 
@@ -49,3 +61,12 @@ class LogoutHandler(BaseHandler):
     def get(self):
         self.clear_all_cookies()
         yield self.redirect(self.get_argument('next', '/'))
+
+class VerifyHandler(BaseHandler):
+    @tornado.gen.coroutine
+    def get(self):
+        cipher = self.get_argument('secret', None)
+        if not cipher is None:
+            plain = unpack(str.encode(cipher))
+            self.set_header("Content-Type", "image/png,jpeg")
+            self.write(gen(plain))
