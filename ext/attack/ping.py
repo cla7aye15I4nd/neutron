@@ -39,4 +39,11 @@ async def gen(code):
     return img
 
 if __name__ == '__main__':
-    pass
+    async def main():
+        for x in range(1000):
+            await asyncio.create_task(pack(b'1234'))
+    def run():
+        for x in range(1000):
+            pack(b'1234')
+    run()
+    asyncio.run(main())

@@ -3,6 +3,7 @@ import tornado.web
 import tornado
 import config
 import os
+import asyncio
 
 from urllib.parse import urlencode
 from verify import get, pack, unpack, gen
@@ -61,10 +62,9 @@ class LogoutHandler(BaseHandler):
         yield self.redirect(self.get_argument('next', '/'))
 
 class VerifyHandler(BaseHandler):
-    @tornado.gen.coroutine
-    def get(self):
+    async def get(self):
         cipher = self.get_argument('secret', None)
         if not cipher is None:
-            plain = unpack(str.encode(cipher))
+            plain = await asyncio.create_task(unpack(str.encode(cipher)))
             self.set_header("Content-Type", "image/png,jpeg")
             self.write(gen(plain))

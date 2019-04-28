@@ -1,7 +1,24 @@
-import requests as req
+import asyncio
+import time
 
-url = '127.0.0.1'
-url = '108.61.126.68'
-for x in range(1000):
-    req.get('http://{}/login'.format(url))
-    req.get('http://{}/register'.format(url))
+async def say_after(delay, what):
+    #asyncio.sleep(delay)
+    time.sleep(delay)
+    return what
+    
+async def main():
+    # task1 = asyncio.create_task(say_after(1, 'hello'))
+
+    # task2 = asyncio.create_task(
+    #     say_after(2, 'world'))
+
+    print(f"started at {time.strftime('%X')}")
+
+    # Wait until both tasks are completed (should take
+    # around 2 seconds.)
+    print(await asyncio.create_task(say_after(1, 'hello')))
+    print(await asyncio.create_task(say_after(2, 'world')))
+    print("12")
+    print(f"finished at {time.strftime('%X')}")
+
+asyncio.run(main())
