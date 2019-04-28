@@ -13,23 +13,23 @@ from PIL import Image
 code_len = 4
 verify_secret = os.urandom(16)
 
-async def get():
+def get():
     return pack(str.encode(''.join([random.choice(string.ascii_lowercase + string.digits) for x in range(code_len)])))
 
-async def pack(code):
+def pack(code):
     assert len(code) == code_len
     iv = Random.new().read(AES.block_size)
     engine = AES.new(verify_secret, AES.MODE_CFB, iv)
     return base64.b64encode(iv + engine.encrypt(os.urandom(16 - code_len) + code))
 
 
-async def unpack(code):
+def unpack(code):
     code = base64.b64decode(code)
     iv, cipher = code[:AES.block_size], code[AES.block_size:]
     engine = AES.new(verify_secret, AES.MODE_CFB, iv)
     return engine.decrypt(cipher)[-code_len:]
 
-async def gen(code):
+def gen(code):
     img = ImageCaptcha()
     image = img.generate_image(code.decode())
     image.save(code, format='jpeg')

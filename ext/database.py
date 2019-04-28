@@ -20,7 +20,8 @@ class UserSystem:
             front = False
             command += " {} = '{}'".format(key, val)
 
-        return cursor.execute(command)
+        cursor.execute(command)
+        return cursor
 
     @classmethod
     def register(self, username, password, email, phone):

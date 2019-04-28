@@ -29,7 +29,8 @@ class LoginHandler(BaseHandler):
             if code is None or unpack(self.get_secure_cookie("code")).decode() != code:
                 errors = "Wrong verification code"
             else:
-                self.set_current_user(UserSystem.queryByUsername(username).fetchone()[0])
+                users = UserSystem.queryByUsername(username).fetchone()
+                self.set_current_user(users[0])
                 errors = "Success"
         self.set_header("Content-Type","application/json")
         yield self.write(json.dumps({"errors" : errors}))
@@ -62,9 +63,10 @@ class LogoutHandler(BaseHandler):
         yield self.redirect(self.get_argument('next', '/'))
 
 class VerifyHandler(BaseHandler):
-    async def get(self):
+    @tornado.gen.coroutine
+    def get(self):
         cipher = self.get_argument('secret', None)
         if not cipher is None:
-            plain = await asyncio.create_task(unpack(str.encode(cipher)))
+            plain = unpack(str.encode(cipher))
             self.set_header("Content-Type", "image/png,jpeg")
             self.write(gen(plain))
