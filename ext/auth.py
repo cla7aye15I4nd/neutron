@@ -3,6 +3,7 @@ import tornado.web
 import tornado
 import config
 import os
+import asyncio
 
 from urllib.parse import urlencode
 from verify import get, pack, unpack, gen
@@ -28,7 +29,8 @@ class LoginHandler(BaseHandler):
             if code is None or unpack(self.get_secure_cookie("code")).decode() != code:
                 errors = "Wrong verification code"
             else:
-                self.set_current_user(UserSystem.queryByUsername(username).fetchone()[0])
+                users = UserSystem.queryByUsername(username).fetchone()
+                self.set_current_user(users[0])
                 errors = "Success"
         self.set_header("Content-Type","application/json")
         yield self.write(json.dumps({"errors" : errors}))
