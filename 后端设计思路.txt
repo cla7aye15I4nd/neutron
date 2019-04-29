@@ -1,23 +1,0 @@
-一、用户：
-	创建user_data类，在B树中，关键词id
-	int id, privilege;
-	standstr name, password, email, phone;
-	用户注册register: 查找，分配id
-	用户登录login:查找，检查密码
-	查询用户信息query_profile：查找并返回
-	修改用户信息modify_profile：查找并修改
-	修改用户权限modify_privilege：查找并修改
-
-二、车次：
-	创建train_data类，在B树中，关键词id
-	bool saled;
-	int id, left[5];
-	standstr name, catalog;
-	stop_info stop[60];
-		stop_info类（struct即可）：location， 三个time，price[5];
-	新建车次add_train:新建，saled状态为0
-	公开车次sale_train:sale状态变为1， 在沿路bitset位置增加该id编号，更新车票数量
-	查询车次query_train：按id查询
-	删除车次delete_train：查找并删除即可	修改车次modify_train：查找并修改即可
-
-三、车票：	创建saled_ticket类，30棵B树，每天一棵，关键词用户id（或者1棵B树， 记录起始时间与用户id的复合关键词）	standstr user_id, train_id, ticket_kind, catalog; （详细信息可以每次查也可以存下来，外存和时间的平衡）	查询车票query_ticket：首末站bitset取交，依次检查沿路是否都有票	带中转查询车票query_transfer：枚举中转站，首末站和中转站三者bitset取交，再依次检查沿路是否都有票	订购车票buy_ticket：沿路检查车票是否存在，成功更新车票数，在起始时间那棵树中写入	退订车票refund_ticket：在起始站那棵树中查询，若存在则删除并更新车票数此外，用户、车次id和地点与分配int类型id的映射采用map存储standstr为定长char数组类型，方便外存存储B树接口（初步）：	bool insert(int id);	bool count(int id);	bool delete(int id);	T query(int id);
