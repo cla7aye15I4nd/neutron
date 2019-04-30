@@ -2,10 +2,15 @@
 <html lang="zh-CN">
 
 <style>
-    .back {      
+    .back {
         background-repeat: repeat;
         background-attachment: fixed;
         background-size: cover;
+        height: 100%;
+    }
+
+    html {
+        height: 100%;
     }
 </style>
 
@@ -25,16 +30,18 @@
         integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
         crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () { 
-            $('body').bootstrapMaterialDesign(); 
+        $(document).ready(function () {
+            $('body').bootstrapMaterialDesign();
             $('body').attr('style', 'background-image: url(static/img/background/' + Math.floor(Math.random() * 2) + '.jpg)')
         });
     </script>
 </head>
 
 <body class="back">
-    {% include "header.html" %}
-    {% block content %} {% end %}
+    <div style="height: 92.5%">
+        {% include "header.html" %}
+        {% block content %} {% end %}
+    </div>
     {% include "footer.html" %}
 </body>
 
