@@ -1,5 +1,5 @@
 # 计划
-目前还不确定是否需要指向父亲的指针
+目前还不确定是否需要指向父亲的指针（所以保留了指向父亲的指针）
 
 ## bptree结构如下：
 ```hpp
@@ -31,15 +31,15 @@ class bptree {
   返回key所对应的value，若key不存在，返回default
 
 ### 2、更新：
-* 插入(insert_in_parent() unfinished）
+* 插入
 
   `void insert(const key_t &Key, const value_t &Value)`
-* 删除(erase_entry_unfinished)
+* 删除
  
   `void erase(const key_t &Key)`
 
 
-## 苏起冬的B+树接口$\Downarrow$
+## B+树接口参考$\Downarrow$
 - 询问是否有某个key
 
   `int count(const key_t &key)`
