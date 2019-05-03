@@ -8,6 +8,7 @@
 #include <iostream>
 
 namespace sjtu {
+    const int blockSize = 4096;
 /**
  * a data container like std::vector
  * store data in a successive memory and support random access.

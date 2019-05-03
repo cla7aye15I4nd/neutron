@@ -16,7 +16,7 @@ namespace sjtu {
 
     private:
         size_t _size;
-        T _elem[blockSize];
+        T _elem[blockSize + 1];
 
     public:
         vector() {
@@ -141,6 +141,10 @@ namespace sjtu {
             }
 
             return;
+        }
+
+        void clear() {
+            _size = 0;
         }
     };
 

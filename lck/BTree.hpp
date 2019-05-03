@@ -1,27 +1,24 @@
-#ifndef BTREE_BPTREE_HPP
-#define BTREE_BPTREE_HPP
+#ifndef BTREE_HPP
+#define BTREE_HPP
 
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include "myVector.hpp"
+#include "vector.hpp"
 #include "exceptions.hpp"
 
-namespace sjtu {
-    template<class key_t, class value_t>
-    class bptree {
+namespace sjtu{
+    typedef void * pointer;
+    template <class key_t, class value_t>
+    class bptree{
     private:
         struct Node {
-            //"vector.hpp"是采用动态数组
-            //"myVector.hpp"是采用静态数组
-            vector<Node *> child;
-            vector<key_t> key;
-            vector<value_t> value;
-
-            //不确定是否需要指向父亲的指针
+            vector <Node *> child;
+            vector <key_t> key;
+            vector <value_t> value;
 
             bool isLeaf;
-            //如果是叶节点，next将指向下一个叶节点
+
             Node *next;
             Node *parent;
 
@@ -38,6 +35,7 @@ namespace sjtu {
 
         Node *root;
 
+    private:
         Node *find_leaf(const key_t &Key) {
             Node *t = root;
             Node *tmp;
@@ -47,7 +45,6 @@ namespace sjtu {
                     if (Key < t->key[idx])
                         break;
                 }
-                //在寻找的过程中记录parent
                 tmp = t;
                 t = t->child[idx];
                 t->parent = tmp;
@@ -58,9 +55,8 @@ namespace sjtu {
         void insert_in_leaf(Node *lf, const key_t &Key, const value_t &Value) {
             int idx;
             for (idx = 0; idx < lf->key.size(); ++idx) {
-                if (Key < lf->key[idx]) {
+                if (Key < lf->key[idx])
                     break;
-                }
             }
             lf->key.insert(idx, Key);
             lf->value.insert(idx, Value);
@@ -68,11 +64,8 @@ namespace sjtu {
             return;
         }
 
-        //unsure whether it is necessary
         void insert_in_parent(Node *n, const key_t &Key, Node *n2) {
             if (n == root) {
-                // Create a new node R containing N, K′, N′
-                // Make R the root of the tree
                 Node *newRoot = new Node();
                 newRoot->key.insert(0, Key);
                 newRoot->child.push_back(n);
@@ -80,44 +73,52 @@ namespace sjtu {
                 root = newRoot;
                 return;
             }
+
             Node *p = n->parent;
+            // p is an inner Node
             if (p->child.size() < blockSize) {
-                // insert (K ′, N′) in P just after N
-                int i;
-                for (i = 0; i < p->child.size(); ++i) {
-                    if (p->child[i] == n)
+                int idx;
+                for (idx = 0; idx < p->child.size(); ++idx) {
+                    if (p->child[idx] == n)
                         break;
                 }
-                p->key.insert(i, Key);
-                p->child.insert(i + 1, n2);
-            } else {
-                /* Split P */
-                //p2是分裂产生的节点
-                // todo wrong!
-                Node *p2 = new Node();
-                for (int i = (blockSize + 1) / 2; i < blockSize; ++i) {
-                    p2->child.push_back(p->child[i]);
-                }
-                for (int i = (blockSize + 1) / 2; i < blockSize; ++i) {
-                    p->child.pop_back();
-                }
-                for (int i = (blockSize + 1) / 2 - 1; i < blockSize - 1; ++i) {
-                    p2->key.push_back(p->key[i]);
-                }
-                for (int i = (blockSize + 1) / 2 - 1; i < blockSize - 1; ++i) {
-                    p2->key.push_back(p->key[i]);
-                }
-
-                p2->child.push_back(n2);
-                p2->key.push_back(Key);
-
-                insert_in_parent(p, p2->key[0], p2);
+                p->key.insert(idx, Key);
+                p->child.insert(idx + 1, n2);
             }
+            else {
+                /* Split P */
+                Node *tmp = new Node;
+                for (int i = 0; i < blockSize - 1; ++i) {
+                    tmp->key.push_back(p->key[i]);
+                    tmp->child.push_back(p->child[i]);
+                }
+                tmp->child.push_back(p->child[blockSize - 1]);
+
+                tmp->key.push_back(Key);
+                tmp->child.push_back(n2);
+
+                p->key.clear();
+                p->child.clear();
+                Node *p2 = new Node();
+
+                for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
+                    p->key.push_back(tmp->key[i]);
+                    p->child.push_back(tmp->child[i]);
+                }
+                key_t k2 = tmp->key[(blockSize + 1) / 2];
+                for (int i = (blockSize + 1) / 2 + 1; i <= blockSize; ++i) {
+                    p->key.push_back(tmp->key[i]);
+                    p->child.push_back(tmp->child[i]);
+                }
+                delete tmp;
+
+                insert_in_parent(p, k2, p2);
+            }
+
         }
 
-
         void erase_entry(Node *n, const key_t &Key, Node *delNode) {
-            //从n中删除Key和对应value或child指针
+
             for (int i = 0; i < n->key.size(); ++i) {
                 if (n->key[i] == Key) {
                     n->key.erase(i);
@@ -135,12 +136,10 @@ namespace sjtu {
                 }
             }
 
-            //n is the root and n has only one remaining child
             if (n == root && n->child.size() == 1) {
                 root = n->child[0];
                 delete n;
             }
-                // if n has too few values/pointers
             else if ((n->isLeaf && n->key.size() < blockSize / 2)
                      ||
                      (!n->isLeaf && n->child.size() < (blockSize + 1) / 2)) {
@@ -148,6 +147,8 @@ namespace sjtu {
                 Node *n2;
                 key_t k2;
                 //prev为true时表示n2是n的前一个节点
+//                Let n2 be the previous or next child of parent(n)
+//                Let k2 be the value between pointers n and n2 in parent(n)
                 bool prev = false;
                 int idx;
                 for (idx = 0; idx < p->child.size(); ++idx) {
@@ -163,7 +164,7 @@ namespace sjtu {
                     k2 = p->key[idx];
                 }
 
-                if (n->key.size() + n2->key.size() < blockSize) {
+                if (n->key.size() + n2->key.size() <= blockSize - 1) {
                     /* Coalesce nodes */
                     if (prev == false) {
                         std::swap(n, n2);
@@ -222,7 +223,7 @@ namespace sjtu {
                             n2->value.pop_back();
                         }
                     }
-                    // symmetric to the prev case
+                        // symmetric to the prev case
                     else {
                         //n2是n的后一个节点
                         if (!n->isLeaf) {
@@ -269,6 +270,7 @@ namespace sjtu {
         }
 
     public:
+
         bptree() {
 
         }
@@ -276,6 +278,7 @@ namespace sjtu {
         ~bptree() {
             clear(root);
         }
+
 
         int count(const key_t &Key) {
             Node *t = find_leaf(Key);
@@ -294,16 +297,15 @@ namespace sjtu {
 
         value_t find(const key_t &Key) {
             Node *t = find_leaf(Key);
-            //t is leafNode now
+            //now t is a leaf node
             int idx;
             for (idx = 0; idx < t->key.size(); ++idx) {
                 if (Key == t->key[idx])
                     break;
             }
-
             if (idx != t->key.size()) {
                 return t->value[idx];
-            } 
+            }
             else {
                 //return default if not found
                 return value_t();
@@ -311,34 +313,50 @@ namespace sjtu {
         }
 
         void insert(const key_t &Key, const value_t &Value) {
-            Node *t;
+            Node *lf;
             if (root == NULL) {
                 root = new Node();
-                t = root;
-            } else {
-                //找到应该包含Key的叶节点
-                t = find_leaf(Key);
+                lf = root;
+            }
+            else {
+                lf = find_leaf(Key);
             }
 
-            if (t->key.size() < blockSize - 1) {
-                insert_in_leaf(t, Key, Value);
-            } 
+            //lf is a leaf Node
+            if (lf->key.size() < blockSize - 1) {
+                insert_in_leaf(lf, Key, Value);
+            }
             else {
-                //t2是分裂出的节点
-                Node *t2 = new Node();
-                for (int i = (blockSize + 1) / 2; i < blockSize; ++i) {
-                    t2->key.push_back(t->key[i]);
-                    t2->value.push_back(t->value[i]);
+                /* Leaf has n − 1 key values already, split it */
+                Node *lf2 = new Node();
+                Node *tmp = new Node();
+
+                for (int i = 0; i < lf->key.size(); ++i) {
+                    tmp->key.push_back(lf->key[i]);
+                    tmp->value.push_back(lf->value[i]);
                 }
-                for (int i = (blockSize + 1) / 2; i < blockSize; ++i) {
-                    t->key.pop_back();
-                    t->value.pop_back();
-                }
-                t2->next = t->next;
-                t->next = t2;
+                insert_in_leaf(tmp, Key, Value);
+                lf2->next = lf->next;
+                lf->next = lf2;
 
 
-                insert_in_parent(t, t2->key[0], t2);
+//                Erase L.P1 through L.Kn−1 from L
+//                Copy T.P1 through T.K⌈n/2⌉ from T into L starting at L.P1 Copy T.P⌈n/2⌉+1 through T.Kn from T into L′ starting at L′.P1 Let K′ be the smallest key-value in L′
+//                insert in parent(L, K′, L′)
+                lf->key.clear();
+                lf->value.clear();
+
+                for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
+                    lf->key.push_back(tmp->key[i]);
+                    lf->value.push_back(tmp->value[i]);
+                }
+                for (int i = (blockSize + 1) / 2; i <= blockSize - 1; ++i) {
+                    lf2->key.push_back(tmp->key[i]);
+                    lf2->value.push_back(tmp->value[i]);
+                }
+                delete tmp;
+
+                insert_in_parent(lf, lf2->key[0], lf2);
             }
         }
 
@@ -346,10 +364,7 @@ namespace sjtu {
             Node *lf = find_leaf(Key);
             erase_entry(lf, Key, NULL);
         }
-
-
     };
 }
 
-
-#endif //BTREE_BPTREE_HPP
+#endif
