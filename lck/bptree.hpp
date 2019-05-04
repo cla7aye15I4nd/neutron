@@ -6,6 +6,7 @@
 #include <cstring>
 #include "myVector.hpp"
 #include "exceptions.hpp"
+using std::cout;
 
 namespace sjtu {
     template<class key_t, class value_t>
@@ -33,6 +34,21 @@ namespace sjtu {
 
             ~Node() {
 
+            }
+
+            void view() {
+                if (isLeaf) {
+                    for (int i = 0; i < key.size(); ++i) {
+                        cout << key[i] << "->" << value[i] << ' ';
+                    }
+                    puts("");
+                }
+                else {
+                    for (int i = 0; i < key.size(); ++i) {
+                        cout << key[i];
+                    }
+                    puts("");
+                }
             }
         };
 
@@ -163,7 +179,7 @@ namespace sjtu {
                     k2 = p->key[idx];
                 }
 
-                if (n->key.size() + n2->key.size() < blockSize) {
+                if (n->key.size() + n2->key.size() <= blockSize - 1) {
                     /* Coalesce nodes */
                     if (prev == false) {
                         std::swap(n, n2);
@@ -270,7 +286,7 @@ namespace sjtu {
 
     public:
         bptree() {
-
+            root = NULL;
         }
 
         ~bptree() {
@@ -305,6 +321,7 @@ namespace sjtu {
                 return t->value[idx];
             } 
             else {
+                //todo
                 //return default if not found
                 return value_t();
             }
@@ -346,8 +363,6 @@ namespace sjtu {
             Node *lf = find_leaf(Key);
             erase_entry(lf, Key, NULL);
         }
-
-
     };
 }
 

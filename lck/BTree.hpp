@@ -4,8 +4,9 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include "vector.hpp"
+#include "myVector.hpp"
 #include "exceptions.hpp"
+using std::cout;
 
 namespace sjtu{
     typedef void * pointer;
@@ -31,6 +32,21 @@ namespace sjtu{
             ~Node() {
 
             }
+
+            void view() {
+                if (isLeaf) {
+                    for (int i = 0; i < key.size(); ++i) {
+                        cout << key[i] << "->" << value[i] << ' ';
+                    }
+                    puts("");
+                }
+                else {
+                    for (int i = 0; i < key.size(); ++i) {
+                        cout << key[i];
+                    }
+                    puts("");
+                }
+            }
         };
 
         Node *root;
@@ -53,6 +69,10 @@ namespace sjtu{
         }
 
         void insert_in_leaf(Node *lf, const key_t &Key, const value_t &Value) {
+//            if (lf->key.size() == 0) {
+//                lf->key.insert(0, Key);
+//                lf->value.insert(0, Value);
+//            }
             int idx;
             for (idx = 0; idx < lf->key.size(); ++idx) {
                 if (Key < lf->key[idx])
@@ -135,11 +155,15 @@ namespace sjtu{
                     }
                 }
             }
-
             if (n == root && n->child.size() == 1) {
                 root = n->child[0];
                 delete n;
             }
+            //todo maybe wrong ⬇
+            else if (n == root) {
+                return;
+            }
+            //todo maybe wrong ⬆
             else if ((n->isLeaf && n->key.size() < blockSize / 2)
                      ||
                      (!n->isLeaf && n->child.size() < (blockSize + 1) / 2)) {
@@ -272,7 +296,7 @@ namespace sjtu{
     public:
 
         bptree() {
-
+            root = NULL;
         }
 
         ~bptree() {
@@ -327,6 +351,8 @@ namespace sjtu{
                 insert_in_leaf(lf, Key, Value);
             }
             else {
+                //todo wrong
+
                 /* Leaf has n − 1 key values already, split it */
                 Node *lf2 = new Node();
                 Node *tmp = new Node();
@@ -362,7 +388,17 @@ namespace sjtu{
 
         void erase(const key_t &Key) {
             Node *lf = find_leaf(Key);
+//            lf->view();
             erase_entry(lf, Key, NULL);
+        }
+
+
+        void view_node(Node *t) {
+            t->view();
+        }
+
+        void view_root() {
+            root->view();
         }
     };
 }
