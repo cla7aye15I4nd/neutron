@@ -38,13 +38,13 @@ namespace sjtu{
             void view() {
                 if (isLeaf) {
                     for (int i = 0; i < key.size(); ++i) {
-                        cout << key[i] << "->" << value[i] << ' ';
+                        cout << key[i] << ":" << value[i] << ' ';
                     }
                     puts("");
                 }
                 else {
                     for (int i = 0; i < key.size(); ++i) {
-                        cout << key[i];
+                        cout << key[i] << ' ';
                     }
                     puts("");
                 }
@@ -211,6 +211,7 @@ namespace sjtu{
                             n2->value.push_back(n->value[i]);
                         }
                     }
+                    n2->next = n->next;
 
                     erase_entry(n->parent, k2, n);
                     delete n;
@@ -285,6 +286,10 @@ namespace sjtu{
                         }
                     }
                 }
+            }
+            //todo maybe wrong
+            else {
+                erase_entry(n->parent, Key, n);
             }
         }
 
