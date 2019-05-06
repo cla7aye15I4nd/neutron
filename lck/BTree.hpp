@@ -7,19 +7,21 @@
 #include "myVector.hpp"
 #include "exceptions.hpp"
 using std::cout;
+using std::cin;
+using std::endl;
+//#define DEBUG
 
 namespace sjtu{
-    typedef void * pointer;
     template <class key_t, class value_t>
-    class bptree{
+    class bptree {
     private:
         struct Node {
             vector <Node *> child;
             vector <key_t> key;
             vector <value_t> value;
-
+            
             bool isLeaf;
-
+            
             Node *next;
             Node *parent;
 
@@ -69,10 +71,6 @@ namespace sjtu{
         }
 
         void insert_in_leaf(Node *lf, const key_t &Key, const value_t &Value) {
-//            if (lf->key.size() == 0) {
-//                lf->key.insert(0, Key);
-//                lf->value.insert(0, Value);
-//            }
             int idx;
             for (idx = 0; idx < lf->key.size(); ++idx) {
                 if (Key < lf->key[idx])
@@ -87,10 +85,11 @@ namespace sjtu{
         void insert_in_parent(Node *n, const key_t &Key, Node *n2) {
             if (n == root) {
                 Node *newRoot = new Node();
-                newRoot->key.insert(0, Key);
+                newRoot->key.push_back(Key);
                 newRoot->child.push_back(n);
                 newRoot->child.push_back(n2);
                 root = newRoot;
+                root->isLeaf = false;
                 return;
             }
 
@@ -155,15 +154,16 @@ namespace sjtu{
                     }
                 }
             }
+
+//            if (N is the root and N has only one remaining child)
             if (n == root && n->child.size() == 1) {
                 root = n->child[0];
                 delete n;
+                return;
             }
-            //todo maybe wrong ⬇
             else if (n == root) {
                 return;
             }
-            //todo maybe wrong ⬆
             else if ((n->isLeaf && n->key.size() < blockSize / 2)
                      ||
                      (!n->isLeaf && n->child.size() < (blockSize + 1) / 2)) {
@@ -179,7 +179,7 @@ namespace sjtu{
                     if (p->child[idx] == n)
                         break;
                 }
-                if (p->child[idx - 1]) {
+                if (idx > 0 && p->child[idx - 1]) {
                     n2 = p->child[idx - 1];
                     k2 = p->key[idx - 1];
                     prev = true;
@@ -188,6 +188,7 @@ namespace sjtu{
                     k2 = p->key[idx];
                 }
 
+//                if (entries in N and N′ can fit in a single node)
                 if (n->key.size() + n2->key.size() <= blockSize - 1) {
                     /* Coalesce nodes */
                     if (prev == false) {
@@ -216,8 +217,12 @@ namespace sjtu{
                 }
                 else {
                     /* Redistribution: borrow an entry from n2 */
+
+//                    if (N′ is a predecessor of N)
                     if (prev) {
                         // n2是n的前一个节点
+
+//                        if (N is a nonleaf node)
                         if (!n->isLeaf) {
                             n->key.insert(0, k2);
                             n->child.insert(0, n2->child.back());
@@ -352,7 +357,6 @@ namespace sjtu{
             }
             else {
                 //todo wrong
-
                 /* Leaf has n − 1 key values already, split it */
                 Node *lf2 = new Node();
                 Node *tmp = new Node();
@@ -362,9 +366,14 @@ namespace sjtu{
                     tmp->value.push_back(lf->value[i]);
                 }
                 insert_in_leaf(tmp, Key, Value);
+
+//#ifdef DEBUG
+//                for (int i = 0; i < tmp->value.size(); ++i)
+//                    cout << tmp->value[i] << endl;
+//#endif
+
                 lf2->next = lf->next;
                 lf->next = lf2;
-
 
 //                Erase L.P1 through L.Kn−1 from L
 //                Copy T.P1 through T.K⌈n/2⌉ from T into L starting at L.P1 Copy T.P⌈n/2⌉+1 through T.Kn from T into L′ starting at L′.P1 Let K′ be the smallest key-value in L′
@@ -376,11 +385,26 @@ namespace sjtu{
                     lf->key.push_back(tmp->key[i]);
                     lf->value.push_back(tmp->value[i]);
                 }
+//#ifdef DEBUG
+//                for (int i = 0; i < lf->key.size(); ++i)
+//                    cout << lf->key[i] << ":" << lf->value[i] << endl;
+//#endif
                 for (int i = (blockSize + 1) / 2; i <= blockSize - 1; ++i) {
                     lf2->key.push_back(tmp->key[i]);
                     lf2->value.push_back(tmp->value[i]);
                 }
+//#ifdef DEBUG
+//                for (int i = 0; i < lf2->key.size(); ++i)
+//                    cout << lf2->key[i] << ':' << lf2->value[i] << endl;
+//#endif
                 delete tmp;
+
+#ifdef DEBUG
+                if (lf == root)
+                    puts("lf is root!!!");
+                if (lf->next == lf2)
+                    puts("the next node of lf is lf2!!!");
+#endif
 
                 insert_in_parent(lf, lf2->key[0], lf2);
             }
@@ -388,15 +412,15 @@ namespace sjtu{
 
         void erase(const key_t &Key) {
             Node *lf = find_leaf(Key);
-//            lf->view();
             erase_entry(lf, Key, NULL);
         }
 
-
+//use for debug
         void view_node(Node *t) {
             t->view();
         }
 
+//use for debug
         void view_root() {
             root->view();
         }
