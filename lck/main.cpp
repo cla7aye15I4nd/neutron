@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <map>
 #include "BTree.hpp"
+#include <vector>
 using std::cin;
 using std::cout;
 using std::string;
@@ -10,7 +11,24 @@ using std::endl;
 
 sjtu::bptree <int, int> tree;
 std::map <int, int> mp;
-const int n = 50001;
+std::vector <int> v1;
+std::vector <int> v2;
+const int n = 10000;
+
+long long aa=13131,bb=5353,MOD=(long long)(1e9+7),now=1;
+int rand()
+{
+    for(int i=1;i<3;i++)
+        now=(now * aa + bb) % MOD;
+    return now;
+}
+
+void make_vector() {
+    for (int i = 0; i < n; ++i) {
+        v1.push_back(rand());
+        v2.push_back(rand());
+    }
+}
 
 void test_insert() {
     puts("Test: insert");
@@ -28,15 +46,9 @@ void test_insert() {
 
 void test_insert_random() {
     puts("Test: insert randomly");
-    for (int i = 0; i < n; i += 2) {
-        int tmp(rand());
-        tree.insert(i, tmp);
-        mp[i] = tmp;
-    }
-    for (int i = n; i > 0; i -= 2) {
-        int tmp(rand());
-        tree.insert(i, tmp);
-        mp[i] = tmp;
+    for (int i = 0; i < n; ++i) {
+        tree.insert(v1[i], v2[i]);
+        mp[v1[i]] = v2[i];
     }
     puts("Test insert passed!");
 }
@@ -74,7 +86,7 @@ void test_find() {
 void test_find_random() {
     puts("Test: find");
     for (int i = 0; i <= n; ++i) {
-        if (tree.find(i) != mp[i]) {
+        if (tree.find(v1[i]) != mp[v1[i]]) {
             puts("find error!");
             return;
         }
@@ -84,8 +96,9 @@ void test_find_random() {
 
 void test_erase() {
     puts("Test erase");
-    for (int i = 0; i <= n; ++i) {
-        tree.erase(i);
+    for (int i = 0; i < n; ++i) {
+        tree.erase(v1[i]);
+//        tree.view_root();
     }
 
     puts("Test erase passed!");
@@ -98,10 +111,11 @@ int main() {
 //    test_count();
 //    test_find();
 
+    make_vector();
     test_insert_random();
     test_find_random();
+//    tree.view_root();
     test_erase();
-//    tree.erase(4096);
     tree.view_root();
 
     puts("Test Over");

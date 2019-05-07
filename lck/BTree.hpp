@@ -36,6 +36,7 @@ namespace sjtu{
             }
 
             void view() {
+                cout << "Nodesize = " << key.size() << endl;
                 if (isLeaf) {
                     for (int i = 0; i < key.size(); ++i) {
                         cout << key[i] << ":" << value[i] << ' ';
@@ -212,7 +213,6 @@ namespace sjtu{
                         }
                     }
                     n2->next = n->next;
-
                     erase_entry(n->parent, k2, n);
                     delete n;
                 }
@@ -287,10 +287,6 @@ namespace sjtu{
                     }
                 }
             }
-            //todo maybe wrong
-            else {
-                erase_entry(n->parent, Key, n);
-            }
         }
 
         void clear(Node *t) {
@@ -361,7 +357,6 @@ namespace sjtu{
                 insert_in_leaf(lf, Key, Value);
             }
             else {
-                //todo wrong
                 /* Leaf has n − 1 key values already, split it */
                 Node *lf2 = new Node();
                 Node *tmp = new Node();
@@ -428,6 +423,8 @@ namespace sjtu{
 //use for debug
         void view_root() {
             root->view();
+//            if (root->child.size())
+//                root->child[0]->view();
         }
     };
 }
