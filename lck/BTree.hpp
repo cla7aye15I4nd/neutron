@@ -52,6 +52,7 @@ namespace sjtu{
             }
         };
 
+    public:
         Node *root;
 
     private:
@@ -180,7 +181,7 @@ namespace sjtu{
                     if (p->child[idx] == n)
                         break;
                 }
-                if (idx > 0 && p->child[idx - 1]) {
+                if (idx > 0) {
                     n2 = p->child[idx - 1];
                     k2 = p->key[idx - 1];
                     prev = true;
@@ -276,13 +277,13 @@ namespace sjtu{
 
                             for (int i = 0; i < p->key.size(); ++i) {
                                 if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.back();
+                                    p->key[i] = n2->key.front();
                                     break;
                                 }
                             }
 
-                            n2->key.pop_back();
-                            n2->value.pop_back();
+                            n2->key.erase(0);
+                            n2->value.erase(0);
                         }
                     }
                 }
@@ -367,11 +368,6 @@ namespace sjtu{
                 }
                 insert_in_leaf(tmp, Key, Value);
 
-//#ifdef DEBUG
-//                for (int i = 0; i < tmp->value.size(); ++i)
-//                    cout << tmp->value[i] << endl;
-//#endif
-
                 lf2->next = lf->next;
                 lf->next = lf2;
 
@@ -385,18 +381,12 @@ namespace sjtu{
                     lf->key.push_back(tmp->key[i]);
                     lf->value.push_back(tmp->value[i]);
                 }
-//#ifdef DEBUG
-//                for (int i = 0; i < lf->key.size(); ++i)
-//                    cout << lf->key[i] << ":" << lf->value[i] << endl;
-//#endif
+
                 for (int i = (blockSize + 1) / 2; i <= blockSize - 1; ++i) {
                     lf2->key.push_back(tmp->key[i]);
                     lf2->value.push_back(tmp->value[i]);
                 }
-//#ifdef DEBUG
-//                for (int i = 0; i < lf2->key.size(); ++i)
-//                    cout << lf2->key[i] << ':' << lf2->value[i] << endl;
-//#endif
+
                 delete tmp;
 
 #ifdef DEBUG
@@ -416,15 +406,8 @@ namespace sjtu{
         }
 
 //use for debug
-        void view_node(Node *t) {
-            t->view();
-        }
-
-//use for debug
         void view_root() {
             root->view();
-//            if (root->child.size())
-//                root->child[0]->view();
         }
     };
 }

@@ -24,7 +24,7 @@ int rand()
 }
 
 void make_vector() {
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i <= n; ++i) {
         v1.push_back(rand());
         v2.push_back(rand());
     }
@@ -32,12 +32,7 @@ void make_vector() {
 
 void test_insert() {
     puts("Test: insert");
-    //insert even number
-    for (int i = 0; i < n; i += 2) {
-        tree.insert(i, -i);
-    }
-    //insert odd number
-    for (int i = n; i > 0; i -= 2) {
+    for (int i = 0; i <= n; ++i) {
         tree.insert(i, -i);
     }
 
@@ -46,7 +41,7 @@ void test_insert() {
 
 void test_insert_random() {
     puts("Test: insert randomly");
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i <= n; ++i) {
         tree.insert(v1[i], v2[i]);
         mp[v1[i]] = v2[i];
     }
@@ -55,7 +50,7 @@ void test_insert_random() {
 
 void test_count() {
     puts("Test count");
-    for (int i = 0; i < n; i += 2) {
+    for (int i = 0; i <= n; ++i) {
         if (!tree.count(i)) {
             puts("count error!");
             return;
@@ -68,13 +63,7 @@ void test_count() {
 
 void test_find() {
     puts("Test: find");
-    for (int i = 0; i <= n; i++) {
-        if (tree.find(i) != -i) {
-            puts("find error!");
-            return;
-        }
-    }
-    for (int i = n; i > 0; i -= 2) {
+    for (int i = 0; i <= n; ++i) {
         if (tree.find(i) != -i) {
             puts("find error!");
             return;
@@ -96,27 +85,45 @@ void test_find_random() {
 
 void test_erase() {
     puts("Test erase");
-    for (int i = 0; i < n; ++i) {
-        tree.erase(v1[i]);
-//        tree.view_root();
+    for (int i = 0; i <= n; ++i) {
+        tree.erase(i);
     }
 
     puts("Test erase passed!");
 }
 
+void test_erase_random() {
+    puts("Test erase");
+    for (int i = 0; i <= n; ++i) {
+        tree.erase(v1[i]);
+    }
 
+    puts("Test erase passed!");
+}
 
-int main() {
-//    test_insert();
-//    test_count();
-//    test_find();
+void test1() {
+    test_insert();
+    test_count();
+    test_find();
+    test_erase();
 
+    tree.view_root();
+    puts("simple test over");
+}
+
+void test2() {
     make_vector();
     test_insert_random();
     test_find_random();
-//    tree.view_root();
-    test_erase();
+
+    test_erase_random();
     tree.view_root();
 
-    puts("Test Over");
+    puts("Random test over");
+}
+
+int main() {
+//    test1();
+
+    test2();
 }

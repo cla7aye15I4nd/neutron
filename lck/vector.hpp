@@ -410,7 +410,7 @@ namespace sjtu {
          */
 		void clear() {
 			_size = 0;
-			_capacity = 0;
+			_capacity = 10;
 
 			for (size_t i = 0; i < _size; ++i)
 				delete _elem[i];
