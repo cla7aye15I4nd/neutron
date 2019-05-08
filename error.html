@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+
+<meta charset=utf-8>
+<meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
+<title>Error 404 (Not Found)!!!</title>
+<head>
+    <script src="../static/js/error.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+</head>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0
+    }
+
+    html, code {
+        font: 15px/22px arial,sans-serif
+    }
+
+    html {
+        background: #3B3B3B;
+        color: #FFF;
+        padding: 15px
+    }
+
+    body {
+        margin: 7% auto 0;
+        max-width: 390px;
+        min-height: 180px;
+        padding: 270px 0 15px
+    }
+
+    * > body {
+        background: url('../static/img/404.jpg') 100% 5px no-repeat;
+        padding-right: 105px
+    }
+
+    p {
+        margin: 11px 0 22px;
+        overflow: hidden
+    }
+
+    ins {
+        color: #777;
+        text-decoration: none
+    }
+
+    a img {
+        border: 0
+    }
+
+    @media screen and (max-width:772px) {
+        body {
+            background: none;
+            margin-top: 0;
+            max-width: none;
+            padding-right: 0
+        }
+    }
+
+    var A=get_url();
+</style>
+
+
+
+<script>
+    var url = get_url();
+
+    window.onload = function () {
+        $("#Url").val(url);
+    }
+
+
+</script>
+
+<p><b>404.</b> <ins>That’s an error.</ins>
+
+<p>The requested URL <output id="Url"></output> was not found on this server.  <ins>That’s all we know.</ins>
