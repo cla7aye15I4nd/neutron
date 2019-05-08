@@ -389,13 +389,6 @@ namespace sjtu{
 
                 delete tmp;
 
-#ifdef DEBUG
-                if (lf == root)
-                    puts("lf is root!!!");
-                if (lf->next == lf2)
-                    puts("the next node of lf is lf2!!!");
-#endif
-
                 insert_in_parent(lf, lf2->key[0], lf2);
             }
         }

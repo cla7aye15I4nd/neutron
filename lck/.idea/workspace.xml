@@ -12,12 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bf3e040-9117-4211-839c-844e7a1a2e1a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BTree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/BTree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vector.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/vector.hpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,70 +26,19 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-                <element signature="e#574#847#0" />
-                <element signature="e#1050#1265#0" />
-                <element signature="e#1268#1621#0" />
-                <element signature="e#1623#1854#0" />
-                <element signature="e#1856#1882#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/BTree.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="273" column="30" selection-start-line="273" selection-start-column="30" selection-end-line="273" selection-end-column="30" />
-              <folding>
-                <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#240#268#0" expanded="true" />
-                <element signature="e#309#1249#1" />
-                <element signature="e#727#1239#0" />
-                <element signature="e#1294#1729#0" />
-                <element signature="e#1739#2080#0" />
-                <element signature="e#2090#3937#0" />
-                <element signature="e#6224#6420#0" />
-                <element signature="e#9986#10031#0" />
-                <element signature="e#4423#4468#0" />
-                <element signature="e#10098#10472#0" />
-                <element signature="e#10482#10960#0" />
-                <element signature="e#10970#13339#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myVector.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-241">
-              <caret line="88" selection-start-line="88" selection-end-line="88" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>push</find>
       <find>insert</find>
-      <find>DEBUG</find>
       <find>insert_in_parent</find>
       <find>erase_entry</find>
       <find>erase</find>
       <find>root</find>
       <find>.clear</find>
       <find>_capacity</find>
+      <find>DEBUG</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -191,18 +135,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14007000" />
+    <option name="totallyTimeSpent" value="14094000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24959612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27157003" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.27157003" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35219237" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -322,32 +265,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/myVector.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-241">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-            <element signature="e#574#847#0" />
-            <element signature="e#1050#1265#0" />
-            <element signature="e#1268#1621#0" />
-            <element signature="e#1623#1854#0" />
-            <element signature="e#1856#1882#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/BTree.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="273" column="30" selection-start-line="273" selection-start-column="30" selection-end-line="273" selection-end-column="30" />
+        <state relative-caret-position="121">
+          <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
             <element signature="e#240#268#0" expanded="true" />
@@ -363,6 +284,28 @@
             <element signature="e#10482#10960#0" />
             <element signature="e#10970#13339#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1457">
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#574#847#0" />
+            <element signature="e#1050#1265#0" />
+            <element signature="e#1268#1621#0" />
+            <element signature="e#1623#1854#0" />
+            <element signature="e#1856#1882#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myVector.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-241">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
         </state>
       </provider>
     </entry>
