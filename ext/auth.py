@@ -3,14 +3,13 @@ import tornado.web
 import tornado
 import config
 import os
-import asyncio
 
 from urllib.parse import urlencode
 from verify import get, pack, unpack, gen
 from base import BaseHandler
 from forms import LoginForm, RegisterForm
 from database import UserSystem
-
+from concurrent.futures import ThreadPoolExecutor
 
 class LoginHandler(BaseHandler):
     @tornado.gen.coroutine
@@ -69,4 +68,5 @@ class VerifyHandler(BaseHandler):
         if not cipher is None:
             plain = unpack(str.encode(cipher))
             self.set_header("Content-Type", "image/png,jpeg")
-            self.write(gen(plain))
+            img = gen(plain)
+            self.write(img)

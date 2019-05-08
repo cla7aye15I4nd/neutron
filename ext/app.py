@@ -15,9 +15,8 @@ from query import TrainHandler
 define("port", **config.global_settings)
 
 class IndexHandler(BaseHandler):
-    @tornado.gen.coroutine
     def get(self):
-        yield self.render('index.html', title = 'index', user = self.current_user)
+        self.render('index.html', title = 'index', user = self.current_user)
         
 def make_app():
     return tornado.web.Application([
