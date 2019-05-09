@@ -139,3 +139,14 @@ class UpdateForm(Form):
         validators.Required(message='Phone number is required.'),
         PhoneUpdateValidator()
     ])
+
+
+
+class SearchForm(Form):
+    froms = TextField('Departure city', [
+        validators.Required(message='Departure city is required.'),
+    ])
+    arrival = TextField('Arrival city', [
+        validators.Required(message='Arrival city is required.'),
+    ])
+    
