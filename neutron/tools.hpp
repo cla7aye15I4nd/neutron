@@ -40,7 +40,10 @@ public:
 		ch[str.length()] = '\0';
 		return *this;
 	}
-	std::string toString() {
+	operator std::string () const{
+		return this->toString();
+	}
+	std::string toString() const{
 		std::stringstream ss;
 		std::string str;
 		ss << ch;
@@ -49,7 +52,7 @@ public:
 	}
 };
 template <size_t len>
-std::istream& operator << (std::istream &is, str<len> &obj) {
+std::istream& operator >> (std::istream &is, str<len> &obj) {
 	std::string str;
 	is >> str;
 	obj = str;
@@ -75,17 +78,42 @@ public:
 	}
 };
 
-/*
 class timeType {
+public:
 	int time;
-	str<5> str;
+	timeType() {}
+	~timeType() {}
+	operator std::string () const{
+		return this->toString();
+	}
+	std::string toString() const{
+		if (time == -1) return "xx:xx";
+		return "" + ('0' + time / 600) + ('0' + time / 60 % 10) + ':' + ('0' + time % 60 / 10) + ('0' + time % 10);
+	}
 };
+std::istream& operator >> (std::istream &is, timeType &t) {
+	std::string str;
+	is >> str;
+	if (str[0] == 'x')
+		t.time = -1;
+	else
+		t.time = ((str[0] - '0') * 10 + (str[1] - '0')) * 60 + (str[2] - '0') * 10 + (str[3] - '0');
+	return is;
+}
 
-class stopInfo {
+struct stopInfo {
 	timeType t[3];
 	str<40> name;
 	double sumPrice[5];
+	std::string toString() {
+		std::string ret;
+		ret = name.toString() + ' ' + t[0].toString + ' ' + t[1].toString() + ' ' + t[2].toString();
+	}
 };
+std::istream& operator >> (std::istream &is, stopInfo &stop) {
+	is >> stop.name >> stop.t[0] >> stop.t[1] >> stop.t[2];
+	return is;
+}
 
 
 class trainData {
@@ -96,20 +124,40 @@ class trainData {
 	stopInfo stop[60];
 public:
 	bool saled;
-	trainData(str<20> _trainID, std::string str) :trainID(_trainID), saled(0){
-		std::stringstream ss;
-		ss << str;
+	trainData(str<20> _trainID) :trainID(_trainID), saled(0){
 		ss >> name >> catalog >> numStation >> numPrice;
 		for (int i = 0; i < numPrice; i++)
 			ss >> priceName[i];
-
+		double sum[5], t;
+		memset(sum, 0, sizeof(sum));
+		std::string str;
+		for (int i = 0; i < numStation; i++) {
+			std::cin >> stop[i];
+			for (int j = 0; i < numPrice; i++) {
+				scanf("гд%lf", t);
+				sum[j] += t;
+				stop[i].sumPrice[j] = sum[j];
+			}
+		}
 	}
 	~trainData() {}
+	std::string query() {
+		std::string ret;
+		ret = trainID.toString() + ' ' + name.toString() + ' ' + catalog.toString() + ' ' + toString(numStation) + ' ' + toString(numPrice);
+		for (int i = 0; i < numPrice; i++)
+			ret += ' ' + priceName[i].toString();
+		for (int i = 0; i < numStation; i++) {
+			ret += '\n' + stop[i].toString();
+			for (int j = 0; j < numPrice; j++)
+				ret += " гд" + toString(stop[i].sumPrice[j]);
+		}
+		return ret;
+	}
 };
 
 class saledTicket {
 
 };
-*/
+
 
 #endif

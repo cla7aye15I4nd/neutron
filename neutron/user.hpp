@@ -68,6 +68,10 @@ public:
 		tree.insert(id2, u);
 		return 1;
 	}
+	void clear() {
+		used = 2018;
+		//TODO BÊ÷Ò»¼üÉ¾³ı
+	}
 };
 
 #endif

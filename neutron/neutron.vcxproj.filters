@@ -33,6 +33,18 @@
     <ClInclude Include="saleSystem.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="hash.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="bitset.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="train.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ticket.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

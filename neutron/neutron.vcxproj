@@ -115,11 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bitset.hpp" />
     <ClInclude Include="BTree.hpp" />
     <ClInclude Include="exceptions.hpp" />
+    <ClInclude Include="hash.hpp" />
     <ClInclude Include="myVector.hpp" />
     <ClInclude Include="saleSystem.hpp" />
+    <ClInclude Include="ticket.hpp" />
     <ClInclude Include="tools.hpp" />
+    <ClInclude Include="train.hpp" />
     <ClInclude Include="user.hpp" />
   </ItemGroup>
   <ItemGroup>
