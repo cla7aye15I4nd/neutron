@@ -2,7 +2,7 @@
 
 <meta charset=utf-8>
 <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
-<title>Error 404 (Not Found)!!!</title>
+<title>Error {{ stcode }}!!!</title>
 <head>
     <script src="../static/js/error.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
@@ -60,21 +60,21 @@
         }
     }
 
-    var A=get_url();
 </style>
-
-
 
 <script>
     var url = get_url();
 
     window.onload = function () {
         $("#Url").val(url);
+        if ($("#stcode").text() != "404.") {
+            $('#Notfind').hide();
+            $('#Url').hide();
+        }
     }
 
 
 </script>
 
-<p><b>404.</b> <ins>That’s an error.</ins>
-
-<p>The requested URL <output id="Url"></output> was not found on this server.  <ins>That’s all we know.</ins>
+<p><b id="stcode">{{ stcode }}.</b> <ins>That’s an error.</ins>
+<p id="Notfind">The requested URL <output id="Url"></output> was not found on this server.  <ins id="Notfind">That’s all we know.</ins>
