@@ -149,4 +149,7 @@ class SearchForm(Form):
     arrival = TextField('Arrival city', [
         validators.Required(message='Arrival city is required.'),
     ])
+    date = TextField('Departure time', [
+        validators.Required(message='Departure time is required.'),
+    ])
     

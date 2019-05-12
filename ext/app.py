@@ -10,8 +10,6 @@ import config
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler, VerifyHandler
 from user import ProfileHandler, SettingHandler, BookingHandler, AvatarHandler, UploadAvatarHandler
 from query import TrainHandler
-from error import ErrorHandler
-
 
 define("port", **config.global_settings)
 
@@ -19,6 +17,8 @@ class IndexHandler(BaseHandler):
     @tornado.gen.coroutine
     def get(self):
         yield self.render('index.html', title = 'index', user = self.current_user)
+
+           
         
 def make_app():
     return tornado.web.Application([
@@ -33,7 +33,7 @@ def make_app():
         (r'/avatar', AvatarHandler),
         (r'/upload_avatar', UploadAvatarHandler),
         (r'/verify_code', VerifyHandler),
-        (r".*", ErrorHandler)
+        (r".*", BaseHandler)
 
     ], **config.app_settings)
 
