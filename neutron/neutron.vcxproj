@@ -115,19 +115,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bitManager.hpp" />
     <ClInclude Include="bitset.hpp" />
     <ClInclude Include="BTree.hpp" />
     <ClInclude Include="exceptions.hpp" />
     <ClInclude Include="hash.hpp" />
     <ClInclude Include="myVector.hpp" />
     <ClInclude Include="saleSystem.hpp" />
+    <ClInclude Include="str.hpp" />
     <ClInclude Include="ticket.hpp" />
-    <ClInclude Include="tools.hpp" />
+    <ClInclude Include="tools.h" />
     <ClInclude Include="train.hpp" />
     <ClInclude Include="user.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tools.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="后端设计思路.md" />
+    <None Include="数据特点.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

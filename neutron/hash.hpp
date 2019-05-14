@@ -1,64 +1,71 @@
 #ifndef HASH_HPP
 #define HASH_HPP
 
-#include "tools.hpp"
+#include "tools.h"
+
+template <int id>
 class hash {
-	const int P = 1009;
-	int used = 0, nameToNum[P];
-	str<20> numToName[P];
+	static const int P[2] = {30011, 60013};
+	static const std::string STR[2] = { "hashCity", "hashTrainID" };
+	int nameToNum[P[id]];
+	str<20> numToName[P[id]];
 	FILE *file;
 public:
+	int used = 0;
 	hash() {
-		file = fopen("hash", "rb");
+		file = fopen(STR[id], "rb");
 		if (file == nullptr) {
-			file = fopen("hash", "wb");
+			file = fopen(STR[id], "wb");
 			fclose(file);
 			memset(nameToNum, -1, sizeof(nameToNum));
 			used = 0;
 		}
 		else {
-			file = fopen("hash", "rb");
+			file = fopen(STR[id], "rb");
 			fread(&used, sizeof(int), 1, file);
-			fread(nameToNum, sizeof(int), P, file);
-			fread(numToName, sizeof(str<20>), P, file);
+			fread(nameToNum, sizeof(int), P[id], file);
+			fread(numToName, sizeof(str<20>), P[id], file);
 			fclose(file);
 		}
 	}
 	~hash() {
-		file = fopen("hash", "wb");
+		file = fopen(STR[id], "wb");
 		fwrite(&used, sizeof(int), 1, file);
-		fwrite(nameToNum, sizeof(int), P, file);
-		fwrite(numToName, sizeof(str<20>), P, file);
+		fwrite(nameToNum, sizeof(int), P[id], file);
+		fwrite(numToName, sizeof(str<20>), P[id], file);
 		fclose(file);
 	}
-	int calc(str<20> &str) {
+	int calc(str<20> &s) {
 		int ret = 0;
-		for (int i = 0; str[i] != '\0'; i++)
-			ret = (ret * 127 + str[i] - '0') % P;
+		for (int i = 0; s[i] != '\0'; i++)
+			ret = (ret * 127 + s[i] - '0') % P[id];
 		return ret;
 	}
-	bool count(str<20> &str) {
-		int p = calc(str);
+	bool count(str<20> &s) {
+		int p = calc(s);
 		while (nameToNum[p] != -1) {
-			if (numToName[nameToNum[p]] == str) return 1;
-			if (++p == P) p = 0;
+			if (numToName[nameToNum[p]] == s) return 1;
+			if (++p == P[id]) p = 0;
 		}
 		return 0;
 	}
-	void insert(str<20> &str) {
-		int p = calc(str);
+	void insert(str<20> &s) {
+		int p = calc(s);
 		while (nameToNum[p] == -1)
-			if (++p == P) p = 0;
-		numToName[used] = str;
+			if (++p == P[id]) p = 0;
+		numToName[used] = s;
 		nameToNum[p] = used++;
 	}
-	int operator [] (str<20> &str) {
-		int p = calc(str);
+	int operator [] (str<20> &s) {
+		int p = calc(s);
 		while (nameToNum[p] != -1) {
-			if (numToName[nameToNum[p]] == str) return p;
-			if (++p == P) p = 0;
+			if (numToName[nameToNum[p]] == s) return p;
+			if (++p == P[id]) p = 0;
 		}
 		return -1;
+	}
+	str<20> operator (int k) {
+		return numToName[k];
 	}
 	std::string list() {
 		//change to streamstream?

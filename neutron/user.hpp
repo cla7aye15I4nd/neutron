@@ -2,7 +2,7 @@
 #define USER_HPP
 
 #include <string>
-#include "tools.hpp"
+#include "tools.h"
 #include "BTree.hpp"
 using namespace sjtu;
 

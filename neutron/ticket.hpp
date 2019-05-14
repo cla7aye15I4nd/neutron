@@ -1,16 +1,16 @@
 #ifndef TICKET_HPP
 #define TICKET_HPP
 
+#include "hash.hpp"
+
+extern hash<0> hashC;
+extern hash<1> hashT;
+
 class ticket {
+	
 public:
 	ticket() {}
 	~ticket() {}
-	std::string qryDirect() {
-	
-	}
-	std::string qryTrans() {
-	
-	}
 	int buy() {
 	
 	}

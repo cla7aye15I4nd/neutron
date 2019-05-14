@@ -4,6 +4,8 @@
 #include "user.hpp"
 #include "train.hpp"
 #include "ticket.hpp"
+#include "hash.hpp"
+#include "bitManager.hpp"
 
 class saleSystem {
 	const int orderN = 17;
@@ -36,8 +38,8 @@ public:
 				case 2:printf("%s\n", User.qry().c_str()); break;
 				case 3:printf("%d\n", User.mod()); break;
 				case 4:printf("%d\n", User.mop()); break;
-				case 5:printf("%s\n", Ticket.qryDirect()); break;
-				case 6:printf("%s\n", Ticket.qryTrans()); break;
+				case 5:printf("%s\n", Train.qryDirect()); break;
+				case 6:printf("%s\n", Train.qryTrans()); break;
 				case 7:printf("%d\n", Ticket.buy()); break;
 				case 8:printf("%s\n", Ticket.qryTicket()); break;
 				case 9:printf("%d\n", Ticket.refund()); break;

@@ -1,0 +1,45 @@
+#ifndef BITMANAGER_HPP
+#define BITMANAGER_HPP
+
+#include "bitset.hpp"
+#include "hash.hpp"
+
+extern hash<0> hashC;
+extern hash<1> hashT;
+
+class bitManager {
+	bitset b[3000];
+	FILE *file;
+public:
+	bitManager() {
+		file = fopen("cityBitset", "rb");
+		if (file == nullptr) {
+			file = fopen("cityBitset", "wb");
+			fclose(file);
+		}
+		else {
+			file = fopen("cityBitset", "rb");
+			fread(b, sizeof(bitset), 3000, file);
+			fclose(file);
+		}
+	}
+	~bitManager() {
+		file = fopen("cityBitset", "wb");
+		fwrite(b, sizeof(bitset), 3000, file);
+		fclose(file);
+	}
+	//add a newLine to a city
+	void add(int city, int newLine) {
+		b[city].to1(newLine);
+	}
+	//return bitset of train-intersection between two cities
+	bitset intersection(str<20> city1, str<20> city2) {
+		return b[hashC[city1]] & b[hashC[city2]];
+	}
+	//return bitset of train-intersection between one city and a bitset
+	bitset intersection(str<20> city, bitset &other) {
+		return b[hashC[city]] & other;
+	}
+};
+
+#endif // !BITMANAGER_HPP

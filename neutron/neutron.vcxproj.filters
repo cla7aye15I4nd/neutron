@@ -24,9 +24,6 @@
     <ClInclude Include="BTree.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="tools.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="user.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -45,10 +42,30 @@
     <ClInclude Include="ticket.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="bitManager.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="str.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="tools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="后端设计思路.md">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="数据特点.md">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>
