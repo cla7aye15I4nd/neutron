@@ -29,14 +29,44 @@ class bptree {
   `value_t find(const key_t &Key)`
 
   返回key所对应的value，若key不存在，返回default
+  
+* 返回一个指向大于等于key的迭代器
+
+	`iterator lower_bound(const key_t &Key)`
 
 ### 2、更新：
 * 插入
 
   `void insert(const key_t &Key, const value_t &Value)`
+  
 * 删除
- 
+
   `void erase(const key_t &Key)`
+
+## 3、关于iterator的操作
+
+
+* 迭代器++
+
+	`iterator operator++(int)`
+	
+* ++迭代器
+
+	`iterator & operator++()`
+	
+* 检查迭代器指向是否有效
+
+	`bool check()`
+	
+* 返回迭代器指向的key
+
+	`key_t retKey()`
+	
+* 返回迭代器指向的value
+
+	`value_t retValue()`
+
+
 
 
 ## B+树接口参考$\Downarrow$

@@ -101,12 +101,44 @@ void test_erase_random() {
     puts("Test erase passed!");
 }
 
+void test_iterator() {
+    puts("Test iterator");
+    sjtu::bptree <int, int>::iterator it;
+    it = tree.lower_bound(5000);
+
+    while (it.check()) {
+//        cout << it.retKey() << ':' << it.retValue() << endl;
+        ++it;
+    }
+
+    puts("test of iterator passed");
+}
+
+void test_iterator_random() {
+    puts("Test iterator");
+    sjtu::bptree <int, int>::iterator it;
+    it = tree.lower_bound(v1[1000]);
+
+    while (it.check()) {
+//        cout << it.retKey() << ':' << it.retValue() << endl;
+        if (mp[it.retKey()] != it.retValue()) {
+            puts("iterator error!");
+            return;
+        }
+
+        ++it;
+    }
+
+    puts("test of iterator passed");
+}
+
 void test1() {
     test_insert();
     test_count();
     test_find();
-    test_erase();
+    test_iterator();
 
+    test_erase();
     tree.view_root();
     puts("simple test over");
 }
@@ -115,6 +147,7 @@ void test2() {
     make_vector();
     test_insert_random();
     test_find_random();
+    test_iterator_random();
 
     test_erase_random();
     tree.view_root();

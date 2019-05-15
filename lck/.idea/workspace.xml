@@ -12,7 +12,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bf3e040-9117-4211-839c-844e7a1a2e1a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BTree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/BTree.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bptree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/bptree.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manual.md" beforeDir="false" afterPath="$PROJECT_DIR$/manual.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,7 +32,44 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BTree.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="362">
+              <caret line="434" column="24" selection-start-line="434" selection-start-column="12" selection-end-line="434" selection-end-column="24" />
+              <folding>
+                <element signature="e#37#56#0" expanded="true" />
+                <element signature="e#240#268#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/myVector.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="50" column="14" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-499">
+              <caret line="123" column="19" selection-start-line="123" selection-start-column="19" selection-end-line="123" selection-end-column="19" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#1146#1359#0" />
+                <element signature="e#1594#1736#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -46,6 +89,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/bptree.hpp" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/myVector.hpp" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/BTree.hpp" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/main.cpp" root0="SKIP_INSPECTION" />
   </component>
@@ -56,8 +100,8 @@
         <option value="$PROJECT_DIR$/bptree.hpp" />
         <option value="$PROJECT_DIR$/const.hpp" />
         <option value="$PROJECT_DIR$/vector.hpp" />
-        <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/BTree.hpp" />
+        <option value="$PROJECT_DIR$/main.cpp" />
       </list>
     </option>
   </component>
@@ -71,6 +115,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -82,7 +127,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -91,7 +135,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -131,30 +175,39 @@
       <workItem from="1557153518877" duration="855000" />
       <workItem from="1557154423512" duration="41000" />
       <workItem from="1557214089568" duration="1030000" />
+      <workItem from="1557312131927" duration="3000" />
+      <workItem from="1557313827502" duration="387000" />
+      <workItem from="1557314607637" duration="768000" />
+      <workItem from="1557316941020" duration="913000" />
+      <workItem from="1557320399128" duration="15000" />
+      <workItem from="1557320488451" duration="106000" />
+      <workItem from="1557373467031" duration="15000" />
+      <workItem from="1557906547997" duration="2169000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14094000" />
+    <option name="totallyTimeSpent" value="18470000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24959612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.27157003" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49919224" visible="true" weight="0.27157003" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35219237" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
       <window_info anchor="bottom" id="Messages" order="8" weight="0.32673267" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32956153" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50080776" side_tool="true" weight="0.27157003" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32956153" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -162,21 +215,21 @@
       <window_info anchor="right" id="Database" order="3" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.24959612" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24959612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.27157003" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.35219237" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" weight="0.27157003" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35219237" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
       <window_info anchor="bottom" id="Messages" order="8" weight="0.32673267" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32956153" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50080776" side_tool="true" weight="0.27157003" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32956153" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -265,47 +318,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BTree.hpp">
+    <entry file="file://$PROJECT_DIR$/myVector.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-          <folding>
-            <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#240#268#0" expanded="true" />
-            <element signature="e#309#1249#1" />
-            <element signature="e#727#1239#0" />
-            <element signature="e#1294#1729#0" />
-            <element signature="e#1739#2080#0" />
-            <element signature="e#2090#3937#0" />
-            <element signature="e#6224#6420#0" />
-            <element signature="e#9986#10031#0" />
-            <element signature="e#4423#4468#0" />
-            <element signature="e#10098#10472#0" />
-            <element signature="e#10482#10960#0" />
-            <element signature="e#10970#13339#0" />
-          </folding>
+        <state relative-caret-position="84">
+          <caret line="50" column="14" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1457">
-          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+        <state relative-caret-position="-499">
+          <caret line="123" column="19" selection-start-line="123" selection-start-column="19" selection-end-line="123" selection-end-column="19" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
-            <element signature="e#574#847#0" />
-            <element signature="e#1050#1265#0" />
-            <element signature="e#1268#1621#0" />
-            <element signature="e#1623#1854#0" />
-            <element signature="e#1856#1882#0" />
+            <element signature="e#1146#1359#0" />
+            <element signature="e#1594#1736#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/myVector.hpp">
+    <entry file="file://$PROJECT_DIR$/BTree.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-241">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
+        <state relative-caret-position="362">
+          <caret line="434" column="24" selection-start-line="434" selection-start-column="12" selection-end-line="434" selection-end-column="24" />
+          <folding>
+            <element signature="e#37#56#0" expanded="true" />
+            <element signature="e#240#268#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
