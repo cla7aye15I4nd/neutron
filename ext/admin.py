@@ -22,20 +22,18 @@ class BaseAdminHandler(tornado.web.RequestHandler):
 class AdminHandler(BaseAdminHandler):
     def login_page(self):
         self.render_template("login.html")
-
+    def manager_page(self):
+        self.render_template("index.html")
     def get(self):
-        if self.is_admin():
-            self.write("hello")
-        else:
-            self.login_page()
-
+        return self.manager_page() if self.is_admin() else self.manager_page()
+    
 class AdminLoginHandler(BaseAdminHandler):
     def post(self):
         if (self.get_argument('name', None), self.get_argument('passwd', None)) in config.admin:
             self.set_admin(self.get_argument('name'))
         return self.redirect('/admin')
             
-admin_route = [
+route = [
     (r'/admin', AdminHandler),
     (r'/admin/login', AdminLoginHandler)
 ]
