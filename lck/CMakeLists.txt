@@ -9,7 +9,9 @@ add_executable(lck
         bptree.hpp
         BTree.hpp
         exceptions.hpp
-        main.cpp
+#        main.cpp
         myVector.hpp
         utility.hpp
-        vector.hpp)
+        vector.hpp
+        code.cpp
+        constant.hpp)

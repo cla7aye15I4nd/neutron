@@ -9,7 +9,7 @@
 
 // 这是一个静态数组的vector
 namespace sjtu {
-    const int blockSize = 4096;
+//    const int blockSize = 4096;
 
     template<typename T>
     class vector {
