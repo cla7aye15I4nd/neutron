@@ -6,6 +6,7 @@
 #include <cstring>
 #include "myVector.hpp"
 #include "exceptions.hpp"
+#include "constant.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
