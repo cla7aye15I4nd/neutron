@@ -16,24 +16,36 @@ namespace sjtu{
     template <class key_t, class value_t>
     class bptree {
         friend class iterator;
+
+        typedef char buffer_t[blockSize];
+        typedef char * buffer_p;
+
     private:
+        FILE *pfile;
+        char *filename;
+        const size_t nonleafMax;
+        const size_t leafMax;
+
         struct Node {
 //            char* buf;
 //            key_t key;
 //            *((key_t*)(buf + 5)) = key;
-            vector <Node *> child;
-            vector <key_t> key;
-            vector <value_t> value;
-            
+            key_t key;
+            off_t pos;
+
+            off_t parent;
+            off_t next;
+
+            size_t _size;
+
             bool isLeaf;
-            
-            Node *next;
-            Node *parent;
 
             Node(bool is_leaf = true) {
+                pos = invalid_off;
                 isLeaf = is_leaf;
-                next = NULL;
-                parent = NULL;
+                next = invalid_off;
+                parent = invalid_off;
+                _size = 0;
             }
 
             ~Node() {
@@ -57,8 +69,117 @@ namespace sjtu{
             }
         };
 
+        char buffer[blockSize];
+
+        inline void file_reopen() {
+            if (pfile)  fflush(pfile);
+        }
+
+        inline void move_to_data(const Node &p) {
+            fseek(pfile, p.pos + sizeof(Node), SEEK_SET);
+        }
+
+        inline void load_nonleaf(char *b, Node p) {
+            move_to_data(p);
+
+            if (p._size == 0)
+                return;
+
+            fread(b, 1, (sizeof(off_t) + sizeof(key_t) * p._size), pfile);
+        }
+
+        inline void save_nonleaf(char *b, Node p) {
+            move_to_data(p);
+            fwrite(b, 1, (sizeof(off_t) + sizeof(key_t)) * p.sz, pfile);
+            file_reopen();
+        }
+
+        inline void loaf_leaf(char *b, Node p) {
+            move_to_data(p);
+
+            if (p._size == 0)
+                return;
+
+            fread(b, 1, (sizeof(value_t) + sizeof(key_t)) * p._size, pfile);
+        }
+
+        inline void save_leaf(char *b, Node p) {
+            move_to_data(p);
+            fwrite(b, 1, (sizeof(value_t) + sizeof(key_t)) * p._size, pfile);
+            file_reopen();
+        }
+
+        inline void save_node(const Node &p) {
+            fseek(pfile, p.pos, SEEK_SET);
+            fwrite(&p, sizeof(Node), 1, pfile);
+            file_reopen();
+        }
+
+        //4 functions to get key, value or child
+        key_t *nth_nonleaf_key(buffer_p b, int n) {
+            return (key_t *)(b + sizeof(off_t) + (sizeof(off_t) + sizeof(key_t)) * n);
+        }
+
+        off_t *nth_nonleaf_child(buffer_p b, int n) {
+            return (off_t *)(b + (sizeof(off_t) + sizeof(key_t)) * n);
+        }
+
+        key_t *nth_leaf_key(buffer_p b, int n) {
+            return (key_t *)(b + sizeof(value_t) + (sizeof(value_t) + sizeof(key_t) * n));
+        }
+
+        value_t *nth_leaf_value(buffer_p b, int n) {
+            return (value_t *)(b + (sizeof(value_t) + sizeof(key_t)) * n);
+        }
+
+        size_t search_nonleaf(buffer_p b, const key_t &Key, const size_t &size) {
+            int idx;
+            for (idx = 0; idx < size; ++idx) {
+                if (Key < *nth_nonleaf_key(idx))
+                    break;
+            }
+
+            return idx;
+        }
+
+        void insert_nonleaf(buffer_p b, const key_t &Key, const off_t &child, Node &p) {
+            int idx = search_nonleaf(b, Key, p._size);
+
+            if (idx < p._size && Key == nth_nonleaf_key(b, idx))
+                return;
+
+            //todo unsure the number of child
+            for (int i = p._size; i > idx; --i) {
+                *nth_nonleaf_key(b, i) = *nth_nonleaf_key(b, i - 1);
+                *nth_nonleaf_child(b, i) = *nth_nonleaf_child(b, i - 1);
+            }
+
+            p._size++;
+            *nth_nonleaf_key(b, idx) = Key;
+            *nth_nonleaf_child(b, idx) = child;
+
+            p.key = *nth_nonleaf_key(b, 0);
+        }
+
+        size_t search_leaf() {
+            
+        }
+
+        void insert_leaf() {
+
+        }
+
+        Node read_node(off_t pos) {
+            Node r;
+            fseek(pfile, pos, SEEK_SET);
+            fread(&r, sizeof(Node), 1, pfile);
+            return r;
+        }
+
+
+
     public:
-        Node *root;
+        off_t root;
 
     private:
         Node *find_leaf(const key_t &Key) {

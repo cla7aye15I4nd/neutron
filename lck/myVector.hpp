@@ -2,6 +2,7 @@
 #define BTREE_MYVECTOR_HPP
 
 #include "exceptions.hpp"
+#include "constant.hpp"
 
 #include <climits>
 #include <cstddef>

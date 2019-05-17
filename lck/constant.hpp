@@ -3,7 +3,7 @@
 
 namespace sjtu {
     typedef int off_t;
-    const off_t invalue_addr = -1;
+    const off_t invalid_off = -1;
 
     const int blockSize = 4096;
 }
