@@ -5,10 +5,10 @@
 
 template <int id>
 class hash {
-	static const int P[2] = {30011, 60013};
-	static const std::string STR[2] = { "hashCity", "hashTrainID" };
-	int nameToNum[P[id]];
-	str<20> numToName[P[id]];
+	const int P[2] = { 30011, 60013 };
+	const char STR[2][12] = { "hashCity", "hashTrainID" };
+	int nameToNum[60013];
+	str<20> numToName[60013];
 	FILE *file;
 public:
 	int used = 0;
@@ -64,7 +64,7 @@ public:
 		}
 		return -1;
 	}
-	str<20> operator (int k) {
+	str<20> operator [] (int k) {
 		return numToName[k];
 	}
 	std::string list() {

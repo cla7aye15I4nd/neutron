@@ -14,8 +14,12 @@ using std::endl;
 namespace sjtu {
 	template <class key_t, class value_t>
 	class bptree {
+		friend class iterator;
 	private:
 		struct Node {
+			//            char* buf;
+			//            key_t key;
+			//            *((key_t*)(buf + 5)) = key;
 			vector <Node *> child;
 			vector <key_t> key;
 			vector <value_t> value;
@@ -397,6 +401,68 @@ namespace sjtu {
 		void erase(const key_t &Key) {
 			Node *lf = find_leaf(Key);
 			erase_entry(lf, Key, NULL);
+		}
+
+		class iterator {
+			friend class bptree;
+		private:
+			Node *ptr;
+			int idx;
+
+		public:
+			iterator(Node *p = NULL, int i = 0) : ptr(p), idx(i) {}
+
+			iterator(const iterator &other) : ptr(other.ptr), idx(other.idx) {}
+
+			iterator operator++(int) {
+				iterator ret = *this;
+				++(*this);
+
+				return ret;
+			}
+
+			iterator & operator++() {
+				if (idx == ptr->key.size() - 1) {
+					ptr = ptr->next;
+					idx = 0;
+				}
+				else {
+					++idx;
+				}
+
+				return *this;
+			}
+
+			bool check() {
+				if (ptr == NULL)
+					return false;
+				else
+					return true;
+			}
+
+			key_t retKey() {
+				return ptr->key[idx];
+			}
+
+			value_t retValue() {
+				return ptr->value[idx];
+			}
+		};
+
+		iterator lower_bound(const key_t &Key) {
+			Node *tmp = find_leaf(Key);
+			int idx;
+			for (idx = 0; idx < tmp->key.size(); ++idx) {
+				if (tmp->key[idx] >= Key)
+					break;
+			}
+			if (idx == tmp->key.size()) {
+				tmp = tmp->next;
+				idx = 0;
+			}
+
+			iterator ret(tmp, idx);
+			return ret;
 		}
 
 		//use for debug

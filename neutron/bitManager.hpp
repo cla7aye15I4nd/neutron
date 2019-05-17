@@ -1,3 +1,4 @@
+#pragma warning(disable:4996)
 #ifndef BITMANAGER_HPP
 #define BITMANAGER_HPP
 
@@ -33,12 +34,12 @@ public:
 		b[city].to1(newLine);
 	}
 	//return bitset of train-intersection between two cities
-	bitset intersection(str<20> city1, str<20> city2) {
-		return b[hashC[city1]] & b[hashC[city2]];
+	bitset intersection(int city1, int city2) {
+		return b[city1] & b[city2];
 	}
 	//return bitset of train-intersection between one city and a bitset
-	bitset intersection(str<20> city, bitset &other) {
-		return b[hashC[city]] & other;
+	bitset intersection(int city, bitset &other) {
+		return b[city] & other;
 	}
 };
 

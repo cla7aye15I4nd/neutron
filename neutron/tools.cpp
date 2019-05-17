@@ -1,41 +1,20 @@
 #include "tools.h"
+extern int bridgeN;
+extern str<100> bridge[100];
 
 //-----------------------------------------------userData begin
 userData::userData() {}
-userData::userData(int _id, str<40> &_name, str<20> &_password, str<20> &_email, str<20> &_phone, int _priv = 1)
+userData::userData(int _id, str<40> &_name, str<20> &_password, str<20> &_email, str<20> &_phone, int _priv)
 	:id(_id), name(_name), password(_password), email(_email), phone(_phone), priv(_priv) {};
-userData::userData(int _id, std::string &_name, std::string &_password, std::string &_email, std::string &_phone, int _priv = 1)
-	:id(_id), name(str<40>(_name)), password(str<20>(_password)), email(str<20>(_email)), phone(str<20>(_phone)), priv(_priv) {};
 userData::~userData() {}
 bool userData::log(str<20> pw) {
 	return password == pw;
 }
-std::string userData::query() {
-return name.toString() + " " + email.toString() + " " + phone.toString() + " " + toString(priv);
+void userData::print() {
+	printf("%s %s %s %d\n", name.ch, email.ch, phone.ch, priv);
 }
 //-----------------------------------------------userData end
-
-//-----------------------------------------------timeType begin
-timeType::timeType() {}
-timeType::~timeType() {}
-timeType::operator std::string() const {
-	return this->toString();
-}
-std::string timeType::toString() const {
-	if (time == -1) return "xx:xx";
-	return "" + ('0' + time / 600) + ('0' + time / 60 % 10) + ':' + ('0' + time % 60 / 10) + ('0' + time % 10);
-}
-std::istream& operator >> (std::istream &is, timeType &t) {
-	std::string s;
-	is >> s;
-	if (s[0] == 'x')
-		t.time = -1;
-	else
-		t.time = ((s[0] - '0') * 10 + (s[1] - '0')) * 60 + (s[2] - '0') * 10 + (s[3] - '0');
-	return is;
-}
-//-----------------------------------------------timeType end
-
+/*
 //-----------------------------------------------dateType begin
 dateType::dateType() {}
 dateType::~dateType() {}
@@ -47,58 +26,157 @@ std::istream& operator >> (std::istream &is, dateType &t) {
 //-----------------------------------------------dateType end
 
 //-----------------------------------------------stopInfo begin
-std::string stopInfo::toString() {
-	std::string ret;
-	ret = hashC[name] + ' ' + t[0].toString + ' ' + t[1].toString() + ' ' + t[2].toString();
-}
-std::istream& operator >> (std::istream &is, stopInfo &stop) {
-	str<20> s;
-	is >> s >> stop.t[0] >> stop.t[1] >> stop.t[2];
-	if (!hashC.count(s))
-		hashC.insert(s);
-	stop.name = hashC[s];
-	return is;
+stopInfo::stopInfo() {
+	for (int date = 1; date < 31; date++)
+		for (int i = 0; i < 5; i++)
+			left[date][i] = 2000;
 }
 //-----------------------------------------------stopInfo end
 
 //-----------------------------------------------trainData begin
+int trainData::timeParser(str<5> t) {
+	if (t[0] == 'x') return -1;
+	return (t[0] - '0') * 600 + (t[1] - '0') * 60 + (t[2] - '0') * 10 + (t[3] - '0');
+}
+void trainData::datePrint(int date) {
+	//TODO change to putchar
+	printf("2019-06-%c%c", date / 10 + '0', date % 10 + '0');
+}
+void trainData::timePrint(int time) {
+	//TODO change to putchar
+	printf("%c%c:%c%c", time / 600 + '0', time / 60 % 10 + '0', time % 60 / 10 + '0', time % 10 + '0');
+}
+/*str<10> trainData::dateForm(int date) {
+	str<10> ret;
+	ret[0] = '2';
+	ret[1] = '0';
+	ret[2] = '1';
+	ret[3] = '9';
+	ret[4] = '-';
+	ret[5] = '0';
+	ret[6] = '6';
+	ret[7] = '-';
+	ret[8] = '0' + date / 10;
+	ret[9] = '0' + date % 10;
+	return ret;
+}
+str<5> trainData::timeForm(int time) {
+	str<5> ret;
+	if (time == -1) {
+		ret[0] = 'x';
+		ret[1] = 'x';
+		ret[2] = ':';
+		ret[3] = 'x';
+		ret[4] = 'x';
+	}
+	else {
+		ret[0] = '0' + time / 600;
+		ret[1] = '0' + time / 60 % 10;
+		ret[2] = ':';
+		ret[3] = '0' + time % 60 / 10;
+		ret[4] = '0' + time % 10;
+	}
+	return ret;
+}
 trainData::trainData() {}
 trainData::trainData(str<20> _trainID) :trainID(_trainID), saled(0) {
-	ss >> name >> catalog >> numStation >> numPrice;
+	scanf("%s%s%d%d", name, catalog, &numStation, &numPrice);
 	for (int i = 0; i < numPrice; i++)
-		ss >> priceName[i];
+		scanf("%s", priceName[i].ch);
 	double sum[5], t;
 	memset(sum, 0, sizeof(sum));
-	std::string s;
 	for (int i = 0; i < numStation; i++) {
-		std::cin >> stop[i];
+		scanf("%s", loc.ch);
+		stop[i].loc = hashC[loc];
+		for (int j = 0; j < 3; j++) {
+			scanf("%s", time.ch);
+			stop[i].t[j] = timeParser(time);
+			stop[i].t_s[j] = time;
+		}
 		for (int j = 0; i < numPrice; i++) {
-			scanf("гд%lf", t);
+			scanf("гд%lf", &t);
 			sum[j] += t;
 			stop[i].sumPrice[j] = sum[j];
 		}
 	}
 }
 trainData::~trainData() {}
-std::string trainData::query() {
-	std::string ret;
-	ret = trainID.toString() + ' ' + name.toString() + ' ' + catalog.toString() + ' ' + toString(numStation) + ' ' + toString(numPrice);
-	for (int i = 0; i < numPrice; i++)
-		ret += ' ' + priceName[i].toString();
+bool trainData::order(int start, int end) {
 	for (int i = 0; i < numStation; i++) {
-		ret += '\n' + stop[i].toString();
-		for (int j = 0; j < numPrice; j++)
-			ret += " гд" + toString(stop[i].sumPrice[j]);
+		if (stop[i].loc == start) return true;
+		if (stop[i].loc == end) return false;
 	}
-	return ret;
 }
-std::string trainData::query(int start, int end, int date) {
-
+void trainData::print() {
+	printf("%s %s %s %d %d", trainID.ch, name.ch, catalog.ch, numStation, numPrice);
+	for (int i = 0; i < numPrice; i++)
+		printf(" %d", priceName[i]);
+	printf("\n");
+	for (int i = 0; i < numStation; i++) {
+		printf("%s", hashC[stop[i].loc]);
+		for (int j = 0; j < 3; j++)
+			printf(" %s", stop[i].t_s[j]);
+		printf(" гд%.1f", stop[i].sumPrice[0]);
+		for (int j = 1; j < numPrice; j++)
+			printf(" гд%.1f", stop[i].sumPrice[j] - stop[i].sumPrice[j - 1]);
+		printf("\n");
+	}
+}
+void trainData::print_detailed(int start, int end, int date) {
+	int p = 0;
+	while (stop[p].loc != start) p++;
+	int q = p, left[5] = {2000, 2000, 2000, 2000, 2000};
+	while (stop[q].loc != end) {
+		for (int i = 0; i < numPrice; i++)
+			if (stop[q].left[date][i] < left[i])
+				left[i] = stop[q].left[date][i];
+		q++;
+	}
+	printf("%s %s ", trainID.ch, hashC[start].ch);
+	datePrint(date);
+	putchar(' ');
+	timePrint(stop[p].t[1]);
+	printf(" %s ", hashC[end].ch);
+	datePrint(date);
+	putchar(' ');
+	timePrint(stop[q].t[0]);
+	//TODO change to putchar
+	for (int i = 0; i < numPrice; i++)
+		printf(" %s %d %.2f", priceName[i].ch, left[i], stop[q].sumPrice[i] - stop[p].sumPrice[i]);
+	putchar('\n');
 }
 void trainData::update(int newLine) {
 	for (int i = 0; i < numStation; i++)
-		bitMgr.add(hashC[stop[i].name], newLine);
+		bitMgr.add(stop[i].loc, newLine);
+}
+bool trainData::buy(int start, int end, int date, int num, str<20> kind_s) {
+	int kind = 0;
+	while (kind < numPrice && priceName[kind] != kind_s) kind++;
+	if (kind == numPrice) return false;
+	int p = 0;
+	while (stop[p].loc != start) p++;
+	int q = p, left = 2000;
+	while (stop[q].loc != end) {
+		if (stop[q].left[date][kind] < left)
+			left = stop[q].left[date][kind];
+		q++;
+	}
+	if (left < num) return false;
+	for (int i = p; i < q; i++)
+		stop[i].left[date][kind] -= num;
+	bridgeN = 0;
+	sprintf(bridge[0].ch, "%s %s 2019-06-%c%c %s %s 2019-06-%c%c %s",
+		trainID, hashC[start], '0' + date / 10, '0' + date % 10, stop[p].t_s[1], hashC[end], 
+		'0' + date / 10, '0' + date % 10, stop[q].t_s[0]);
+	while (bridge[0].ch[bridge[0].used] != '\0') bridge[0].used++;
+	str<40> tmp;
+	for (int i = 0; i < numPrice; i++) {
+		sprintf(" %s %d %.4f", priceName[i].ch, stop[q].sumPrice[i] - stop[p].sumPrice[i]);
+		bridge[0].append(tmp);
+	}
+		
+	
+	return true;
 }
 //-----------------------------------------------trainData end
-
-
+*/

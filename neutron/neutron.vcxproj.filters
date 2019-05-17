@@ -51,6 +51,9 @@
     <ClInclude Include="str.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="parser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
