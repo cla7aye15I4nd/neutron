@@ -29,7 +29,7 @@ public:
 	}
 	~user() {
 		file = fopen("userFile", "wb");
-		//fwrite(&used, sizeof(int), 1, file);
+		// fwrite(&used, sizeof(int), 1, file);
 		fclose(file);
 	}
 	int reg() {

@@ -5,16 +5,15 @@
 #include <sstream>
 #include <iostream>
 #include "str.hpp"
-//#include "hash.hpp"
-//#include "bitManager.hpp"
+#include "hash.hpp"
+#include "bitManager.hpp"
 
-//extern hash<0> hashC;
-//extern hash<1> hashT;
-//extern bitManager bitMgr;
+extern hash<0> hashC;
+extern hash<1> hashT;
+extern bitManager bitMgr;
 
 //store single user's data
-class userData {
-public:
+struct userData {
 	int id, priv;
 	str<20> password, email, phone;
 	str<40> name;
@@ -24,8 +23,8 @@ public:
 	bool log(str<20> pw);
 	void print();
 };
-/*
-class dateType {
+
+/*class dateType {
 public:
 	int date;
 	dateType();
@@ -36,10 +35,10 @@ public:
 };
 //get date
 std::istream& operator >> (std::istream &is, dateType &t);
+*/
 
 //store infomation about one stop station
-class stopInfo {
-public:
+struct stopInfo {
 	int loc, t[3], left[31][5];
 	str<5> t_s[3];
 	double sumPrice[5];
@@ -77,12 +76,18 @@ public:
 	void update(int newLine);
 	//buy ticket
 	bool buy(int start, int end, int date, int num, str<20> kind);
+	//refund ticket
+	void refund(int start, int end, int date, int num, int kind);
 };
 
 //store information about saled tickets
-class saledTicket {
-
+struct ticketData {
+	str<10> catalog;
+	str<100> head;
+	int numPrice, num[5];
+	str<20> priceName[5];
+	double price[5];
+	void print();
 };
-*/
 
 #endif

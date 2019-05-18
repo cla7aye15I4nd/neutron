@@ -2,9 +2,9 @@
 #define SALESYSTEM_HPP
 
 #include "user.hpp"
-//#include "train.hpp"
-//#include "hash.hpp"
-//#include "bitManager.hpp"
+#include "train.hpp"
+#include "hash.hpp"
+#include "bitManager.hpp"
 
 class saleSystem {
 	static const int orderN = 17;
@@ -16,7 +16,7 @@ class saleSystem {
 	};
 	str<20> orders[orderN];
 	user User;
-	//train Train;
+	train Train;
 public:
 	saleSystem() {
 		for (int i = 0; i < orderN; i++)
@@ -36,7 +36,7 @@ public:
 				case 2:User.qry(); break;
 				case 3:printf("%d\n", User.mod()); break;
 				case 4:printf("%d\n", User.mop()); break;
-				/*case 5:Train.qryDirect(); break;
+				case 5:Train.qryDirect(); break;
 				case 6:Train.qryTrans(); break;
 				case 7:printf("%d\n", Train.buy()); break;
 				case 8:Train.qryTicket(); break;
@@ -45,12 +45,11 @@ public:
 				case 11:printf("%d\n", Train.sale()); break;
 				case 12:Train.qry(); break;
 				case 13:printf("%d\n", Train.del()); break;
-				case 14:printf("%d\n", Train.mod()); break;*/
+				case 14:printf("%d\n", Train.mod()); break;
 				case 15:
 					printf("1\n");
 					User.clear();
-					//Train.clear();
-					//Ticket.clear();
+					Train.clear();
 					break;
 				case 16:
 					printf("BYE\n");

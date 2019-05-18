@@ -1,6 +1,6 @@
 #include "tools.h"
 extern int bridgeN;
-extern str<100> bridge[100];
+extern ticketData bridge[100];
 
 //-----------------------------------------------userData begin
 userData::userData() {}
@@ -14,6 +14,7 @@ void userData::print() {
 	printf("%s %s %s %d\n", name.ch, email.ch, phone.ch, priv);
 }
 //-----------------------------------------------userData end
+
 /*
 //-----------------------------------------------dateType begin
 dateType::dateType() {}
@@ -24,6 +25,7 @@ std::istream& operator >> (std::istream &is, dateType &t) {
 	t.date = (s[8] - '0') * 10 + (s[9] - '0');
 }
 //-----------------------------------------------dateType end
+*/
 
 //-----------------------------------------------stopInfo begin
 stopInfo::stopInfo() {
@@ -77,7 +79,7 @@ str<5> trainData::timeForm(int time) {
 		ret[4] = '0' + time % 10;
 	}
 	return ret;
-}
+}*/
 trainData::trainData() {}
 trainData::trainData(str<20> _trainID) :trainID(_trainID), saled(0) {
 	scanf("%s%s%d%d", name, catalog, &numStation, &numPrice);
@@ -165,18 +167,33 @@ bool trainData::buy(int start, int end, int date, int num, str<20> kind_s) {
 	for (int i = p; i < q; i++)
 		stop[i].left[date][kind] -= num;
 	bridgeN = 0;
-	sprintf(bridge[0].ch, "%s %s 2019-06-%c%c %s %s 2019-06-%c%c %s",
+	sprintf(bridge[0].head.ch, "%s %s 2019-06-%c%c %s %s 2019-06-%c%c %s",
 		trainID, hashC[start], '0' + date / 10, '0' + date % 10, stop[p].t_s[1], hashC[end], 
 		'0' + date / 10, '0' + date % 10, stop[q].t_s[0]);
-	while (bridge[0].ch[bridge[0].used] != '\0') bridge[0].used++;
-	str<40> tmp;
+	bridge[0].catalog = catalog;
+	bridge[0].numPrice = numPrice;
 	for (int i = 0; i < numPrice; i++) {
-		sprintf(" %s %d %.4f", priceName[i].ch, stop[q].sumPrice[i] - stop[p].sumPrice[i]);
-		bridge[0].append(tmp);
+		bridge[0].priceName[0] = priceName[i];
+		bridge[0].price[i] = stop[q].sumPrice[i] - stop[p].sumPrice[i];
+		bridge[0].num[i] = num;
 	}
-		
-	
 	return true;
 }
+void trainData::refund(int start, int end, int date, int num, int kind) {
+	int p = 0;
+	while (stop[p].loc != start) p++;
+	int q = p;
+	while (stop[q].loc != end) q++;
+	for (int i = p; i < q; i++)
+		stop[i].left[date][kind] += num;
+}
 //-----------------------------------------------trainData end
-*/
+
+//-----------------------------------------------ticketData begin
+void ticketData::print() {
+	printf("%s", head.ch);
+	for (int i = 0; i < numPrice; i++)
+		printf(" %s %d %.3f", priceName[i], num[i], price[i]);
+	putchar('\n');
+}
+//-----------------------------------------------ticketData begin

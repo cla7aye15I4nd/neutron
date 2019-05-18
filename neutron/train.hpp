@@ -1,22 +1,28 @@
 #ifndef TRAIN_HPP
 #define TRAIN_HPP
-/*
+
 #include <string>
 #include "tools.h"
 #include "BTree.hpp"
 #include "hash.hpp"
 #include "str.hpp"
 
+using namespace sjtu;
+
 extern hash<0> hashC;
 extern hash<1> hashT;
-extern str<100> bridge;
+extern int bridgeN;
+extern ticketData bridge[100];
 
 class train {
 	bptree<int, trainData> trainInfo;
-	bptree<long long, str<100>> ticketInfo;
+	bptree<long long, ticketData> ticketInfo;
 	str<20> trainID;
 	str<20> idArray_s[200];
 	int idArray[200];
+	long long combine(int userID, int date, int trainID, int start = 0, int end = 0) {
+		return ((((long long)userID * 100 + date) * 100000 + trainID) * 100 + start) * 100 + end;
+	}
 public:
 	train() {}
 	~train() {}
@@ -112,19 +118,57 @@ public:
 		trainData train = trainInfo.find(hashT[trainID]);
 		if (!train.order(start, end)) return 0;
 		if (!train.buy(start, end, date, num, ticketKind)) return false;
-		ticketInfo.insert(((long long)userID * 100 + date) * 100000 + hashT[trainID], bridge);
+		long long key = combine(userID, date, hashT[trainID], start, end);
+		if (trainInfo.count(key)) {
+			ticketData t = ticketInfo.find(key);
+			for (int i = 0; i < t.numPrice; i++)
+				if (t.priceName[i] == ticketKind) {
+					t.num[i] += num;
+					break;
+				}
+			ticketInfo.erase(key);
+			ticketInfo.insert(key, bridge[0]);
+		}
+		else
+			ticketInfo.insert(key, bridge[0]);
 	}
 	void qryTicket() {
 		int userID, date;
 		str<10> date_s, catalog;
-		scanf("%d%s%s", &userID, date_s, catalog);
+		scanf("%d%s%s", &userID, date_s.ch, catalog.ch);
 		date = (date_s[8] - '0') * 10 + (date_s[9] - '0');
-		for (bptree<long long, str<100>>::iterator t = ticketInfo.lower_bound(
-			((long long)userID * 100 + date) * 100000);
+		long long key = combine(userID, date, hashT[trainID]);
+		long long upper = combine(userID, date, hashT[trainID] + 1);
+		bridgeN = 0;
+		for (bptree<long long, ticketData>::iterator t = ticketInfo.lower_bound(key); t.retKey() < upper; t++)
+			if (t.retValue().catalog == catalog)
+				bridge[bridgeN++] = t.retValue();
+		printf("%d\n", bridgeN);
+		for (int i = 0; i < bridgeN; i++)
+			bridge[i].print();
 	}
 	int refund() {
-
+		int userID, num, date;
+		str<10> date_s;
+		str<20> trainID, loc1, loc2, ticketKind;
+		scanf("%d%d%s%s%s", &userID, &num, trainID.ch, loc1.ch, loc2.ch, date_s, ticketKind);
+		if (!hashT.count(trainID) || !trainInfo.count(hashT[trainID])) return 0;
+		date = (date_s[8] - '0') * 10 + (date_s[9] - '0');
+		int start = hashC[loc1], end = hashC[loc2];
+		long long key = combine(userID, date, hashT[trainID], start, end);
+		if (!ticketInfo.count(key)) return 0;
+		ticketData t = ticketInfo.find(key);
+		int p = 0;
+		while (p < t.numPrice && t.priceName[p] != ticketKind) p++;
+		if (p == t.numPrice || t.num[p] < num) return 0;
+		ticketInfo.erase(key);
+		trainInfo.find(hashT[trainID]).refund(start, end, date, num, p);
+		t.num[p] -= num;
+		int left = 0;
+		for (int i = 0; i < t.numPrice; i++)
+			left += t.num[i];
+		if (left) ticketInfo.insert(key, t);
 	}
 };
-*/
+
 #endif // !TRAIN_HPP
