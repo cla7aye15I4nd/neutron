@@ -2,24 +2,25 @@
 #include <cstring>
 #include <cstdio>
 #include <map>
-#include "BTree.hpp"
+#include "bptree.hpp"
 #include <vector>
+
 using std::cin;
 using std::cout;
 using std::string;
 using std::endl;
 
-sjtu::bptree <int, int> tree;
-std::map <int, int> mp;
-std::vector <int> v1;
-std::vector <int> v2;
+sjtu::bptree<int, int> tree;
+std::map<int, int> mp;
+std::vector<int> v1;
+std::vector<int> v2;
 const int n = 10000;
 
-long long aa=13131,bb=5353,MOD=(long long)(1e9+7),now=1;
-int rand()
-{
-    for(int i=1;i<3;i++)
-        now=(now * aa + bb) % MOD;
+long long aa = 13131, bb = 5353, MOD = (long long) (1e9 + 7), now = 1;
+
+int rand() {
+    for (int i = 1; i < 3; i++)
+        now = (now * aa + bb) % MOD;
     return now;
 }
 
@@ -103,7 +104,7 @@ void test_erase_random() {
 
 void test_iterator() {
     puts("Test iterator");
-    sjtu::bptree <int, int>::iterator it;
+    sjtu::bptree<int, int>::iterator it;
     it = tree.lower_bound(5000);
 
     while (it.check()) {
@@ -116,7 +117,7 @@ void test_iterator() {
 
 void test_iterator_random() {
     puts("Test iterator");
-    sjtu::bptree <int, int>::iterator it;
+    sjtu::bptree<int, int>::iterator it;
     it = tree.lower_bound(v1[1000]);
 
     while (it.check()) {

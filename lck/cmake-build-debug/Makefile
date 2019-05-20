@@ -123,32 +123,32 @@ lck/fast:
 	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/build
 .PHONY : lck/fast
 
-code.o: code.cpp.o
+main.o: main.cpp.o
 
-.PHONY : code.o
+.PHONY : main.o
 
 # target to build an object file
-code.cpp.o:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/code.cpp.o
-.PHONY : code.cpp.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-code.i: code.cpp.i
+main.i: main.cpp.i
 
-.PHONY : code.i
+.PHONY : main.i
 
 # target to preprocess a source file
-code.cpp.i:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/code.cpp.i
-.PHONY : code.cpp.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-code.s: code.cpp.s
+main.s: main.cpp.s
 
-.PHONY : code.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-code.cpp.s:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/code.cpp.s
-.PHONY : code.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... lck"
-	@echo "... code.o"
-	@echo "... code.i"
-	@echo "... code.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

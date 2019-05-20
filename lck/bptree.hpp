@@ -250,7 +250,7 @@ namespace sjtu{
 
                             for (int i = 0; i < p->key.size(); ++i) {
                                 if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.back();
+                                    p->key[i] = n->key[0];
                                     break;
                                 }
                             }
@@ -268,7 +268,7 @@ namespace sjtu{
 
                             for (int i = 0; i < p->key.size(); ++i) {
                                 if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.front();
+                                    p->key[i] = n2->key[0];
                                     break;
                                 }
                             }

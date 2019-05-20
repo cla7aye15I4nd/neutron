@@ -161,8 +161,14 @@ namespace sjtu{
             p.key = *nth_nonleaf_key(b, 0);
         }
 
-        size_t search_leaf() {
-            
+        size_t search_leaf(buffer_p b, const key_t &Key, const size_t &size) {
+            int idx;
+            for (idx = 0; idx < size; ++idx) {
+                if (Key < *nth_leaf_key(idx))
+                    break;
+            }
+
+            return idx;
         }
 
         void insert_leaf() {
@@ -428,12 +434,29 @@ namespace sjtu{
 
     public:
 
-        bptree() {
-            root = NULL;
+        bptree(const char * fname) {
+            root = invalid_off;
+
+            pfile = fopen(fname, "rb+");
+            filename = new char[strlen(fname) + 1];
+            strcpy(filename, fname);
+
+            if (!pfile) {
+                pfile = fopen(fname, "wb+");
+            }
+            else {
+                read_info();
+            }
         }
 
         ~bptree() {
             clear(root);
+
+            if (pfile) {
+                fclose(pfile);
+            }
+
+            delete filename;
         }
 
 
