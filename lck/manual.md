@@ -20,7 +20,7 @@ class bptree {
 ## 我的接口：
 
 ### 1、查询：
-* 询问是否有某个key
+* 询问是否有某个key(这个暂时还没有)
 
   `int count(const key_t &Key)`
 
@@ -37,11 +37,11 @@ class bptree {
 ### 2、更新：
 * 插入
 
-  `void insert(const key_t &Key, const value_t &Value)`
+  `bool insert(const key_t &Key, const value_t &Value)`
   
 * 删除
 
-  `void erase(const key_t &Key)`
+  `bool erase(const key_t &Key)`
 
 ## 3、关于iterator的操作
 

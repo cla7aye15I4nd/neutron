@@ -12,14 +12,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02bd7f6b-8099-4add-8aa2-d445cde44e37" name="Default Changelist" comment=";">
-      <change beforePath="$PROJECT_DIR$/../lck/BTree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/BTree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck/cmake-build-debug/lck" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/cmake-build-debug/lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck/constant.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/constant.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck/myVector.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/myVector.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lck/manual.md" beforeDir="false" afterPath="$PROJECT_DIR$/../lck/manual.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BTree.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bpNode.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bptree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/bptree.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bufferpool.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck2.dir/code.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/code.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constant.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/constant.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myVector.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/myVector.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vector.hpp" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,23 +51,27 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bptree.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+            <state relative-caret-position="281">
+              <caret line="231" column="29" selection-start-line="231" selection-start-column="29" selection-end-line="231" selection-end-column="29" />
+              <folding>
+                <element signature="e#37#56#0" expanded="true" />
+                <element signature="e#345#373#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bptree.hpp">
+        <entry file="file://$PROJECT_DIR$/myVector.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="431" column="37" lean-forward="true" selection-start-line="431" selection-start-column="37" selection-end-line="431" selection-end-column="37" />
+            <state relative-caret-position="45">
+              <caret line="57" selection-start-line="57" selection-end-line="57" />
               <folding>
-                <element signature="e#37#56#0" expanded="true" />
+                <element signature="e#55#80#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -72,29 +80,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/constant.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+            <state relative-caret-position="1549">
+              <caret line="153" column="1" selection-start-line="153" selection-start-column="1" selection-end-line="153" selection-end-column="1" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#598#778#0" />
+                <element signature="e#983#1196#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myVector.hpp">
+        <entry file="file://$PROJECT_DIR$/constant.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1760">
-              <caret line="88" selection-start-line="88" selection-end-line="88" />
-              <folding>
-                <element signature="e#55#80#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="10" selection-start-column="10" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -117,18 +118,29 @@
       <find>search</find>
       <find>blockSize</find>
       <find>split</find>
-      <find>erase</find>
       <find>insert</find>
+      <find>+ 1</find>
+      <find>size_t</find>
+      <find>int</find>
+      <find>insert_node</find>
+      <find>haa</find>
+      <find>newRoot</find>
+      <find>update</find>
+      <find>chPos</find>
+      <find>chPos == -1</find>
+      <find>find</find>
+      <find>erase_node</find>
+      <find>delete root</find>
+      <find>spilt</find>
+      <find>erase</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/bufferpool.hpp" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/bptree.hpp" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/myVector.hpp" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/BTree.hpp" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -140,15 +152,16 @@
         <option value="$PROJECT_DIR$/BTree.hpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/myVector.hpp" />
-        <option value="$PROJECT_DIR$/bptree.hpp" />
-        <option value="$PROJECT_DIR$/code.cpp" />
         <option value="$PROJECT_DIR$/constant.hpp" />
+        <option value="$PROJECT_DIR$/code.cpp" />
+        <option value="$PROJECT_DIR$/bptree.hpp" />
       </list>
     </option>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="width" value="1280" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="646" />
+    <option name="width" value="634" />
     <option name="height" value="800" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -157,6 +170,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -164,11 +178,14 @@
               <item name="lck2" type="b2602c69:ProjectViewProjectNode" />
               <item name="lck2" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="lck2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -218,15 +235,18 @@
       <workItem from="1558347678762" duration="583000" />
       <workItem from="1558365724378" duration="3222000" />
       <workItem from="1558396827264" duration="11535000" />
-      <workItem from="1558423129245" duration="1071000" />
+      <workItem from="1558423129245" duration="1224000" />
+      <workItem from="1558424534947" duration="684000" />
+      <workItem from="1558441480718" duration="297000" />
+      <workItem from="1558442107163" duration="7880000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32143000" />
+    <option name="totallyTimeSpent" value="41157000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <frame x="646" y="0" width="634" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.15105008" />
@@ -234,8 +254,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2956153" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2970297" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27086383" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35139093" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -244,7 +264,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="CMake" order="11" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32956153" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32064423" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -257,7 +277,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.2956153" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2970297" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3026874" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -277,48 +297,84 @@
     <option name="version" value="1" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/BTree.hpp</url>
-          <line>125</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/bufferpool.hpp</url>
-          <line>216</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
-        <watch expression="cur == root" language="ObjectiveC" />
-        <watch expression="cur-&gt;isLeaf" language="ObjectiveC" />
+        <watch expression="root" language="ObjectiveC" />
+        <watch expression="cur" language="ObjectiveC" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
       <expression>
-        <expression-string>i == 7</expression-string>
+        <expression-string>Key == 466880197 &amp;&amp; cur-&gt;isLeaf</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>i == 3</expression-string>
+        <expression-string>v1[i] == 382587221 || v1[i] == 466880197 || v2[i] == 670083442</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>v1[i] == 382587221</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i == 200000</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i &gt; 6</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i &gt; 5</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i == 18</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>if (i == 4)</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>if (Key &gt; 10)</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i == 7</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
     <expressions id="watch">
       <expression>
-        <expression-string>cur-&gt;isLeaf</expression-string>
+        <expression-string>cur</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
         <expression-string>cur == root</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>root</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>cur-&gt;isLeaf</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -334,17 +390,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-5172">
           <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-            <element signature="e#2099#2146#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -384,6 +429,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="760">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -391,10 +446,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/constant.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="10" selection-start-column="10" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1549">
+          <caret line="153" column="1" selection-start-line="153" selection-start-column="1" selection-end-line="153" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#598#778#0" />
+            <element signature="e#983#1196#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/myVector.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1760">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
+        <state relative-caret-position="45">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
           <folding>
             <element signature="e#55#80#0" expanded="true" />
           </folding>
@@ -403,25 +477,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bptree.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="431" column="37" lean-forward="true" selection-start-line="431" selection-start-column="37" selection-end-line="431" selection-end-column="37" />
+        <state relative-caret-position="281">
+          <caret line="231" column="29" selection-start-line="231" selection-start-column="29" selection-end-line="231" selection-end-column="29" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
+            <element signature="e#345#373#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/constant.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
         </state>
       </provider>
     </entry>

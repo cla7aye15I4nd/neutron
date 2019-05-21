@@ -25,7 +25,7 @@ int rand() {
 }
 
 void make_vector() {
-    for (int i = 0; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         v1.push_back(rand());
         v2.push_back(rand());
     }
@@ -33,9 +33,10 @@ void make_vector() {
 
 void test_insert() {
     puts("Test: insert");
-    for (int i = 0; i <= n; ++i) {
-//        cout << i << endl;
+    for (int i = 1; i <= n; ++i) {
+//        cout << "insert:" << i << endl;
         tree.insert(i, -i);
+//        tree.view_root();
     }
 
     puts("Test insert passed!");
@@ -43,7 +44,7 @@ void test_insert() {
 
 void test_insert_random() {
     puts("Test: insert randomly");
-    for (int i = 0; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         tree.insert(v1[i], v2[i]);
         mp[v1[i]] = v2[i];
     }
@@ -53,7 +54,7 @@ void test_insert_random() {
 
 void test_find() {
     puts("Test: find");
-    for (int i = 0; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         if (tree.find(i) != -i) {
             puts("find error!");
             return;
@@ -64,7 +65,7 @@ void test_find() {
 
 void test_find_random() {
     puts("Test: find");
-    for (int i = 0; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         if (tree.find(v1[i]) != mp[v1[i]]) {
             puts("find error!");
             return;
@@ -75,7 +76,7 @@ void test_find_random() {
 
 void test_erase() {
     puts("Test erase");
-    for (int i = 0; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         tree.erase(i);
     }
 
@@ -84,7 +85,7 @@ void test_erase() {
 
 void test_erase_random() {
     puts("Test erase");
-    for (int i = 0; i <= n; ++i) {
+    for (int i = 1; i <= n; ++i) {
         tree.erase(v1[i]);
     }
 
@@ -110,7 +111,7 @@ void test_iterator_random() {
     it = tree.lower_bound(v1[1000]);
 
     while (it.check()) {
-//        cout << it.retKey() << ':' << it.retValue() << endl;
+        cout << it.retKey() << ':' << it.retValue() << endl;
         if (mp[it.retKey()] != it.retValue()) {
             puts("iterator error!");
             return;
@@ -138,17 +139,16 @@ void test2() {
     test_insert_random();
     test_find_random();
     test_iterator_random();
-
     test_erase_random();
-    if (tree.root)
-    tree.view_root();
+
+//    tree.view_root();
 
     puts("Random test over");
 }
 
 int main() {
-    test1();
-    if (tree.root)
-        tree.view_root();
+//    test1();
+
     test2();
+    tree.view_root();
 }
