@@ -14,7 +14,7 @@ sjtu::bptree<int, int> tree;
 std::map<int, int> mp;
 std::vector<int> v1;
 std::vector<int> v2;
-const int n = 10000;
+const int n = 200000;
 
 long long aa = 13131, bb = 5353, MOD = (long long) (1e9 + 7), now = 1;
 

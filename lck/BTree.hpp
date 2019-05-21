@@ -13,39 +13,24 @@ using std::endl;
 //#define DEBUG
 
 namespace sjtu{
+    const int leaf_max = blockSize - 1;
+    const int nonleaf_max = blockSize;
     template <class key_t, class value_t>
     class bptree {
         friend class iterator;
-
-        typedef char buffer_t[blockSize];
-        typedef char * buffer_p;
-
     private:
-        FILE *pfile;
-        char *filename;
-        const size_t nonleafMax;
-        const size_t leafMax;
-
         struct Node {
-//            char* buf;
-//            key_t key;
-//            *((key_t*)(buf + 5)) = key;
-            key_t key;
-            off_t pos;
-
-            off_t parent;
-            off_t next;
-
-            size_t _size;
+            vector <Node *> child;
+            vector <key_t> key;
+            vector <value_t> value;
 
             bool isLeaf;
 
+            Node *next;
+
             Node(bool is_leaf = true) {
-                pos = invalid_off;
                 isLeaf = is_leaf;
-                next = invalid_off;
-                parent = invalid_off;
-                _size = 0;
+                next = NULL;
             }
 
             ~Node() {
@@ -67,359 +52,361 @@ namespace sjtu{
                     puts("");
                 }
             }
+
+            int search(const key_t &Key) {
+                size_t idx;
+                for (idx = 0; idx < key.size(); ++idx) {
+                    if (key[idx] == Key)
+                        break;
+                }
+
+                if (idx == key.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
+                }
+            }
+
+            int search_upper(const key_t &Key) {
+                int idx;
+                for (idx = 0; idx < key.size(); ++idx) {
+                    if (key[idx] > Key)
+                        break;
+                }
+
+                if (idx == key.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
+                }
+            }
+
+            int search_child(Node *Child) {
+                int idx;
+                for (idx = 0; idx < child.size(); ++idx) {
+                    if (child[idx] == Child)
+                        break;
+                }
+
+                if (idx == child.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
+                }
+            }
         };
 
-        char buffer[blockSize];
-
-        inline void file_reopen() {
-            if (pfile)  fflush(pfile);
-        }
-
-        inline void move_to_data(const Node &p) {
-            fseek(pfile, p.pos + sizeof(Node), SEEK_SET);
-        }
-
-        inline void load_nonleaf(char *b, Node p) {
-            move_to_data(p);
-
-            if (p._size == 0)
-                return;
-
-            fread(b, 1, (sizeof(off_t) + sizeof(key_t) * p._size), pfile);
-        }
-
-        inline void save_nonleaf(char *b, Node p) {
-            move_to_data(p);
-            fwrite(b, 1, (sizeof(off_t) + sizeof(key_t)) * p.sz, pfile);
-            file_reopen();
-        }
-
-        inline void loaf_leaf(char *b, Node p) {
-            move_to_data(p);
-
-            if (p._size == 0)
-                return;
-
-            fread(b, 1, (sizeof(value_t) + sizeof(key_t)) * p._size, pfile);
-        }
-
-        inline void save_leaf(char *b, Node p) {
-            move_to_data(p);
-            fwrite(b, 1, (sizeof(value_t) + sizeof(key_t)) * p._size, pfile);
-            file_reopen();
-        }
-
-        inline void save_node(const Node &p) {
-            fseek(pfile, p.pos, SEEK_SET);
-            fwrite(&p, sizeof(Node), 1, pfile);
-            file_reopen();
-        }
-
-        //4 functions to get key, value or child
-        key_t *nth_nonleaf_key(buffer_p b, int n) {
-            return (key_t *)(b + sizeof(off_t) + (sizeof(off_t) + sizeof(key_t)) * n);
-        }
-
-        off_t *nth_nonleaf_child(buffer_p b, int n) {
-            return (off_t *)(b + (sizeof(off_t) + sizeof(key_t)) * n);
-        }
-
-        key_t *nth_leaf_key(buffer_p b, int n) {
-            return (key_t *)(b + sizeof(value_t) + (sizeof(value_t) + sizeof(key_t) * n));
-        }
-
-        value_t *nth_leaf_value(buffer_p b, int n) {
-            return (value_t *)(b + (sizeof(value_t) + sizeof(key_t)) * n);
-        }
-
-        size_t search_nonleaf(buffer_p b, const key_t &Key, const size_t &size) {
-            int idx;
-            for (idx = 0; idx < size; ++idx) {
-                if (Key < *nth_nonleaf_key(idx))
-                    break;
-            }
-
-            return idx;
-        }
-
-        void insert_nonleaf(buffer_p b, const key_t &Key, const off_t &child, Node &p) {
-            int idx = search_nonleaf(b, Key, p._size);
-
-            if (idx < p._size && Key == nth_nonleaf_key(b, idx))
-                return;
-
-            //todo unsure the number of child
-            for (int i = p._size; i > idx; --i) {
-                *nth_nonleaf_key(b, i) = *nth_nonleaf_key(b, i - 1);
-                *nth_nonleaf_child(b, i) = *nth_nonleaf_child(b, i - 1);
-            }
-
-            p._size++;
-            *nth_nonleaf_key(b, idx) = Key;
-            *nth_nonleaf_child(b, idx) = child;
-
-            p.key = *nth_nonleaf_key(b, 0);
-        }
-
-        size_t search_leaf(buffer_p b, const key_t &Key, const size_t &size) {
-            int idx;
-            for (idx = 0; idx < size; ++idx) {
-                if (Key < *nth_leaf_key(idx))
-                    break;
-            }
-
-            return idx;
-        }
-
-        void insert_leaf() {
-
-        }
-
-        Node read_node(off_t pos) {
-            Node r;
-            fseek(pfile, pos, SEEK_SET);
-            fread(&r, sizeof(Node), 1, pfile);
-            return r;
-        }
-
-
-
     public:
-        off_t root;
+        Node *root;
 
     private:
+        bool erase_node(Node *cur, const key_t &Key) {
+            if (cur->isLeaf) {
+                int delPos = cur->search(Key);
+
+                if (delPos == -1) {
+                    return false;
+                }
+                else {
+                    cur->key.erase(delPos);
+                    cur->value.erase(delPos);
+                    return true;
+                }
+            }
+            else {
+                Node *ch;
+                int chPos = cur->search_upper(Key);
+                if (chPos == -1) {
+                    ch = cur->child.back();
+                }
+                else {
+                    ch = cur->child[chPos];
+                }
+
+                bool flag = erase_node(ch, Key);
+
+                if (!flag) {
+                    return false;
+                }
+                else {
+                    if (ch->isLeaf) {
+                        if (ch->key.size() >= (leaf_max + 1) / 2) {
+                            return true;
+                        }
+                        else {
+                            Node *sbl;
+                            int sblPos;
+                            int keyPos;
+                            Node *leftNode, *rightNode;
+
+                            if (chPos == 0) {
+                                sbl = cur->child[1];
+                                sblPos = 1;
+                            }
+                            else {
+                                sbl = cur->child[chPos - 1];
+                                sblPos = chPos - 1;
+                            }
+
+                            keyPos = std::max(chPos, sblPos) - 1;
+
+                            if (ch->key.size() + sbl->key.size() <= leaf_max) {
+                                if (chPos < sblPos) {
+                                    leftNode = ch;
+                                    rightNode = sbl;
+                                }
+                                else {
+                                    leftNode = sbl;
+                                    rightNode = ch;
+                                }
+
+                                leftNode->next = rightNode->next;
+
+                                for (int i = 0; i < rightNode->key.size(); ++i) {
+                                    leftNode->key.push_back(leftNode->key[i]);
+                                    rightNode->value.push_back(rightNode->value[i]);
+                                }
+
+                                cur->key.erase(keyPos);
+                                cur->child.erase(keyPos + 1);
+
+                                return true;
+                            }
+                            else {
+                                if (sblPos < chPos) {
+                                    key_t borrow_key = sbl->key.back();
+                                    value_t borrow_value = sbl->value.back();
+
+                                    sbl->key.pop_back();
+                                    sbl->value.pop_back();
+
+                                    ch->key.insert(0, borrow_key);
+                                    ch->value.insert(0, borrow_value);
+
+                                    cur->key[keyPos] = ch->key[0];
+
+                                    return true;
+                                }
+                                else {
+                                    key_t borrow_key = sbl->key.front();
+                                    value_t borrow_value = sbl->value.front();
+
+                                    sbl->key.erase(0);
+                                    sbl->value.erase(0);
+
+                                    ch->key.push_back(borrow_key);
+                                    ch->value.push_back(borrow_value);
+
+                                    cur->key[keyPos] = sbl->key[0];
+
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                        //ch is nonleaf
+                    else {
+                        if (ch->child.size() >= (nonleaf_max + 1) / 2) {
+                            return true;
+                        }
+                        else {
+                            Node *sbl;
+                            int sblPos;
+                            int keyPos;
+                            Node *leftNode, *rightNode;
+
+                            if (chPos == 0) {
+                                sbl = cur->child[1];
+                                sblPos = 1;
+                            } else {
+                                sbl = cur->child[chPos - 1];
+                                sblPos = chPos - 1;
+                            }
+
+                            keyPos = std::max(chPos, sblPos) - 1;
+
+                            if (ch->child.size() + sbl->key.size() <= nonleaf_max) {
+                                if (chPos < sblPos) {
+                                    leftNode = ch;
+                                    rightNode = sbl;
+                                }
+                                else {
+                                    leftNode = sbl;
+                                    rightNode = ch;
+                                }
+
+                                leftNode->key.push_back(cur->key[keyPos]);
+                                for (int i = 0; i < rightNode->key.size(); ++i)
+                                    leftNode->key.push_back(rightNode->key[i]);
+                                for (int i = 0; i < rightNode->child.size(); ++i)
+                                    leftNode->child.push_back(rightNode->child[i]);
+
+
+                                cur->key.erase(keyPos);
+                                cur->child.erase(keyPos + 1);
+
+                                return true;
+                            }
+                                //borrow from sibling
+                            else {
+                                if (sblPos < chPos) {
+                                    key_t borrow_key = sbl->key.back();
+                                    Node *borrow_child = sbl->child.back();
+
+                                    sbl->key.pop_back();
+                                    sbl->child.pop_back();
+
+                                    ch->key.insert(0, cur->key[keyPos]);
+                                    ch->child.insert(0, borrow_child);
+
+                                    cur->key[keyPos] = borrow_key;
+
+                                    return true;
+                                }
+                                else {
+                                    key_t borrow_key = sbl->key.front();
+                                    Node *borrow_child = sbl->child.front();
+
+                                    sbl->key.erase(0);
+                                    sbl->child.erase(0);
+
+                                    ch->key.push_back(borrow_key);
+                                    ch->child.push_back(borrow_child);
+
+                                    cur->key[keyPos] = borrow_key;
+
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        key_t split_nonleaf(Node *n, Node *n2) {
+            int mid = (nonleaf_max + 1) / 2;
+
+            key_t midKey = n->key[mid - 1];
+
+            n2->key.copy(n->key, mid, n->key.size());
+            n2->child.copy(n->child, mid, n->child.size());
+
+            n->key.update_size(mid - 1);
+            n->child.update_size(mid);
+
+            return midKey;
+        }
+
+        void split_leaf(Node *lf, Node *lf2) {
+            int mid = (leaf_max + 1) / 2;
+
+            lf2->key.copy(lf->key, mid, lf->key.size());
+            lf2->value.copy(lf->value, mid, lf->value.size());
+
+            lf->key.update_size(mid);
+            lf->value.update_size(mid);
+        }
+
+        bool insert_in_leaf(Node *cur, const key_t &Key, const value_t &Value) {
+            int idx = cur->search_upper(Key);
+
+            //failed
+            if (idx == -1) {
+                if (cur->key[cur->key.size() - 1] == Key)
+                    return false;
+            }
+            else {
+                if (idx != 0 && cur->key[idx - 1] == Key)
+                    return false;
+            }
+
+            if (idx == -1) {
+                cur->key.push_back(Key);
+                cur->value.push_back(Value);
+                return true;
+            }
+            else {
+                cur->key.insert(idx, Key);
+                cur->value.insert(idx, Value);
+                return true;
+            }
+
+        }
+
+        bool insert_node(Node *cur, const key_t &Key, const value_t &Value) {
+            if (cur->isLeaf) {
+                bool flag = insert_in_leaf(cur, Key, Value);
+                return flag;
+            }
+            else {
+                if (!cur->isLeaf)
+                    puts("haha");
+                Node *ch;
+                int chPos = cur->search_upper(Key);
+                if (chPos == -1) {
+                    ch = cur->child.back();
+                }
+                else {
+                    ch = cur->child[chPos];
+                }
+
+                bool flag = insert_node(cur, Key, Value);
+
+                if (!flag) {
+                    return false;
+                }
+                else {
+                    if (ch->isLeaf) {
+                        if (ch->key.size() <= leaf_max) {
+                            return true;
+                        } else {
+                            Node *newLeaf = new Node();
+                            newLeaf->next = ch->next;
+                            ch->next = newLeaf;
+
+                            split_leaf(ch, newLeaf);
+
+                            cur->key.insert(chPos, newLeaf->key[0]);
+                            cur->child.insert(chPos + 1, newLeaf);
+
+                            return true;
+                        }
+                    }
+                    else {
+                        if (ch->child.size() <= nonleaf_max) {
+                            return true;
+                        }
+                        else {
+                            key_t midKey;
+                            Node *newInner = new Node(false);
+
+                            midKey = split_nonleaf(ch, newInner);
+
+                            cur->key.insert(chPos, midKey);
+                            cur->child.insert(chPos + 1, newInner);
+
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
         Node *find_leaf(const key_t &Key) {
             Node *t = root;
-            Node *tmp;
             while (!t->isLeaf) {
                 int idx;
                 for (idx = 0; idx < t->key.size(); ++idx) {
                     if (Key < t->key[idx])
                         break;
                 }
-                tmp = t;
-                t = t->child[idx];
-                t->parent = tmp;
             }
+
             return t;
-        }
-
-        void insert_in_leaf(Node *lf, const key_t &Key, const value_t &Value) {
-            int idx;
-            for (idx = 0; idx < lf->key.size(); ++idx) {
-                if (Key < lf->key[idx])
-                    break;
-            }
-            lf->key.insert(idx, Key);
-            lf->value.insert(idx, Value);
-
-            return;
-        }
-
-        void insert_in_parent(Node *n, const key_t &Key, Node *n2) {
-            if (n == root) {
-                Node *newRoot = new Node();
-                newRoot->key.push_back(Key);
-                newRoot->child.push_back(n);
-                newRoot->child.push_back(n2);
-                root = newRoot;
-                root->isLeaf = false;
-                return;
-            }
-
-            Node *p = n->parent;
-            // p is an inner Node
-            if (p->child.size() < blockSize) {
-                int idx;
-                for (idx = 0; idx < p->child.size(); ++idx) {
-                    if (p->child[idx] == n)
-                        break;
-                }
-                p->key.insert(idx, Key);
-                p->child.insert(idx + 1, n2);
-            }
-            else {
-                /* Split P */
-                Node *tmp = new Node;
-                for (int i = 0; i < blockSize - 1; ++i) {
-                    tmp->key.push_back(p->key[i]);
-                    tmp->child.push_back(p->child[i]);
-                }
-                tmp->child.push_back(p->child[blockSize - 1]);
-
-                tmp->key.push_back(Key);
-                tmp->child.push_back(n2);
-
-                p->key.clear();
-                p->child.clear();
-                Node *p2 = new Node();
-
-                for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
-                    p->key.push_back(tmp->key[i]);
-                    p->child.push_back(tmp->child[i]);
-                }
-                key_t k2 = tmp->key[(blockSize + 1) / 2];
-                for (int i = (blockSize + 1) / 2 + 1; i <= blockSize; ++i) {
-                    p->key.push_back(tmp->key[i]);
-                    p->child.push_back(tmp->child[i]);
-                }
-                delete tmp;
-
-                insert_in_parent(p, k2, p2);
-            }
-
-        }
-
-        void erase_entry(Node *n, const key_t &Key, Node *delNode) {
-
-            for (int i = 0; i < n->key.size(); ++i) {
-                if (n->key[i] == Key) {
-                    n->key.erase(i);
-                    if (n->isLeaf)
-                        n->value.erase(i);
-                    break;
-                }
-            }
-            if (!n->isLeaf) {
-                for (int i = 0; i < n->child.size(); ++i) {
-                    if (n->child[i] == delNode) {
-                        n->child.erase(i);
-                        break;
-                    }
-                }
-            }
-
-//            if (N is the root and N has only one remaining child)
-            if (n == root && n->child.size() == 1) {
-                root = n->child[0];
-                delete n;
-                return;
-            }
-            else if (n == root) {
-                return;
-            }
-            else if ((n->isLeaf && n->key.size() < blockSize / 2)
-                     ||
-                     (!n->isLeaf && n->child.size() < (blockSize + 1) / 2)) {
-                Node *p = n->parent;
-                Node *n2;
-                key_t k2;
-                //prev为true时表示n2是n的前一个节点
-//                Let n2 be the previous or next child of parent(n)
-//                Let k2 be the value between pointers n and n2 in parent(n)
-                bool prev = false;
-                int idx;
-                for (idx = 0; idx < p->child.size(); ++idx) {
-                    if (p->child[idx] == n)
-                        break;
-                }
-                if (idx > 0) {
-                    n2 = p->child[idx - 1];
-                    k2 = p->key[idx - 1];
-                    prev = true;
-                } else {
-                    n2 = p->child[idx + 1];
-                    k2 = p->key[idx];
-                }
-
-//                if (entries in N and N′ can fit in a single node)
-                if (n->key.size() + n2->key.size() <= blockSize - 1) {
-                    /* Coalesce nodes */
-                    if (prev == false) {
-                        std::swap(n, n2);
-                    }
-                    if (!n->isLeaf) {
-                        //append k2 and all pointers and values in n to n2
-                        n2->key.push_back(k2);
-                        for (int i = 0; i < n->key.size(); ++i) {
-                            n2->key.push_back(n->key[i]);
-                        }
-
-                        for (int i = 0; i < n->child.size(); ++i) {
-                            n2->child.push_back(n->child[i]);
-                        }
-                    }
-                    else {
-                        for (int i = 0; i < n->key.size(); ++i) {
-                            n2->key.push_back(n->key[i]);
-                            n2->value.push_back(n->value[i]);
-                        }
-                    }
-                    n2->next = n->next;
-                    erase_entry(n->parent, k2, n);
-                    delete n;
-                }
-                else {
-                    /* Redistribution: borrow an entry from n2 */
-
-//                    if (N′ is a predecessor of N)
-                    if (prev) {
-                        // n2是n的前一个节点
-
-//                        if (N is a nonleaf node)
-                        if (!n->isLeaf) {
-                            n->key.insert(0, k2);
-                            n->child.insert(0, n2->child.back());
-
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.back();
-                                    break;
-                                }
-                            }
-
-                            n2->key.pop_back();
-                            n2->child.pop_back();
-                        }
-                        else {
-                            n->key.insert(0, n2->key.back());
-                            n->value.insert(0, n2->value.back());
-
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.back();
-                                    break;
-                                }
-                            }
-
-                            n2->key.pop_back();
-                            n2->value.pop_back();
-                        }
-                    }
-                        // symmetric to the prev case
-                    else {
-                        //n2是n的后一个节点
-                        if (!n->isLeaf) {
-                            n->key.push_back(k2);
-                            n->child.push_back(n2->child.front());
-
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.front();
-                                    break;
-                                }
-                            }
-
-                            n2->key.erase(0);
-                            n2->child.erase(0);
-                        }
-                        else {
-                            n->key.push_back(n2->key.front());
-                            n->value.push_back(n2->value.front());
-
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.front();
-                                    break;
-                                }
-                            }
-
-                            n2->key.erase(0);
-                            n2->value.erase(0);
-                        }
-                    }
-                }
-            }
         }
 
         void clear(Node *t) {
@@ -433,118 +420,109 @@ namespace sjtu{
         }
 
     public:
-
-        bptree(const char * fname) {
-            root = invalid_off;
-
-            pfile = fopen(fname, "rb+");
-            filename = new char[strlen(fname) + 1];
-            strcpy(filename, fname);
-
-            if (!pfile) {
-                pfile = fopen(fname, "wb+");
-            }
-            else {
-                read_info();
-            }
+        bptree() {
+            root = NULL;
         }
 
         ~bptree() {
             clear(root);
-
-            if (pfile) {
-                fclose(pfile);
-            }
-
-            delete filename;
-        }
-
-
-        int count(const key_t &Key) {
-            Node *t = find_leaf(Key);
-            int idx;
-            for (idx = 0; idx < t->key.size(); ++idx) {
-                if (Key == t->key[idx])
-                    break;
-            }
-            if (idx != t->key.size()) {
-                return 1;
-            }
-            else {
-                return 0;
-            }
         }
 
         value_t find(const key_t &Key) {
             Node *t = find_leaf(Key);
-            //now t is a leaf node
-            int idx;
-            for (idx = 0; idx < t->key.size(); ++idx) {
-                if (Key == t->key[idx])
-                    break;
-            }
-            if (idx != t->key.size()) {
-                return t->value[idx];
-            }
-            else {
-                //return default if not found
+
+            int idx = t->search(Key);
+
+            if (idx == -1)
                 return value_t();
-            }
+            else
+                return t->value[idx];
         }
 
-        void insert(const key_t &Key, const value_t &Value) {
-            Node *lf;
+        bool insert(const key_t &Key, const value_t &Value) {
             if (root == NULL) {
                 root = new Node();
-                lf = root;
+
+                root->key.push_back(Key);
+                root->value.push_back(Key);
+
+                return true;
+            }
+
+            bool flag = insert_node(root, Key, Value);
+
+            if (!flag) {
+                return false;
             }
             else {
-                lf = find_leaf(Key);
-            }
+                if (root->isLeaf) {
+                    if (root->key.size() > leaf_max) {
+                        Node *newLeaf = new Node();
+                        Node *newRoot = new Node(false);
 
-            //lf is a leaf Node
-            if (lf->key.size() < blockSize - 1) {
-                insert_in_leaf(lf, Key, Value);
-            }
-            else {
-                /* Leaf has n − 1 key values already, split it */
-                Node *lf2 = new Node();
-                Node *tmp = new Node();
+                        split_leaf(root, newLeaf);
+                        newLeaf->next = root->next;
+                        root->next = newLeaf;
 
-                for (int i = 0; i < lf->key.size(); ++i) {
-                    tmp->key.push_back(lf->key[i]);
-                    tmp->value.push_back(lf->value[i]);
+                        newRoot->key.push_back(newLeaf->key[0]);
+                        newRoot->child.push_back(root);
+                        newRoot->child.push_back(newLeaf);
+
+                        return true;
+                    }
+                    else {
+                        return true;
+                    }
                 }
-                insert_in_leaf(tmp, Key, Value);
+                else {
+                    if (root->child.size() > nonleaf_max) {
+                        Node *newInner = new Node(false);
+                        Node *newRoot = new Node(false);
 
-                lf2->next = lf->next;
-                lf->next = lf2;
+                        key_t midKey;
 
-//                Erase L.P1 through L.Kn−1 from L
-//                Copy T.P1 through T.K⌈n/2⌉ from T into L starting at L.P1 Copy T.P⌈n/2⌉+1 through T.Kn from T into L′ starting at L′.P1 Let K′ be the smallest key-value in L′
-//                insert in parent(L, K′, L′)
-                lf->key.clear();
-                lf->value.clear();
+                        midKey = split_nonleaf(root, newInner);
 
-                for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
-                    lf->key.push_back(tmp->key[i]);
-                    lf->value.push_back(tmp->value[i]);
+                        newRoot->key.push_back(midKey);
+                        newRoot->child.push_back(root);
+                        newRoot->child.push_back(newInner);
+
+                        return true;
+                    }
+                    else {
+                        return true;
+                    }
                 }
-
-                for (int i = (blockSize + 1) / 2; i <= blockSize - 1; ++i) {
-                    lf2->key.push_back(tmp->key[i]);
-                    lf2->value.push_back(tmp->value[i]);
-                }
-
-                delete tmp;
-
-                insert_in_parent(lf, lf2->key[0], lf2);
             }
         }
 
-        void erase(const key_t &Key) {
-            Node *lf = find_leaf(Key);
-            erase_entry(lf, Key, NULL);
+        bool erase(const key_t &Key) {
+            bool flag = erase_node(root, Key);
+
+            if (!flag) {
+                return false;
+            }
+            else {
+                if (root->isLeaf) {
+                    if (root->key.size() == 0) {
+                        root->next = NULL;
+                        delete root;
+                        root = NULL;
+                    }
+                }
+                else {
+                    if (root->child.size() == 1) {
+                        Node *tmp = root;
+                        root = root->child[0];
+                        delete tmp;
+                        root->next = NULL;
+                    }
+                    else {
+                        ;
+                    }
+                }
+                return true;
+            }
         }
 
         class iterator {

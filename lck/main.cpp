@@ -128,7 +128,8 @@ void test1() {
     test_iterator();
 
     test_erase();
-    tree.view_root();
+    if (tree.root)
+        tree.view_root();
     puts("simple test over");
 }
 
@@ -139,7 +140,8 @@ void test2() {
     test_iterator_random();
 
     test_erase_random();
-    tree.view_root();
+    if (tree.root)
+        tree.view_root();
 
     puts("Random test over");
 }
@@ -147,5 +149,5 @@ void test2() {
 int main() {
     test1();
 
-//    test2();
+    test2();
 }

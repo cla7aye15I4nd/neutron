@@ -12,35 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7bf3e040-9117-4211-839c-844e7a1a2e1a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../lck2/code.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bptree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/bptree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/code.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/code.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/code.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BTree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/BTree.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constant.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/constant.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/myVector.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/myVector.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lck2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/BTree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/BTree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/bptree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/bptree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/bufferpool.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/bufferpool.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/code.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/code.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/lck2" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/lck2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/lck2.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/lck2.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lck2/code.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/code.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lck2/constant.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/constant.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/myVector.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/myVector.hpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,11 +35,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-192">
-              <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
+            <state relative-caret-position="328">
+              <caret line="35" column="34" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -70,8 +50,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/constant.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+            <state>
+              <caret column="23" selection-start-column="23" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -79,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/myVector.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="365">
+              <caret line="142" column="26" selection-start-line="142" selection-start-column="26" selection-end-line="142" selection-end-column="26" />
               <folding>
                 <element signature="e#55#80#0" expanded="true" />
               </folding>
@@ -92,31 +72,18 @@
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bptree.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="619">
-              <caret line="148" column="26" selection-start-line="148" selection-start-column="26" selection-end-line="148" selection-end-column="26" />
-              <folding>
-                <element signature="e#37#56#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/BTree.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8375">
-              <caret line="468" column="13" lean-forward="true" selection-start-line="468" selection-start-column="13" selection-end-line="468" selection-end-column="13" />
+            <state relative-caret-position="79">
+              <caret line="301" column="9" selection-start-line="301" selection-start-column="9" selection-end-line="301" selection-end-column="9" />
               <folding>
                 <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#264#292#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -155,11 +122,11 @@
         <option value="$PROJECT_DIR$/vector.hpp" />
         <option value="$PROJECT_DIR$/code.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/constant.hpp" />
         <option value="$PROJECT_DIR$/bptree.hpp" />
-        <option value="$PROJECT_DIR$/main.cpp" />
-        <option value="$PROJECT_DIR$/myVector.hpp" />
         <option value="$PROJECT_DIR$/BTree.hpp" />
+        <option value="$PROJECT_DIR$/constant.hpp" />
+        <option value="$PROJECT_DIR$/myVector.hpp" />
+        <option value="$PROJECT_DIR$/main.cpp" />
       </list>
     </option>
   </component>
@@ -252,11 +219,12 @@
       <workItem from="1558367606503" duration="1092000" />
       <workItem from="1558396966346" duration="2511000" />
       <workItem from="1558423153513" duration="235000" />
+      <workItem from="1558424064232" duration="240000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33625000" />
+    <option name="totallyTimeSpent" value="33865000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -311,6 +279,11 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
+      <expression>
+        <expression-string>i == 7</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>i == 6143 || i == 6145</expression-string>
         <language-id>ObjectiveC</language-id>
@@ -408,7 +381,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bptree.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="619">
+        <state relative-caret-position="428">
           <caret line="148" column="26" selection-start-line="148" selection-start-column="26" selection-end-line="148" selection-end-column="26" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
@@ -419,44 +392,43 @@
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BTree.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="301" column="9" selection-start-line="301" selection-start-column="9" selection-end-line="301" selection-end-column="9" />
+          <folding>
+            <element signature="e#37#56#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/constant.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-192">
-          <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="23" selection-start-column="23" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/myVector.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="365">
+          <caret line="142" column="26" selection-start-line="142" selection-start-column="26" selection-end-line="142" selection-end-column="26" />
           <folding>
             <element signature="e#55#80#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BTree.hpp">
+    <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8375">
-          <caret line="468" column="13" lean-forward="true" selection-start-line="468" selection-start-column="13" selection-end-line="468" selection-end-column="13" />
+        <state relative-caret-position="328">
+          <caret line="35" column="34" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
           <folding>
-            <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#264#292#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>

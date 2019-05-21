@@ -16,7 +16,7 @@ namespace sjtu {
     private:
         size_t _size;
 //        T _elem[blockSize / sizeof(T)];
-        T _elem[blockSize];
+        T _elem[blockSize + 1];
 
     public:
         vector() {
@@ -140,6 +140,7 @@ namespace sjtu {
                 _elem[i - l] = other._elem[i];
             }
 
+            _size = r - l;
             return;
         }
 
