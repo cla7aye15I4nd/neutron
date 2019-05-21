@@ -83,8 +83,14 @@ namespace sjtu{
                 if (Key < lf->key[idx])
                     break;
             }
-            lf->key.insert(idx, Key);
-            lf->value.insert(idx, Value);
+            if (idx != lf->key.size()) {
+                lf->key.insert(idx, Key);
+                lf->value.insert(idx, Value);
+            }
+            else {
+                lf->key.push_back(Key);
+                lf->value.push_back(Value);
+            }
 
             return;
         }
@@ -97,6 +103,8 @@ namespace sjtu{
                 newRoot->child.push_back(n2);
                 root = newRoot;
                 root->isLeaf = false;
+                n->parent = root;
+                n2->parent = root;
                 return;
             }
 
@@ -250,7 +258,7 @@ namespace sjtu{
 
                             for (int i = 0; i < p->key.size(); ++i) {
                                 if (p->key[i] == k2) {
-                                    p->key[i] = n->key[0];
+                                    p->key[i] = n2->key.back();
                                     break;
                                 }
                             }
@@ -268,7 +276,7 @@ namespace sjtu{
 
                             for (int i = 0; i < p->key.size(); ++i) {
                                 if (p->key[i] == k2) {
-                                    p->key[i] = n2->key[0];
+                                    p->key[i] = n2->key.front();
                                     break;
                                 }
                             }

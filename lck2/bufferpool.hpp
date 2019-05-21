@@ -158,9 +158,9 @@ namespace sjtu {
             fread(&ret.isLeaf, sizeof(bool), 1, fp);
 
             size_t keySize, valueSize, childSize;
-            fread(&keySize, sizeof(short), 1, fp);
-            fread(&valueSize, sizeof(short), 1, fp);
-            fread(&childSize, sizeof(short), 1, fp);
+            fread(&keySize, sizeof(size_t), 1, fp);
+            fread(&valueSize, sizeof(size_t), 1, fp);
+            fread(&childSize, sizeof(size_t), 1, fp);
 
             ret.key.file_read(fp, keySize);
             ret.value.file_read(fp, valueSize);
@@ -224,7 +224,7 @@ namespace sjtu {
             tmp = ret.value.size();
             fwrite(&tmp, sizeof(size_t), 1, fp);
             tmp = ret.child.size();
-            fwrite(&ret, sizeof(size_t), 1, fp);
+            fwrite(&tmp, sizeof(size_t), 1, fp);
 
             ret.key.file_write(fp);
             ret.value.file_write(fp);

@@ -92,7 +92,7 @@ namespace sjtu{
 
             if (idx == -1) {
                 cur.key.push_back(Key);
-                cur.value.push_back(Key);
+                cur.value.push_back(Value);
                 return true;
             }
             else {

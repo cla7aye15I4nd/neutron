@@ -10,14 +10,13 @@
 
 // 这是一个静态数组的vector
 namespace sjtu {
-//    const int blockSize = 4096;
-
     template<typename T>
     class vector {
 
     private:
         size_t _size;
-        T _elem[blockSize + 1];
+//        T _elem[blockSize / sizeof(T)];
+        T _elem[blockSize];
 
     public:
         vector() {
@@ -144,8 +143,21 @@ namespace sjtu {
             return;
         }
 
+        void update_size(const size_t &new_size) {
+            _size = new_size;
+        }
+
         void clear() {
             _size = 0;
+        }
+
+        void file_read(FILE *&fp, const size_t &num) {
+            _size = num;
+            fread(_elem, sizeof(T), _size, fp);
+        }
+
+        void file_write(FILE *&fp) {
+            fwrite(_elem, sizeof(T), _size, fp);
         }
     };
 

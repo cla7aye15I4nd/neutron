@@ -2,9 +2,7 @@
 #define LCK_CONSTANT_HPP
 
 namespace sjtu {
-    typedef int off_t;
-    const off_t invalid_off = -1;
 
-    const int blockSize = 1024;
+    const int blockSize = 64;
 }
 #endif //LCK_CONSTANT_HPP

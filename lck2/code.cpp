@@ -5,14 +5,12 @@
 #include "bptree.hpp"
 #include <vector>
 
-#define DEBUG
-
 using std::cin;
 using std::cout;
 using std::string;
 using std::endl;
 
-sjtu::bptree<int, int> bptree;
+sjtu::bptree<int, int> tree;
 std::map<int, int> mp;
 std::vector<int> v1;
 std::vector<int> v2;
@@ -36,6 +34,7 @@ void make_vector() {
 void test_insert() {
     puts("Test: insert");
     for (int i = 0; i <= n; ++i) {
+//        cout << i << endl;
         tree.insert(i, -i);
     }
 
@@ -92,19 +91,45 @@ void test_erase_random() {
     puts("Test erase passed!");
 }
 
-#ifdef DEBUG
+void test_iterator() {
+    puts("Test iterator");
+    sjtu::bptree<int, int>::iterator it;
+    it = tree.lower_bound(5000);
 
-#endif
+    while (it.check()) {
+//        cout << it.retKey() << ':' << it.retValue() << endl;
+        ++it;
+    }
 
+    puts("test of iterator passed");
+}
+
+void test_iterator_random() {
+    puts("Test iterator");
+    sjtu::bptree<int, int>::iterator it;
+    it = tree.lower_bound(v1[1000]);
+
+    while (it.check()) {
+//        cout << it.retKey() << ':' << it.retValue() << endl;
+        if (mp[it.retKey()] != it.retValue()) {
+            puts("iterator error!");
+            return;
+        }
+
+        ++it;
+    }
+
+    puts("test of iterator passed");
+}
 
 void test1() {
     test_insert();
     test_find();
+    test_iterator();
 
     test_erase();
-#ifdef DEBUG
-    tree.view_root();
-#endif
+    if (tree.root)
+        tree.view_root();
     puts("simple test over");
 }
 
@@ -112,21 +137,18 @@ void test2() {
     make_vector();
     test_insert_random();
     test_find_random();
+    test_iterator_random();
 
     test_erase_random();
-#ifdef DEBUG
+    if (tree.root)
     tree.view_root();
-#endif
 
     puts("Random test over");
 }
 
 int main() {
-#ifndef DEBUG
-    tree.set_filename("aaa");
-    tree.open_file();
-#endif
     test1();
-
-//    test2();
+    if (tree.root)
+        tree.view_root();
+    test2();
 }

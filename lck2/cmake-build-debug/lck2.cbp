@@ -89,7 +89,7 @@
 		<Unit filename="/Users/lck/Desktop/neutron/lck2/bufferpool.hpp">
 			<Option target="lck2"/>
 		</Unit>
-		<Unit filename="/Users/lck/Desktop/neutron/lck2/main.cpp">
+		<Unit filename="/Users/lck/Desktop/neutron/lck2/code.cpp">
 			<Option target="lck2"/>
 		</Unit>
 		<Unit filename="/Users/lck/Desktop/neutron/lck2/myVector.hpp">

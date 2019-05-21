@@ -57,27 +57,27 @@ include CMakeFiles/lck2.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/lck2.dir/flags.make
 
-CMakeFiles/lck2.dir/main.cpp.o: CMakeFiles/lck2.dir/flags.make
-CMakeFiles/lck2.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lck2.dir/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lck2.dir/main.cpp.o -c /Users/lck/Desktop/neutron/lck2/main.cpp
+CMakeFiles/lck2.dir/code.cpp.o: CMakeFiles/lck2.dir/flags.make
+CMakeFiles/lck2.dir/code.cpp.o: ../code.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lck2.dir/code.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lck2.dir/code.cpp.o -c /Users/lck/Desktop/neutron/lck2/code.cpp
 
-CMakeFiles/lck2.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lck2.dir/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/lck/Desktop/neutron/lck2/main.cpp > CMakeFiles/lck2.dir/main.cpp.i
+CMakeFiles/lck2.dir/code.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lck2.dir/code.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/lck/Desktop/neutron/lck2/code.cpp > CMakeFiles/lck2.dir/code.cpp.i
 
-CMakeFiles/lck2.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lck2.dir/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/lck/Desktop/neutron/lck2/main.cpp -o CMakeFiles/lck2.dir/main.cpp.s
+CMakeFiles/lck2.dir/code.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lck2.dir/code.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/lck/Desktop/neutron/lck2/code.cpp -o CMakeFiles/lck2.dir/code.cpp.s
 
 # Object files for target lck2
 lck2_OBJECTS = \
-"CMakeFiles/lck2.dir/main.cpp.o"
+"CMakeFiles/lck2.dir/code.cpp.o"
 
 # External object files for target lck2
 lck2_EXTERNAL_OBJECTS =
 
-lck2: CMakeFiles/lck2.dir/main.cpp.o
+lck2: CMakeFiles/lck2.dir/code.cpp.o
 lck2: CMakeFiles/lck2.dir/build.make
 lck2: CMakeFiles/lck2.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable lck2"

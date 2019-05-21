@@ -2,7 +2,7 @@
 #include <cstring>
 #include <cstdio>
 #include <map>
-#include "bptree.hpp"
+#include "BTree.hpp"
 #include <vector>
 
 using std::cin;
@@ -49,17 +49,6 @@ void test_insert_random() {
     puts("Test insert passed!");
 }
 
-void test_count() {
-    puts("Test count");
-    for (int i = 0; i <= n; ++i) {
-        if (!tree.count(i)) {
-            puts("count error!");
-            return;
-        }
-    }
-
-    puts("Test count passed!");
-}
 
 
 void test_find() {
@@ -135,7 +124,6 @@ void test_iterator_random() {
 
 void test1() {
     test_insert();
-    test_count();
     test_find();
     test_iterator();
 
@@ -157,7 +145,7 @@ void test2() {
 }
 
 int main() {
-//    test1();
+    test1();
 
-    test2();
+//    test2();
 }
