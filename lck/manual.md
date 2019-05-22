@@ -11,7 +11,7 @@ class bptree {
 };
 
 ```
-> blockSize = n, 每个节点有n - 1个搜索码key， n个指针，用vector存储
+> blockSize = n, 每个节点有n - 1个搜索码key， n个指针，用静态数组存储
 >
 > n - 1个搜索码值$K_0, K_1, \dots, K_{n - 2}$
 >
@@ -20,7 +20,7 @@ class bptree {
 ## 我的接口：
 
 ### 1、查询：
-* 询问是否有某个key(这个暂时还没有)
+* 询问是否有某个key
 
   `int count(const key_t &Key)`
 
@@ -42,6 +42,10 @@ class bptree {
 * 删除
 
   `bool erase(const key_t &Key)`
+  
+* 修改
+
+	`bool modify(const key_t &Key, const value_t &Value)`
 
 ## 3、关于iterator的操作
 

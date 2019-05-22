@@ -59,45 +59,45 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/lck/Desktop/neutron/lck
+CMAKE_SOURCE_DIR = /Users/lck/Desktop/neutron/lck2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/lck/Desktop/neutron/lck/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/lck/Desktop/neutron/lck2/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/lck.dir
+# Target rules for target CMakeFiles/lck2.dir
 
 # All Build rule for target.
-CMakeFiles/lck.dir/all:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/depend
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target lck"
-.PHONY : CMakeFiles/lck.dir/all
+CMakeFiles/lck2.dir/all:
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/depend
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target lck2"
+.PHONY : CMakeFiles/lck2.dir/all
 
 # Include target in all.
-all: CMakeFiles/lck.dir/all
+all: CMakeFiles/lck2.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/lck.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/lck.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/lck.dir/rule
+CMakeFiles/lck2.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/lck2.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/lck2.dir/rule
 
 # Convenience name for target.
-lck: CMakeFiles/lck.dir/rule
+lck2: CMakeFiles/lck2.dir/rule
 
-.PHONY : lck
-
-# clean rule for target.
-CMakeFiles/lck.dir/clean:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/clean
-.PHONY : CMakeFiles/lck.dir/clean
+.PHONY : lck2
 
 # clean rule for target.
-clean: CMakeFiles/lck.dir/clean
+CMakeFiles/lck2.dir/clean:
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/clean
+.PHONY : CMakeFiles/lck2.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/lck2.dir/clean
 
 .PHONY : clean
 

@@ -2,6 +2,8 @@
 #define LCK_CONSTANT_HPP
 
 namespace sjtu {
+    typedef short Rank;
+    typedef int offset;
 
     const int blockSize = 8;
 }

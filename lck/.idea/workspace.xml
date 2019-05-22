@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="lck" targetName="lck" />
+      <config projectName="lck2" targetName="lck2" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -11,21 +11,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bf3e040-9117-4211-839c-844e7a1a2e1a" name="Default Changelist" comment="">
+    <list default="true" id="02bd7f6b-8099-4add-8aa2-d445cde44e37" name="Default Changelist" comment=";">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bptree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/bptree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/lck.dir/main.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/bptree.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/bptree.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/code.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/CMakeFiles/lck2.dir/code.cpp.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/cmake-build-debug/lck2" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/cmake-build-debug/lck2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/code.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/code.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lck2/constant.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lck2/constant.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lck2.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lck2.cbp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,50 +28,52 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="37" selection-start-line="37" selection-end-line="37" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/constant.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myVector.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="150" column="13" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="13" />
-              <folding>
-                <element signature="e#55#80#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bptree.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="392" column="36" selection-start-line="392" selection-start-column="36" selection-end-line="392" selection-end-column="36" />
+            <state relative-caret-position="372">
+              <caret line="609" column="13" lean-forward="true" selection-start-line="609" selection-start-column="13" selection-end-line="609" selection-end-column="13" />
               <folding>
                 <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#264#292#0" expanded="true" />
+                <element signature="e#345#373#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1697">
+              <caret line="134" selection-start-line="134" selection-end-line="134" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -90,17 +83,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>push</find>
-      <find>insert_in_parent</find>
-      <find>erase_entry</find>
-      <find>root</find>
-      <find>.clear</find>
-      <find>_capacity</find>
-      <find>DEBUG</find>
-      <find>erase</find>
-      <find>find_child</find>
+      <find>append_block</find>
+      <find>pos</find>
+      <find>Coalesce nodes</find>
+      <find>insert(</find>
+      <find>get_ro</find>
+      <find>insert_in_leaf</find>
+      <find>get_node</find>
+      <find>keySize</find>
+      <find>search</find>
+      <find>blockSize</find>
+      <find>split</find>
       <find>insert</find>
-      <find>*tmp</find>
+      <find>+ 1</find>
+      <find>size_t</find>
+      <find>int</find>
+      <find>insert_node</find>
+      <find>haa</find>
+      <find>newRoot</find>
+      <find>update</find>
+      <find>chPos</find>
+      <find>chPos == -1</find>
+      <find>erase_node</find>
+      <find>delete root</find>
+      <find>spilt</find>
+      <find>erase</find>
+      <find>keypos</find>
+      <find>insert_in</find>
+      <find>cout</find>
+      <find>/</find>
+      <find>find</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -109,25 +121,24 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/bptree.hpp" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/myVector.hpp" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/BTree.hpp" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/main.cpp" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/code.cpp" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/const.hpp" />
         <option value="$PROJECT_DIR$/vector.hpp" />
-        <option value="$PROJECT_DIR$/code.cpp" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/bpNode.hpp" />
+        <option value="$PROJECT_DIR$/bufferpool.hpp" />
+        <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/BTree.hpp" />
         <option value="$PROJECT_DIR$/myVector.hpp" />
-        <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/constant.hpp" />
+        <option value="$PROJECT_DIR$/code.cpp" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/bptree.hpp" />
       </list>
     </option>
   </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" fullScreen="true">
     <option name="x" value="646" />
     <option name="width" value="634" />
@@ -143,8 +154,12 @@
         <subPane>
           <expand>
             <path>
-              <item name="lck" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lck" type="462c0819:PsiDirectoryNode" />
+              <item name="lck2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lck2" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lck2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
             </path>
           </expand>
           <select />
@@ -160,7 +175,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -175,7 +190,7 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="lck" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="lck" TARGET_NAME="lck" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="lck" RUN_TARGET_NAME="lck">
+    <configuration name="lck2" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="lck2" TARGET_NAME="lck2" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="lck2" RUN_TARGET_NAME="lck2">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -186,113 +201,134 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7bf3e040-9117-4211-839c-844e7a1a2e1a" name="Default Changelist" comment="" />
-      <created>1556978521073</created>
+      <changelist id="02bd7f6b-8099-4add-8aa2-d445cde44e37" name="Default Changelist" comment="" />
+      <created>1558255968516</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1556978521073</updated>
-      <workItem from="1556978522540" duration="2138000" />
-      <workItem from="1556980688792" duration="148000" />
-      <workItem from="1557070178907" duration="13000" />
-      <workItem from="1557145570553" duration="4605000" />
-      <workItem from="1557150673556" duration="83000" />
-      <workItem from="1557151433020" duration="1932000" />
-      <workItem from="1557153518877" duration="855000" />
-      <workItem from="1557154423512" duration="41000" />
-      <workItem from="1557214089568" duration="1030000" />
-      <workItem from="1557312131927" duration="3000" />
-      <workItem from="1557313827502" duration="387000" />
-      <workItem from="1557314607637" duration="768000" />
-      <workItem from="1557316941020" duration="913000" />
-      <workItem from="1557320399128" duration="15000" />
-      <workItem from="1557320488451" duration="106000" />
-      <workItem from="1557373467031" duration="15000" />
-      <workItem from="1557906547997" duration="2829000" />
-      <workItem from="1557912708021" duration="2428000" />
-      <workItem from="1558007466655" duration="39000" />
-      <workItem from="1558007533885" duration="878000" />
-      <workItem from="1558054855099" duration="5554000" />
-      <workItem from="1558091759520" duration="375000" />
-      <workItem from="1558092571989" duration="1000" />
-      <workItem from="1558095453681" duration="1382000" />
-      <workItem from="1558367606503" duration="1092000" />
-      <workItem from="1558396966346" duration="2511000" />
-      <workItem from="1558423153513" duration="235000" />
-      <workItem from="1558424064232" duration="240000" />
-      <workItem from="1558484463944" duration="1711000" />
+      <updated>1558255968516</updated>
+      <workItem from="1558255969691" duration="2697000" />
+      <workItem from="1558260491263" duration="569000" />
+      <workItem from="1558269174225" duration="485000" />
+      <workItem from="1558269676558" duration="7172000" />
+      <workItem from="1558316138315" duration="2081000" />
+      <workItem from="1558335588330" duration="2728000" />
+      <workItem from="1558347678762" duration="583000" />
+      <workItem from="1558365724378" duration="3222000" />
+      <workItem from="1558396827264" duration="11535000" />
+      <workItem from="1558423129245" duration="1224000" />
+      <workItem from="1558424534947" duration="684000" />
+      <workItem from="1558441480718" duration="297000" />
+      <workItem from="1558442107163" duration="11401000" />
+      <workItem from="1558492024964" duration="1106000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35576000" />
+    <option name="totallyTimeSpent" value="46740000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.23021002" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.15105008" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" weight="0.27157003" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29844412" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.25884017" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3493635" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.32673267" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32956153" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50080776" side_tool="true" weight="0.27157003" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32956153" />
-      <window_info anchor="bottom" id="CMake" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="CMake" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.31683168" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32956383" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23021002" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15105008" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" visible="true" weight="0.27157003" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.29844412" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.25884017" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3493635" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.32673267" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32956153" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50080776" side_tool="true" weight="0.27157003" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32956153" />
-      <window_info anchor="bottom" id="CMake" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="CMake" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.31683168" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32956383" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <condition expression="i == 35" language="ObjectiveC" />
-          <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>37</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="root" language="ObjectiveC" />
+        <watch expression="cur" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
       <expression>
-        <expression-string>i == 35</expression-string>
+        <expression-string>Key == 466880197 &amp;&amp; cur-&gt;isLeaf</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>v1[i] == 382587221 || v1[i] == 466880197 || v2[i] == 670083442</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>v1[i] == 382587221</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i == 200000</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i &gt; 6</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i &gt; 5</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>i == 18</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>if (i == 4)</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>if (Key &gt; 10)</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -301,55 +337,15 @@
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>i == 6143 || i == 6145</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tree.root-&gt;key[0] == tree.root-&gt;key[1]</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>tree.root</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>i == 6141 || i == 6143 || i == 6145</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>i == 6145</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>i ==</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="watch">
       <expression>
-        <expression-string>*(int *)(buf + 8)</expression-string>
+        <expression-string>cur</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>*(int *)(buf + 4)</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>*(int *)buf</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>buf</expression-string>
+        <expression-string>cur == root</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -358,65 +354,34 @@
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
+      <expression>
+        <expression-string>cur-&gt;isLeaf</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>_size</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/const.hpp" />
-    <entry file="file://$PROJECT_DIR$/vector.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="412" column="25" lean-forward="true" selection-start-line="412" selection-start-column="25" selection-end-line="412" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include/stdio.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="157" column="9" selection-start-line="157" selection-start-column="9" selection-end-line="157" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utility.hpp">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/vector.hpp" />
+    <entry file="file://$PROJECT_DIR$/BTree.hpp" />
+    <entry file="file://$PROJECT_DIR$/bufferpool.hpp" />
     <entry file="file://$PROJECT_DIR$/exceptions.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+        <state relative-caret-position="73">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BTree.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="301" column="9" selection-start-line="301" selection-start-column="9" selection-end-line="301" selection-end-column="9" />
-          <folding>
-            <element signature="e#37#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/bpNode.hpp" />
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        <state relative-caret-position="760">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -425,8 +390,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/myVector.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="150" column="13" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="13" />
+        <state relative-caret-position="-4">
+          <caret line="139" column="20" selection-start-line="139" selection-start-column="20" selection-end-line="139" selection-end-column="20" />
           <folding>
             <element signature="e#55#80#0" expanded="true" />
           </folding>
@@ -435,18 +400,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/constant.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+        <state relative-caret-position="126">
+          <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1697">
+          <caret line="134" selection-start-line="134" selection-end-line="134" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bptree.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="392" column="36" selection-start-line="392" selection-start-column="36" selection-end-line="392" selection-end-column="36" />
+        <state relative-caret-position="372">
+          <caret line="609" column="13" lean-forward="true" selection-start-line="609" selection-start-column="13" selection-end-line="609" selection-end-column="13" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#264#292#0" expanded="true" />
+            <element signature="e#345#373#0" expanded="true" />
           </folding>
         </state>
       </provider>

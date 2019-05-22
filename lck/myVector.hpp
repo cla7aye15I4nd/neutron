@@ -14,7 +14,7 @@ namespace sjtu {
     class vector {
 
     private:
-        size_t _size;
+        Rank _size;
 //        T _elem[blockSize / sizeof(T)];
         T _elem[blockSize + 1];
 
@@ -33,33 +33,33 @@ namespace sjtu {
 
             _size = other._size;
 
-            for (size_t i = 0; i < _size; ++i)
+            for (Rank i = 0; i < _size; ++i)
                 _elem[i] = other._elem[i];
 
             return *this;
         }
 
-        T & at(const size_t &pos) {
+        T & at(const Rank &pos) {
             if (pos >= _size || pos < 0)
                 throw index_out_of_bound();
 
             return _elem[pos];
         }
 
-        const T & at(const size_t &pos) const {
+        const T & at(const Rank &pos) const {
             if (pos >= _size || pos < 0)
                 throw index_out_of_bound();
 
             return _elem[pos];
         }
 
-        T & operator[](const size_t &pos) {
+        T & operator[](const Rank &pos) {
             if (pos >= _size)
                 throw index_out_of_bound();
             return _elem[pos];
         }
 
-        const T & operator[](const size_t &pos) const {
+        const T & operator[](const Rank &pos) const {
             if (pos >= _size)
                 throw index_out_of_bound();
             return _elem[pos];
@@ -85,15 +85,15 @@ namespace sjtu {
         /**
          * returns the number of elements
          */
-        size_t size() const {
+        Rank size() const {
             return _size;
         }
 
-        void insert(const size_t &ind, const T &value) {
+        void insert(const Rank &ind, const T &value) {
             if (ind > _size)
                 throw index_out_of_bound();
 
-            for (size_t i = _size; i > ind; --i)
+            for (Rank i = _size; i > ind; --i)
                 _elem[i] = _elem[i - 1];
 
             _elem[ind] = value;
@@ -102,11 +102,11 @@ namespace sjtu {
             return;
         }
 
-        void erase(const size_t &ind) {
+        void erase(const Rank &ind) {
             if (ind >= _size)
                 throw index_out_of_bound();
 
-            for (size_t i = ind + 1; i < _size; ++i)
+            for (Rank i = ind + 1; i < _size; ++i)
                 _elem[i - 1] = _elem[i];
 
             _size--;
@@ -132,19 +132,20 @@ namespace sjtu {
             --_size;
         }
 
-        void copy(const vector &other, const int l, const int r) {
+        void copy(const vector &other, const Rank l, const Rank r) {
             if (l < 0 || r > other._size)
                 throw index_out_of_bound();
 
-            for (int i = l; i < r; ++i) {
+            for (Rank i = l; i < r; ++i) {
                 _elem[i - l] = other._elem[i];
             }
 
             _size = r - l;
+
             return;
         }
 
-        void update_size(const size_t &new_size) {
+        void update_size(const Rank &new_size) {
             _size = new_size;
         }
 
@@ -152,7 +153,7 @@ namespace sjtu {
             _size = 0;
         }
 
-        void file_read(FILE *&fp, const size_t &num) {
+        void file_read(FILE *&fp, const Rank &num) {
             _size = num;
             fread(_elem, sizeof(T), _size, fp);
         }

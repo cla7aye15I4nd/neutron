@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/lck/Desktop/neutron/lck
+CMAKE_SOURCE_DIR = /Users/lck/Desktop/neutron/lck2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/lck/Desktop/neutron/lck/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/lck/Desktop/neutron/lck2/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles /Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles /Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lck/Desktop/neutron/lck2/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named lck
+# Target rules for targets named lck2
 
 # Build rule for target.
-lck: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lck
-.PHONY : lck
+lck2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lck2
+.PHONY : lck2
 
 # fast build rule for target.
-lck/fast:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/build
-.PHONY : lck/fast
+lck2/fast:
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/build
+.PHONY : lck2/fast
 
-main.o: main.cpp.o
+code.o: code.cpp.o
 
-.PHONY : main.o
+.PHONY : code.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/main.cpp.o
-.PHONY : main.cpp.o
+code.cpp.o:
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/code.cpp.o
+.PHONY : code.cpp.o
 
-main.i: main.cpp.i
+code.i: code.cpp.i
 
-.PHONY : main.i
+.PHONY : code.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/main.cpp.i
-.PHONY : main.cpp.i
+code.cpp.i:
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/code.cpp.i
+.PHONY : code.cpp.i
 
-main.s: main.cpp.s
+code.s: code.cpp.s
 
-.PHONY : main.s
+.PHONY : code.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/lck.dir/build.make CMakeFiles/lck.dir/main.cpp.s
-.PHONY : main.cpp.s
+code.cpp.s:
+	$(MAKE) -f CMakeFiles/lck2.dir/build.make CMakeFiles/lck2.dir/code.cpp.s
+.PHONY : code.cpp.s
 
 # Help Target
 help:
@@ -158,10 +158,10 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... lck"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... lck2"
+	@echo "... code.o"
+	@echo "... code.i"
+	@echo "... code.s"
 .PHONY : help
 
 

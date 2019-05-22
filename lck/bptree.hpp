@@ -13,14 +13,13 @@ using std::endl;
 //#define DEBUG
 
 namespace sjtu{
+    const Rank leaf_max = blockSize - 1;
+    const Rank nonleaf_max = blockSize;
     template <class key_t, class value_t>
     class bptree {
         friend class iterator;
     private:
         struct Node {
-//            char* buf;
-//            key_t key;
-//            *((key_t*)(buf + 5)) = key;
             vector <Node *> child;
             vector <key_t> key;
             vector <value_t> value;
@@ -28,12 +27,10 @@ namespace sjtu{
             bool isLeaf;
 
             Node *next;
-            Node *parent;
 
             Node(bool is_leaf = true) {
                 isLeaf = is_leaf;
                 next = NULL;
-                parent = NULL;
             }
 
             ~Node() {
@@ -43,16 +40,46 @@ namespace sjtu{
             void view() {
                 cout << "Nodesize = " << key.size() << endl;
                 if (isLeaf) {
-                    for (int i = 0; i < key.size(); ++i) {
+                    for (Rank i = 0; i < key.size(); ++i) {
                         cout << key[i] << ":" << value[i] << ' ';
                     }
                     puts("");
                 }
                 else {
-                    for (int i = 0; i < key.size(); ++i) {
+                    for (Rank i = 0; i < key.size(); ++i) {
                         cout << key[i] << ' ';
                     }
                     puts("");
+                }
+            }
+
+            Rank search(const key_t &Key) {
+                Rank idx;
+                for (idx = 0; idx < key.size(); ++idx) {
+                    if (key[idx] == Key)
+                        break;
+                }
+
+                if (idx == key.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
+                }
+            }
+
+            Rank search_upper(const key_t &Key) {
+                Rank idx;
+                for (idx = 0; idx < key.size(); ++idx) {
+                    if (key[idx] > Key)
+                        break;
+                }
+
+                if (idx == key.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
                 }
             }
         };
@@ -61,241 +88,323 @@ namespace sjtu{
         Node *root;
 
     private:
+
         Node *find_leaf(const key_t &Key) {
             Node *t = root;
-            Node *tmp;
             while (!t->isLeaf) {
-                int idx;
+                Rank idx;
                 for (idx = 0; idx < t->key.size(); ++idx) {
                     if (Key < t->key[idx])
                         break;
                 }
-                tmp = t;
                 t = t->child[idx];
-                t->parent = tmp;
             }
+
             return t;
         }
 
-        void insert_in_leaf(Node *lf, const key_t &Key, const value_t &Value) {
-            int idx;
-            for (idx = 0; idx < lf->key.size(); ++idx) {
-                if (Key < lf->key[idx])
-                    break;
-            }
-            if (idx != lf->key.size()) {
-                lf->key.insert(idx, Key);
-                lf->value.insert(idx, Value);
-            }
-            else {
-                lf->key.push_back(Key);
-                lf->value.push_back(Value);
-            }
+        key_t split_nonleaf(Node *n, Node *n2) {
+            Rank mid = (nonleaf_max + 1) / 2;
 
-            return;
+            key_t midKey = n->key[mid - 1];
+
+            n2->key.copy(n->key, mid, n->key.size());
+            n2->child.copy(n->child, mid, n->child.size());
+
+            n->key.update_size(mid - 1);
+            n->child.update_size(mid);
+
+            return midKey;
         }
 
-        void insert_in_parent(Node *n, const key_t &Key, Node *n2) {
-            if (n == root) {
-                Node *newRoot = new Node();
-                newRoot->key.push_back(Key);
-                newRoot->child.push_back(n);
-                newRoot->child.push_back(n2);
-                root = newRoot;
-                root->isLeaf = false;
-                return;
-            }
+        void split_leaf(Node *lf, Node *lf2) {
+            Rank mid = (leaf_max + 1) / 2;
 
-            Node *p = n->parent;
-            // p is an inner Node
-            if (p->child.size() < blockSize) {
-                int idx;
-                for (idx = 0; idx < p->child.size(); ++idx) {
-                    if (p->child[idx] == n)
-                        break;
-                }
-                p->key.insert(idx, Key);
-                p->child.insert(idx + 1, n2);
+            lf2->key.copy(lf->key, mid, lf->key.size());
+            lf2->value.copy(lf->value, mid, lf->value.size());
+
+            lf->key.update_size(mid);
+            lf->value.update_size(mid);
+        }
+
+        //pass
+        bool insert_in_leaf(Node *cur, const key_t &Key, const value_t &Value) {
+            Rank idx = cur->search_upper(Key);
+
+            //has existed
+            if (idx == -1) {
+                if (cur->key[cur->key.size() - 1] == Key)
+                    return false;
             }
             else {
-                /* Split P */
-                Node *tmp = new Node(false);
-                for (int i = 0; i < blockSize - 1; ++i) {
-                    tmp->key.push_back(p->key[i]);
-                    tmp->child.push_back(p->child[i]);
-                }
-                tmp->child.push_back(p->child[blockSize - 1]);
+                if (idx != 0 && cur->key[idx - 1] == Key)
+                    return false;
+            }
 
-                tmp->key.push_back(Key);
-                tmp->child.push_back(n2);
-
-                p->key.clear();
-                p->child.clear();
-                Node *p2 = new Node(false);
-
-                for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
-                    p->key.push_back(tmp->key[i]);
-                    p->child.push_back(tmp->child[i]);
-                }
-                key_t k2 = tmp->key[(blockSize + 1) / 2];
-                for (int i = (blockSize + 1) / 2 + 1; i <= blockSize; ++i) {
-                    p2->key.push_back(tmp->key[i]);
-                    p2->child.push_back(tmp->child[i]);
-                }
-                delete tmp;
-
-                //k2上升至parent
-                insert_in_parent(p, k2, p2);
+            if (idx == -1) {
+                cur->key.push_back(Key);
+                cur->value.push_back(Value);
+                return true;
+            }
+            else {
+                cur->key.insert(idx, Key);
+                cur->value.insert(idx, Value);
+                return true;
             }
 
         }
 
-        void erase_entry(Node *n, const key_t &Key, Node *delNode) {
-
-            for (int i = 0; i < n->key.size(); ++i) {
-                if (n->key[i] == Key) {
-                    n->key.erase(i);
-                    if (n->isLeaf)
-                        n->value.erase(i);
-                    break;
-                }
+        //我去到底哪里写错了，insert写的非常有道理啊
+        bool insert_node(Node *cur, const key_t &Key, const value_t &Value) {
+            if (cur->isLeaf) {
+                bool flag = insert_in_leaf(cur, Key, Value);
+                return flag;
             }
-            if (!n->isLeaf) {
-                for (int i = 0; i < n->child.size(); ++i) {
-                    if (n->child[i] == delNode) {
-                        n->child.erase(i);
-                        break;
-                    }
-                }
-            }
-
-//            if (N is the root and N has only one remaining child)
-            if (n == root && n->child.size() == 1) {
-                root = n->child[0];
-                delete n;
-                return;
-            }
-            else if (n == root) {
-                return;
-            }
-            else if ((n->isLeaf && n->key.size() < blockSize / 2)
-                     ||
-                     (!n->isLeaf && n->child.size() < (blockSize + 1) / 2)) {
-                Node *p = n->parent;
-                Node *n2;
-                key_t k2;
-                //prev为true时表示n2是n的前一个节点
-//                Let n2 be the previous or next child of parent(n)
-//                Let k2 be the value between pointers n and n2 in parent(n)
-                bool prev = false;
-                int idx;
-                for (idx = 0; idx < p->child.size(); ++idx) {
-                    if (p->child[idx] == n)
-                        break;
-                }
-                if (idx > 0) {
-                    n2 = p->child[idx - 1];
-                    k2 = p->key[idx - 1];
-                    prev = true;
-                } else {
-                    n2 = p->child[idx + 1];
-                    k2 = p->key[idx];
-                }
-
-//                if (entries in N and N′ can fit in a single node)
-                if (n->key.size() + n2->key.size() <= blockSize - 1) {
-                    /* Coalesce nodes */
-                    if (prev == false) {
-                        std::swap(n, n2);
-                    }
-                    if (!n->isLeaf) {
-                        //append k2 and all pointers and values in n to n2
-                        n2->key.push_back(k2);
-                        for (int i = 0; i < n->key.size(); ++i) {
-                            n2->key.push_back(n->key[i]);
-                        }
-
-                        for (int i = 0; i < n->child.size(); ++i) {
-                            n2->child.push_back(n->child[i]);
-                        }
-                    }
-                    else {
-                        for (int i = 0; i < n->key.size(); ++i) {
-                            n2->key.push_back(n->key[i]);
-                            n2->value.push_back(n->value[i]);
-                        }
-                    }
-                    n2->next = n->next;
-                    erase_entry(n->parent, k2, n);
-                    delete n;
+            else {
+                //先找到孩子ch和它的位置
+                Node *ch;
+                Rank chPos = cur->search_upper(Key);
+                if (chPos == -1) {
+                    ch = cur->child.back();
+                    chPos = cur->child.size() - 1;
                 }
                 else {
-                    /* Redistribution: borrow an entry from n2 */
+                    ch = cur->child[chPos];
+                }
 
-//                    if (N′ is a predecessor of N)
-                    if (prev) {
-                        // n2是n的前一个节点
+                //往下递归
+                bool flag = insert_node(ch, Key, Value);
 
-//                        if (N is a nonleaf node)
-                        if (!n->isLeaf) {
-                            n->key.insert(0, k2);
-                            n->child.insert(0, n2->child.back());
-
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.back();
-                                    break;
-                                }
-                            }
-
-                            n2->key.pop_back();
-                            n2->child.pop_back();
+                if (!flag) {
+                    return false;
+                }
+                else {
+                    if (ch->isLeaf) {
+                        if (ch->key.size() <= leaf_max) {
+                            return true;
                         }
                         else {
-                            n->key.insert(0, n2->key.back());
-                            n->value.insert(0, n2->value.back());
+                            Node *newLeaf = new Node();
+                            newLeaf->next = ch->next;
+                            ch->next = newLeaf;
 
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.back();
-                                    break;
-                                }
-                            }
+                            split_leaf(ch, newLeaf);
 
-                            n2->key.pop_back();
-                            n2->value.pop_back();
+                            cur->key.insert(chPos, newLeaf->key[0]);
+                            cur->child.insert(chPos + 1, newLeaf);
+
+                            return true;
                         }
                     }
-                        // symmetric to the prev case
                     else {
-                        //n2是n的后一个节点
-                        if (!n->isLeaf) {
-                            n->key.push_back(k2);
-                            n->child.push_back(n2->child.front());
-
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.front();
-                                    break;
-                                }
-                            }
-
-                            n2->key.erase(0);
-                            n2->child.erase(0);
+                        if (ch->child.size() <= nonleaf_max) {
+                            return true;
                         }
                         else {
-                            n->key.push_back(n2->key.front());
-                            n->value.push_back(n2->value.front());
+                            key_t midKey;
+                            Node *newInner = new Node(false);
 
-                            for (int i = 0; i < p->key.size(); ++i) {
-                                if (p->key[i] == k2) {
-                                    p->key[i] = n2->key.front();
-                                    break;
-                                }
+                            midKey = split_nonleaf(ch, newInner);
+
+                            cur->key.insert(chPos, midKey);
+                            cur->child.insert(chPos + 1, newInner);
+
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        //
+        bool erase_node(Node *cur, const key_t &Key) {
+            if (cur->isLeaf) {
+                Rank delPos = cur->search(Key);
+
+                if (delPos == -1) {
+                    return false;
+                }
+                else {
+                    cur->key.erase(delPos);
+                    cur->value.erase(delPos);
+                    return true;
+                }
+            }
+            else {
+                Node *ch;
+                //先找到孩子ch以及它的位置
+                Rank chPos = cur->search_upper(Key);
+                if (chPos == -1) {
+                    ch = cur->child.back();
+                    chPos = cur->child.size() - 1;
+                }
+                else {
+                    ch = cur->child[chPos];
+                }
+
+                //往下递归
+                bool flag = erase_node(ch, Key);
+
+                if (!flag) {
+                    return false;
+                }
+                else {
+                    if (ch->isLeaf) {
+                        if (ch->key.size() >= (leaf_max + 1) / 2) {
+                            return true;
+                        }
+                        else {
+                            Node *sbl;
+                            Rank sblPos;
+                            Rank keyPos;
+                            Node *leftNode, *rightNode;
+
+                            if (chPos == 0) {
+                                sbl = cur->child[1];
+                                sblPos = 1;
+                            }
+                            else {
+                                sbl = cur->child[chPos - 1];
+                                sblPos = chPos - 1;
                             }
 
-                            n2->key.erase(0);
-                            n2->value.erase(0);
+                            keyPos = std::min(chPos, sblPos);
+
+                            // 合并叶子节点
+                            if (ch->key.size() + sbl->key.size() <= leaf_max) {
+                                if (chPos < sblPos) {
+                                    leftNode = ch;
+                                    rightNode = sbl;
+                                }
+                                else {
+                                    leftNode = sbl;
+                                    rightNode = ch;
+                                }
+
+                                leftNode->next = rightNode->next;
+
+                                for (Rank i = 0; i < rightNode->key.size(); ++i) {
+                                    leftNode->key.push_back(rightNode->key[i]);
+                                    leftNode->value.push_back(rightNode->value[i]);
+                                }
+
+                                cur->key.erase(keyPos);
+                                cur->child.erase(keyPos + 1);
+
+                                delete rightNode;
+
+                                return true;
+                            }
+                            //不合并就借，这里好像也没有问题
+                            else {
+                                if (sblPos < chPos) {
+                                    key_t borrow_key = sbl->key.back();
+                                    value_t borrow_value = sbl->value.back();
+
+                                    sbl->key.pop_back();
+                                    sbl->value.pop_back();
+
+                                    ch->key.insert(0, borrow_key);
+                                    ch->value.insert(0, borrow_value);
+
+                                    cur->key[keyPos] = ch->key[0];
+
+                                    return true;
+                                }
+                                else {
+                                    key_t borrow_key = sbl->key.front();
+                                    value_t borrow_value = sbl->value.front();
+
+                                    sbl->key.erase(0);
+                                    sbl->value.erase(0);
+
+                                    ch->key.push_back(borrow_key);
+                                    ch->value.push_back(borrow_value);
+
+                                    cur->key[keyPos] = sbl->key[0];
+
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                        //ch is nonleaf
+                    else {
+                        if (ch->child.size() >= (nonleaf_max + 1) / 2) {
+                            return true;
+                        }
+                        else {
+                            Node *sbl;
+                            Rank sblPos;
+                            Rank keyPos;
+                            Node *leftNode, *rightNode;
+
+                            if (chPos == 0) {
+                                sbl = cur->child[1];
+                                sblPos = 1;
+                            } else {
+                                sbl = cur->child[chPos - 1];
+                                sblPos = chPos - 1;
+                            }
+
+                            keyPos = std::min(chPos, sblPos);
+
+                            //合并内部节点,没毛病啊
+                            if (ch->child.size() + sbl->child.size() <= nonleaf_max) {
+                                if (chPos < sblPos) {
+                                    leftNode = ch;
+                                    rightNode = sbl;
+                                }
+                                else {
+                                    leftNode = sbl;
+                                    rightNode = ch;
+                                }
+
+                                leftNode->key.push_back(cur->key[keyPos]);
+                                for (Rank i = 0; i < rightNode->key.size(); ++i)
+                                    leftNode->key.push_back(rightNode->key[i]);
+                                for (Rank i = 0; i < rightNode->child.size(); ++i)
+                                    leftNode->child.push_back(rightNode->child[i]);
+
+
+                                cur->key.erase(keyPos);
+                                cur->child.erase(keyPos + 1);
+
+                                delete rightNode;
+
+                                return true;
+                            }
+                                //borrow from sibling
+                            else {
+                                if (sblPos < chPos) {
+                                    key_t borrow_key = sbl->key.back();
+                                    Node *borrow_child = sbl->child.back();
+
+                                    sbl->key.pop_back();
+                                    sbl->child.pop_back();
+
+                                    ch->key.insert(0, cur->key[keyPos]);
+                                    ch->child.insert(0, borrow_child);
+
+                                    cur->key[keyPos] = borrow_key;
+
+                                    return true;
+                                }
+                                else {
+                                    key_t borrow_key = sbl->key.front();
+                                    Node *borrow_child = sbl->child.front();
+
+                                    sbl->key.erase(0);
+                                    sbl->child.erase(0);
+
+                                    ch->key.push_back(cur->key[keyPos]);
+                                    ch->child.push_back(borrow_child);
+
+                                    cur->key[keyPos] = borrow_key;
+
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }
@@ -306,14 +415,14 @@ namespace sjtu{
             if (t == NULL)
                 return;
 
-            for (int i = 0; i < t->child.size(); ++i)
+            for (Rank i = 0; i < t->child.size(); ++i)
                 clear(t->child[i]);
 
             delete t;
+            t = NULL;
         }
 
     public:
-
         bptree() {
             root = NULL;
         }
@@ -322,102 +431,134 @@ namespace sjtu{
             clear(root);
         }
 
+        value_t find(const key_t &Key) {
+            Node *t = find_leaf(Key);
+
+            Rank idx = t->search(Key);
+
+            if (idx == -1)
+                return value_t();
+            else
+                return t->value[idx];
+        }
 
         int count(const key_t &Key) {
             Node *t = find_leaf(Key);
-            int idx;
-            for (idx = 0; idx < t->key.size(); ++idx) {
-                if (Key == t->key[idx])
-                    break;
-            }
-            if (idx != t->key.size()) {
-                return 1;
-            }
-            else {
+
+            Rank idx = t->search(Key);
+
+            if (idx == -1)
                 return 0;
-            }
+            else
+                return 1;
         }
 
-        value_t find(const key_t &Key) {
+        bool modify(const key_t &Key, const value_t &Value) {
             Node *t = find_leaf(Key);
-            //now t is a leaf node
-            int idx;
-            for (idx = 0; idx < t->key.size(); ++idx) {
-                if (Key == t->key[idx])
-                    break;
-            }
-            if (idx != t->key.size()) {
-                return t->value[idx];
-            }
+
+            Rank idx = t->search(Key);
+
+            if (idx == -1)
+                return false;
             else {
-                //return default if not found
-                return value_t();
+                t->value[idx] = Value;
+                return true;
             }
         }
 
-        void insert(const key_t &Key, const value_t &Value) {
-            Node *lf;
+        bool insert(const key_t &Key, const value_t &Value) {
             if (root == NULL) {
                 root = new Node();
-                lf = root;
+
+                root->key.push_back(Key);
+                root->value.push_back(Value);
+
+                return true;
+            }
+
+            bool flag = insert_node(root, Key, Value);
+
+            if (!flag) {
+                return false;
             }
             else {
-                lf = find_leaf(Key);
-            }
+                if (root->isLeaf) {
+                    if (root->key.size() > leaf_max) {
+                        Node *newLeaf = new Node();
+                        Node *newRoot = new Node(false);
 
-            //lf is a leaf Node
-            if (lf->key.size() < blockSize - 1) {
-                insert_in_leaf(lf, Key, Value);
-            }
-            else {
-                /* Leaf has n − 1 key values already, split it */
-                Node *lf2 = new Node();
-                Node *tmp = new Node();
+                        split_leaf(root, newLeaf);
+                        newLeaf->next = root->next;
+                        root->next = newLeaf;
 
-                for (int i = 0; i < lf->key.size(); ++i) {
-                    tmp->key.push_back(lf->key[i]);
-                    tmp->value.push_back(lf->value[i]);
+                        newRoot->key.push_back(newLeaf->key[0]);
+                        newRoot->child.push_back(root);
+                        newRoot->child.push_back(newLeaf);
+                        root = newRoot;
+
+                        return true;
+                    }
+                    else {
+                        return true;
+                    }
                 }
-                insert_in_leaf(tmp, Key, Value);
+                else {
+                    if (root->child.size() > nonleaf_max) {
+                        Node *newInner = new Node(false);
+                        Node *newRoot = new Node(false);
 
-                lf2->next = lf->next;
-                lf->next = lf2;
+                        key_t midKey;
 
-//                Erase L.P1 through L.Kn−1 from L
-//                Copy T.P1 through T.K⌈n/2⌉ from T into L starting at L.P1 Copy T.P⌈n/2⌉+1 through T.Kn from T into L′ starting at L′.P1 Let K′ be the smallest key-value in L′
-//                insert in parent(L, K′, L′)
-                lf->key.clear();
-                lf->value.clear();
+                        midKey = split_nonleaf(root, newInner);
 
-                for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
-                    lf->key.push_back(tmp->key[i]);
-                    lf->value.push_back(tmp->value[i]);
+                        newRoot->key.push_back(midKey);
+                        newRoot->child.push_back(root);
+                        newRoot->child.push_back(newInner);
+                        root = newRoot;
+
+                        return true;
+                    }
+                    else {
+                        return true;
+                    }
                 }
-
-                for (int i = (blockSize + 1) / 2; i <= blockSize - 1; ++i) {
-                    lf2->key.push_back(tmp->key[i]);
-                    lf2->value.push_back(tmp->value[i]);
-                }
-
-                delete tmp;
-
-                insert_in_parent(lf, lf2->key[0], lf2);
             }
         }
 
-        void erase(const key_t &Key) {
-            Node *lf = find_leaf(Key);
-            erase_entry(lf, Key, NULL);
+        bool erase(const key_t &Key) {
+            if (root == NULL)
+                return false;
+
+            bool flag = erase_node(root, Key);
+
+            if (!flag) {
+                return false;
+            }
+            else {
+                if (root->isLeaf) {
+                    if (root->key.size() == 0) {
+                        ;
+                    }
+                }
+                else {
+                    if (root->child.size() == 1) {
+                        Node *tmp = root;
+                        root = root->child[0];
+                        delete tmp;
+                    }
+                }
+                return true;
+            }
         }
 
         class iterator {
             friend class bptree;
         private:
             Node *ptr;
-            int idx;
+            Rank idx;
 
         public:
-            iterator(Node *p = NULL, int i = 0) : ptr(p), idx(i) {}
+            iterator(Node *p = NULL, Rank i = 0) : ptr(p), idx(i) {}
 
             iterator(const iterator &other) : ptr(other.ptr), idx(other.idx) {}
 
@@ -458,7 +599,7 @@ namespace sjtu{
 
         iterator lower_bound(const key_t &Key) {
             Node *tmp = find_leaf(Key);
-            int idx;
+            Rank idx;
             for (idx = 0; idx < tmp->key.size(); ++idx) {
                 if (tmp->key[idx] >= Key)
                     break;
