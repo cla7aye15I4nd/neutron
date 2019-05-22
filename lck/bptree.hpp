@@ -411,7 +411,7 @@ namespace sjtu{
             }
         }
 
-        void clear(Node *t) {
+        void clear(const Node *t) {
             if (t == NULL)
                 return;
 
@@ -419,7 +419,6 @@ namespace sjtu{
                 clear(t->child[i]);
 
             delete t;
-            t = NULL;
         }
 
     public:
@@ -429,6 +428,12 @@ namespace sjtu{
 
         ~bptree() {
             clear(root);
+            root = NULL;
+        }
+
+        void init() {
+            clear(root);
+            root = NULL;
         }
 
         value_t find(const key_t &Key) {

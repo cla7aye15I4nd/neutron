@@ -46,6 +46,9 @@ class bptree {
 * 修改
 
 	`bool modify(const key_t &Key, const value_t &Value)`
+	
+* 初始化
+	`void init()`
 
 ## 3、关于iterator的操作
 

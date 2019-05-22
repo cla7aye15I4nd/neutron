@@ -14,7 +14,7 @@ sjtu::bptree<int, int> tree;
 std::map<int, int> mp;
 std::vector<int> v1;
 std::vector<int> v2;
-const int n = 200000;
+const int n = 100000;
 
 long long aa = 13131, bb = 5353, MOD = (long long) (1e9 + 7), now = 1;
 
@@ -48,6 +48,17 @@ void test_insert_random() {
         tree.insert(v1[i], v2[i]);
         mp[v1[i]] = v2[i];
     }
+
+//    for (int i = 1; i <= n / 2; ++i) {
+//        tree.insert(v1[i], v2[i]);
+//        mp[v1[i]] = v2[i];
+//    }
+//    tree.init();
+//    for (int i = n / 2 + 1; i <= n; ++i) {
+//        tree.insert(v1[i], v2[i]);
+//        mp[v1[i]] = v2[i];
+//    }
+
     puts("Test insert passed!");
 }
 
@@ -145,9 +156,26 @@ void test2() {
     puts("Random test over");
 }
 
+
+void test_clear() {
+    puts("Test: clear");
+    for (int i = 1; i <= n; ++i) {
+        tree.insert(i, -i);
+    }
+    tree.init();
+    puts("init");
+    for (int i = n + 1; i < 2 * n; ++i) {
+//        cout << i << endl;
+        tree.insert(i, -i);
+    }
+
+    puts("test clear pass");
+}
+
 int main() {
 //    test1();
 
     test2();
-    tree.view_root();
+
+//    test_clear();
 }
