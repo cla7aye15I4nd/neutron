@@ -2,7 +2,7 @@
 #include <cstring>
 #include <cstdio>
 #include <map>
-#include "BTree.hpp"
+#include "bptree.hpp"
 #include <vector>
 
 using std::cin;
@@ -34,6 +34,7 @@ void make_vector() {
 void test_insert() {
     puts("Test: insert");
     for (int i = 0; i <= n; ++i) {
+        cout << i << endl;
         tree.insert(i, -i);
     }
 

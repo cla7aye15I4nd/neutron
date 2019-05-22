@@ -103,8 +103,6 @@ namespace sjtu{
                 newRoot->child.push_back(n2);
                 root = newRoot;
                 root->isLeaf = false;
-                n->parent = root;
-                n2->parent = root;
                 return;
             }
 
@@ -121,7 +119,7 @@ namespace sjtu{
             }
             else {
                 /* Split P */
-                Node *tmp = new Node;
+                Node *tmp = new Node(false);
                 for (int i = 0; i < blockSize - 1; ++i) {
                     tmp->key.push_back(p->key[i]);
                     tmp->child.push_back(p->child[i]);
@@ -133,7 +131,7 @@ namespace sjtu{
 
                 p->key.clear();
                 p->child.clear();
-                Node *p2 = new Node();
+                Node *p2 = new Node(false);
 
                 for (int i = 0; i <= (blockSize + 1) / 2 - 1; ++i) {
                     p->key.push_back(tmp->key[i]);
@@ -141,11 +139,12 @@ namespace sjtu{
                 }
                 key_t k2 = tmp->key[(blockSize + 1) / 2];
                 for (int i = (blockSize + 1) / 2 + 1; i <= blockSize; ++i) {
-                    p->key.push_back(tmp->key[i]);
-                    p->child.push_back(tmp->child[i]);
+                    p2->key.push_back(tmp->key[i]);
+                    p2->child.push_back(tmp->child[i]);
                 }
                 delete tmp;
 
+                //k2上升至parent
                 insert_in_parent(p, k2, p2);
             }
 

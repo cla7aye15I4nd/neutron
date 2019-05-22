@@ -111,7 +111,6 @@ void test_iterator_random() {
     it = tree.lower_bound(v1[1000]);
 
     while (it.check()) {
-        cout << it.retKey() << ':' << it.retValue() << endl;
         if (mp[it.retKey()] != it.retValue()) {
             puts("iterator error!");
             return;

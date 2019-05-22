@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/lck/Desktop/neutron/lck/BTree.hpp
+/Users/lck/Desktop/neutron/lck/bptree.hpp
 iostream
 -
 cstdio
@@ -39,8 +39,8 @@ cstdio
 -
 map
 -
-BTree.hpp
-/Users/lck/Desktop/neutron/lck/BTree.hpp
+bptree.hpp
+/Users/lck/Desktop/neutron/lck/bptree.hpp
 vector
 -
 

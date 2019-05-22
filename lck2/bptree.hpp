@@ -127,6 +127,7 @@ namespace sjtu{
             lf->value.update_size(mid);
         }
 
+        //pass
         bool insert_in_leaf(Node *cur, const key_t &Key, const value_t &Value) {
             Rank idx = cur->search_upper(Key);
 
@@ -153,12 +154,14 @@ namespace sjtu{
 
         }
 
+        //我去到底哪里写错了，insert写的非常有道理啊
         bool insert_node(Node *cur, const key_t &Key, const value_t &Value) {
             if (cur->isLeaf) {
                 bool flag = insert_in_leaf(cur, Key, Value);
                 return flag;
             }
             else {
+                //先找到孩子ch和它的位置
                 Node *ch;
                 Rank chPos = cur->search_upper(Key);
                 if (chPos == -1) {
@@ -169,6 +172,7 @@ namespace sjtu{
                     ch = cur->child[chPos];
                 }
 
+                //往下递归
                 bool flag = insert_node(ch, Key, Value);
 
                 if (!flag) {
@@ -212,6 +216,7 @@ namespace sjtu{
             }
         }
 
+        //
         bool erase_node(Node *cur, const key_t &Key) {
             if (cur->isLeaf) {
                 Rank delPos = cur->search(Key);
@@ -227,6 +232,7 @@ namespace sjtu{
             }
             else {
                 Node *ch;
+                //先找到孩子ch以及它的位置
                 Rank chPos = cur->search_upper(Key);
                 if (chPos == -1) {
                     ch = cur->child.back();
@@ -236,6 +242,7 @@ namespace sjtu{
                     ch = cur->child[chPos];
                 }
 
+                //往下递归
                 bool flag = erase_node(ch, Key);
 
                 if (!flag) {
@@ -261,8 +268,9 @@ namespace sjtu{
                                 sblPos = chPos - 1;
                             }
 
-                            keyPos = std::max(chPos, sblPos) - 1;
+                            keyPos = std::min(chPos, sblPos);
 
+                            // 合并叶子节点
                             if (ch->key.size() + sbl->key.size() <= leaf_max) {
                                 if (chPos < sblPos) {
                                     leftNode = ch;
@@ -287,6 +295,7 @@ namespace sjtu{
 
                                 return true;
                             }
+                            //不合并就借，这里好像也没有问题
                             else {
                                 if (sblPos < chPos) {
                                     key_t borrow_key = sbl->key.back();
@@ -338,9 +347,10 @@ namespace sjtu{
                                 sblPos = chPos - 1;
                             }
 
-                            keyPos = std::max(chPos, sblPos) - 1;
+                            keyPos = std::min(chPos, sblPos);
 
-                            if (ch->child.size() + sbl->key.size() <= nonleaf_max) {
+                            //合并内部节点,没毛病啊
+                            if (ch->child.size() + sbl->child.size() <= nonleaf_max) {
                                 if (chPos < sblPos) {
                                     leftNode = ch;
                                     rightNode = sbl;
@@ -387,7 +397,7 @@ namespace sjtu{
                                     sbl->key.erase(0);
                                     sbl->child.erase(0);
 
-                                    ch->key.push_back(borrow_key);
+                                    ch->key.push_back(cur->key[keyPos]);
                                     ch->child.push_back(borrow_child);
 
                                     cur->key[keyPos] = borrow_key;
@@ -409,6 +419,7 @@ namespace sjtu{
                 clear(t->child[i]);
 
             delete t;
+            t = NULL;
         }
 
     public:
@@ -510,7 +521,6 @@ namespace sjtu{
                         Node *tmp = root;
                         root = root->child[0];
                         delete tmp;
-                        root->next = NULL;
                     }
                 }
                 return true;

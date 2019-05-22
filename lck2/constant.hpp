@@ -5,6 +5,6 @@ namespace sjtu {
     typedef short Rank;
     typedef int offset;
 
-    const int blockSize = 4;
+    const int blockSize = 8;
 }
 #endif //LCK_CONSTANT_HPP
