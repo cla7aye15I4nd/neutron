@@ -21,9 +21,6 @@
     <ClInclude Include="exceptions.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BTree.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="user.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -39,9 +36,6 @@
     <ClInclude Include="train.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ticket.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="bitManager.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -51,7 +45,13 @@
     <ClInclude Include="str.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="parser.h">
+    <ClInclude Include="constant.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="alloc.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="bptree.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 
 #include <string>
 #include "tools.h"
-#include "BTree.hpp"
+#include "bptree.hpp"
 #include "hash.hpp"
 #include "str.hpp"
 

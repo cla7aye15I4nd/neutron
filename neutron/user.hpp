@@ -4,7 +4,7 @@
 
 #include <string>
 #include "tools.h"
-#include "BTree.hpp"
+#include "bptree.hpp"
 using namespace sjtu;
 
 class user {
@@ -29,7 +29,7 @@ public:
 	}
 	~user() {
 		file = fopen("userFile", "wb");
-		// fwrite(&used, sizeof(int), 1, file);
+		//fwrite(&used, sizeof(int), 1, file);
 		fclose(file);
 	}
 	int reg() {
@@ -73,7 +73,7 @@ public:
 	}
 	void clear() {
 		used = 2018;
-		//TODO BÊ÷Ò»¼üÉ¾³ý
+		tree.init();
 	}
 };
 

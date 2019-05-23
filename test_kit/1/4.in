@@ -1,0 +1,5 @@
+register 小紫帽 xiaozimao zi@mao.com 110
+modify_privilege 2019 2019 1
+modify_privilege 2019 2020 2
+clean
+exit

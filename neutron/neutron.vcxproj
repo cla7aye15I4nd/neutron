@@ -115,9 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="alloc.hpp" />
     <ClInclude Include="bitManager.hpp" />
     <ClInclude Include="bitset.hpp" />
-    <ClInclude Include="BTree.hpp" />
+    <ClInclude Include="bptree.hpp" />
+    <ClInclude Include="constant.hpp" />
     <ClInclude Include="exceptions.hpp" />
     <ClInclude Include="hash.hpp" />
     <ClInclude Include="myVector.hpp" />
