@@ -28,7 +28,10 @@ public:
 	~train() {}
 	bool add() {
 		scanf("%s", trainID.ch);
-		if (hashT.count(trainID)) return 0;
+		if (hashT.count(trainID)) {
+			trainData(trainID);
+			return 0;
+		}
 		hashT.insert(trainID);
 		trainInfo.insert(hashT[trainID], trainData(trainID));
 		return 1;
@@ -43,9 +46,11 @@ public:
 		trainInfo.erase(h);
 		trainInfo.insert(h, t);
 		t.update(h);
+		return 1;
 	}
 	void qry() {
 		scanf("%s", trainID.ch);
+		if (!hashT.count(trainID) || !trainInfo.count(hashT[trainID])) { printf("0\n"); return; }
 		trainInfo.find(hashT[trainID]).print();
 	}
 	int del() {

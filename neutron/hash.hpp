@@ -3,6 +3,8 @@
 
 #include "tools.h"
 
+extern bool debug;
+
 template <int id>
 class hash {
 	const int P[2] = { 30011, 60013 };
@@ -13,33 +15,41 @@ class hash {
 public:
 	int used = 0;
 	hash() {
-		file = fopen(STR[id], "rb");
-		if (file == nullptr) {
-			file = fopen(STR[id], "wb");
-			fclose(file);
+		if (!debug) {
+			file = fopen(STR[id], "rb");
+			if (file == nullptr) {
+				file = fopen(STR[id], "wb");
+				fclose(file);
+				memset(nameToNum, -1, sizeof(nameToNum));
+				used = 0;
+			}
+			else {
+				file = fopen(STR[id], "rb");
+				fread(&used, sizeof(int), 1, file);
+				fread(nameToNum, sizeof(int), P[id], file);
+				fread(numToName, sizeof(str<20>), P[id], file);
+				fclose(file);
+			}
+		}
+		else {
 			memset(nameToNum, -1, sizeof(nameToNum));
 			used = 0;
 		}
-		else {
-			file = fopen(STR[id], "rb");
-			fread(&used, sizeof(int), 1, file);
-			fread(nameToNum, sizeof(int), P[id], file);
-			fread(numToName, sizeof(str<20>), P[id], file);
-			fclose(file);
-		}
 	}
 	~hash() {
-		file = fopen(STR[id], "wb");
-		fwrite(&used, sizeof(int), 1, file);
-		fwrite(nameToNum, sizeof(int), P[id], file);
-		fwrite(numToName, sizeof(str<20>), P[id], file);
-		fclose(file);
+		if (!debug) {
+			file = fopen(STR[id], "wb");
+			fwrite(&used, sizeof(int), 1, file);
+			fwrite(nameToNum, sizeof(int), P[id], file);
+			fwrite(numToName, sizeof(str<20>), P[id], file);
+			fclose(file);
+		}
 	}
 	int calc(str<20> &s) {
 		int ret = 0;
 		for (int i = 0; s[i] != '\0'; i++)
 			ret = (ret * 127 + s[i] - '0') % P[id];
-		return ret;
+		return (ret + P[id]) % P[id];
 	}
 	bool count(str<20> &s) {
 		int p = calc(s);
@@ -51,7 +61,7 @@ public:
 	}
 	void insert(str<20> &s) {
 		int p = calc(s);
-		while (nameToNum[p] == -1)
+		while (nameToNum[p] != -1)
 			if (++p == P[id]) p = 0;
 		numToName[used] = s;
 		nameToNum[p] = used++;
@@ -67,12 +77,9 @@ public:
 	str<20> operator [] (int k) {
 		return numToName[k];
 	}
-	std::string list() {
-		//change to streamstream?
-		std::string ret;
+	void list() {
 		for (int i = 0; i < used; i++)
-			ret = ret + numToName[i].toString();
-		return ret;
+			printf("%s\n", numToName[i].ch);
 	}
 	void clear() {
 		memset(nameToNum, -1, sizeof(nameToNum));

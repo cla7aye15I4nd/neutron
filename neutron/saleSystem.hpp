@@ -6,6 +6,14 @@
 #include "hash.hpp"
 #include "bitManager.hpp"
 
+bool isLinux = false;
+bool debug = true;
+hash<0> hashC;
+hash<1> hashT;
+bitManager bitMgr;
+int bridgeN = 0;
+ticketData bridge[100];
+
 class saleSystem {
 	static const int orderN = 17;
 	const std::string string_orders[orderN] = { 
@@ -50,6 +58,8 @@ public:
 					printf("1\n");
 					User.clear();
 					Train.clear();
+					hashT.clear();
+					hashC.clear();
 					break;
 				case 16:
 					printf("BYE\n");

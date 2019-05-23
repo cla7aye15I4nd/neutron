@@ -16,21 +16,25 @@ class user {
 	bptree<int, userData> tree;
 public:
 	user() {
-		file = fopen("userFile", "rb");
-		if (file == nullptr) {
-			file = fopen("userFile", "wb");
-			fclose(file);
-		}
-		else {
+		if (!debug) {
 			file = fopen("userFile", "rb");
-			fread(&used, sizeof(int), 1, file);
-			fclose(file);
+			if (file == nullptr) {
+				file = fopen("userFile", "wb");
+				fclose(file);
+			}
+			else {
+				file = fopen("userFile", "rb");
+				fread(&used, sizeof(int), 1, file);
+				fclose(file);
+			}
 		}
 	}
 	~user() {
-		file = fopen("userFile", "wb");
-		//fwrite(&used, sizeof(int), 1, file);
-		fclose(file);
+		if (!debug) {
+			file = fopen("userFile", "wb");
+			fwrite(&used, sizeof(int), 1, file);
+			fclose(file);
+		}
 	}
 	int reg() {
 		used++;

@@ -1,4 +1,6 @@
 #include "tools.h"
+
+extern bool isLinux;
 extern int bridgeN;
 extern ticketData bridge[100];
 
@@ -82,24 +84,34 @@ str<5> trainData::timeForm(int time) {
 }*/
 trainData::trainData() {}
 trainData::trainData(str<20> _trainID) :trainID(_trainID), saled(0) {
-	scanf("%s%s%d%d", name, catalog, &numStation, &numPrice);
+	scanf("%s%s%d%d", name.ch, catalog.ch, &numStation, &numPrice);
+	printf("%s\n", name.ch);
 	for (int i = 0; i < numPrice; i++)
 		scanf("%s", priceName[i].ch);
 	double sum[5], t;
+	char bin[50];
 	memset(sum, 0, sizeof(sum));
 	for (int i = 0; i < numStation; i++) {
 		scanf("%s", loc.ch);
+		if (!hashC.count(loc)) hashC.insert(loc);
 		stop[i].loc = hashC[loc];
 		for (int j = 0; j < 3; j++) {
 			scanf("%s", time.ch);
 			stop[i].t[j] = timeParser(time);
 			stop[i].t_s[j] = time;
 		}
-		for (int j = 0; i < numPrice; i++) {
-			scanf("гд%lf", &t);
+		char c = getchar();
+		for (int j = 0; j < numPrice; j++) {
+			while (c == ' ') c = getchar();
+			if (!isLinux) {
+				c = getchar();
+				c = getchar();
+			}
+			scanf("%lf", &t);
 			sum[j] += t;
 			stop[i].sumPrice[j] = sum[j];
 		}
+		scanf("%s", bin);
 	}
 }
 trainData::~trainData() {}
@@ -112,12 +124,12 @@ bool trainData::order(int start, int end) {
 void trainData::print() {
 	printf("%s %s %s %d %d", trainID.ch, name.ch, catalog.ch, numStation, numPrice);
 	for (int i = 0; i < numPrice; i++)
-		printf(" %d", priceName[i]);
+		printf(u8" %s", priceName[i].ch);
 	printf("\n");
 	for (int i = 0; i < numStation; i++) {
 		printf("%s", hashC[stop[i].loc]);
 		for (int j = 0; j < 3; j++)
-			printf(" %s", stop[i].t_s[j]);
+			printf(" %s", stop[i].t_s[j].ch);
 		printf(" гд%.1f", stop[i].sumPrice[0]);
 		for (int j = 1; j < numPrice; j++)
 			printf(" гд%.1f", stop[i].sumPrice[j] - stop[i].sumPrice[j - 1]);
