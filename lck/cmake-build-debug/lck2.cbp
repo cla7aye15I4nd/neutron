@@ -80,6 +80,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/lck/Desktop/neutron/lck/alloc.hpp">
+			<Option target="lck2"/>
+		</Unit>
 		<Unit filename="/Users/lck/Desktop/neutron/lck/code.cpp">
 			<Option target="lck2"/>
 		</Unit>

@@ -7,6 +7,8 @@
 #include "myVector.hpp"
 #include "exceptions.hpp"
 #include "constant.hpp"
+#include "alloc.hpp"
+
 using std::cout;
 using std::cin;
 using std::endl;
