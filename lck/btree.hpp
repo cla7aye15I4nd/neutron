@@ -153,7 +153,7 @@ namespace sjtu{
         }
 
         offset *InnerChild(char *b, Rank n) {
-            return (offset *n)(b + sizeof(offset) * n + sizeof(key_t) * n);
+            return (offset)(b + sizeof(offset) * n + sizeof(key_t) * n);
         }
 
         key_t *LeafKey(char *b, Rank n) {

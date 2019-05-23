@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/Users/lck/Desktop/neutron/lck/alloc.hpp
+bptree.hpp
+/Users/lck/Desktop/neutron/lck/bptree.hpp
+constant.hpp
+/Users/lck/Desktop/neutron/lck/constant.hpp
+node.hpp
+/Users/lck/Desktop/neutron/lck/node.hpp
+
 /Users/lck/Desktop/neutron/lck/bptree.hpp
 iostream
 -
@@ -13,12 +21,14 @@ cstdio
 -
 cstring
 -
-myVector.hpp
-/Users/lck/Desktop/neutron/lck/myVector.hpp
 exceptions.hpp
 /Users/lck/Desktop/neutron/lck/exceptions.hpp
 constant.hpp
 /Users/lck/Desktop/neutron/lck/constant.hpp
+alloc.hpp
+/Users/lck/Desktop/neutron/lck/alloc.hpp
+node.hpp
+/Users/lck/Desktop/neutron/lck/node.hpp
 
 /Users/lck/Desktop/neutron/lck/code.cpp
 iostream
@@ -44,15 +54,9 @@ cstring
 string
 -
 
-/Users/lck/Desktop/neutron/lck/myVector.hpp
-exceptions.hpp
-/Users/lck/Desktop/neutron/lck/exceptions.hpp
+/Users/lck/Desktop/neutron/lck/node.hpp
+bptree.hpp
+/Users/lck/Desktop/neutron/lck/bptree.hpp
 constant.hpp
 /Users/lck/Desktop/neutron/lck/constant.hpp
-climits
--
-cstddef
--
-iostream
--
 

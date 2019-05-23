@@ -4,8 +4,9 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include "myVector.hpp"
 #include "exceptions.hpp"
+#include "constant.hpp"
+#include "alloc.hpp"
 #include "node.hpp"
 
 using std::cout;
@@ -19,133 +20,176 @@ namespace sjtu{
         friend class iterator;
         typedef node<key_t, value_t> Node;
 
+        char filename[50];
+
         Rank leaf_max;
         Rank nonleaf_max;
 
-    public:
-        Node *root;
+        file_alloc alloc;
+
+        Node pool[50];
+        short cnt;
 
     private:
 
-        Node *find_leaf(const key_t &Key) {
-            Node *t = root;
-            while (!t->isLeaf) {
-                Rank idx;
-                for (idx = 0; idx < t->key.size(); ++idx) {
-                    if (Key < t->key[idx])
-                        break;
-                }
-                t = t->child[idx];
+        void find_leaf(const key_t &Key, Node &ret) {
+            alloc.get_root(ret);
+
+            while (!ret.isLeaf) {
+                find_child(Key, ret, ret);
             }
 
-            return t;
         }
 
-        key_t split_nonleaf(Node *n, Node *n2) {
+        Rank find_child(const key_t &Key, Node &cur, Node &ch) {
+            Rank idx = cur.search_upper_inner(Key);
+
+            if (idx == -1) {
+                alloc.get_block(cur.child(cur.childSize - 1), ch);
+                return cur.childSize - 1;
+            }
+            else {
+                alloc.get_block(cur.child(idx), ch);
+                return idx;
+            }
+        }
+
+        key_t split_nonleaf(Node &n, Node &n2) {
             Rank mid = (nonleaf_max + 1) / 2;
 
-            key_t midKey = n->key[mid - 1];
+            key_t midKey = *(n.keyInner(mid - 1));
 
-            n2->key.copy(n->key, mid, n->key.size());
-            n2->child.copy(n->child, mid, n->child.size());
+            for (Rank i = mid; i < n.keySize; ++i) {
+                *(n2.keyInner(i - mid)) = *(n.keyInner(i));
+                *(n2.child(i - mid)) = *(n.child(i));
+            }
+            *(n2.child(n.keySize - mid)) = *(n.child(n.keySize));
 
-            n->key.update_size(mid - 1);
-            n->child.update_size(mid);
+            n2.keySize = n.keySize - mid;
+            n.keySize = mid - 1;
+            n2.childSize = n2.keySize + 1;
+            n.childSize = n.keySize + 1;
 
             return midKey;
         }
 
-        void split_leaf(Node *lf, Node *lf2) {
+        void split_leaf(Node &lf, Node &lf2) {
             Rank mid = (leaf_max + 1) / 2;
 
-            lf2->key.copy(lf->key, mid, lf->key.size());
-            lf2->value.copy(lf->value, mid, lf->value.size());
+            for (Rank i = mid; i < lf.keySize; ++i) {
+                *(lf2.keyLeaf(i - mid)) = *(lf.keyLeaf(i));
+                *(lf2.value(i - mid)) = *(lf.value(i));
+            }
 
-            lf->key.update_size(mid);
-            lf->value.update_size(mid);
+            lf2.keySize = lf.keySize - mid;
+            lf.keySize = mid;
         }
 
         //pass
-        bool insert_in_leaf(Node *cur, const key_t &Key, const value_t &Value) {
-            Rank idx = cur->search_upper(Key);
+        bool insert_in_leaf(Node &cur, const key_t &Key, const value_t &Value) {
+            Rank idx = cur.search_upper_leaf(Key);
 
-            //has existed
             if (idx == -1) {
-                if (cur->key[cur->key.size() - 1] == Key)
+                if (*(cur.keyLeaf(cur.keySize - 1)) == Key)
                     return false;
             }
             else {
-                if (idx != 0 && cur->key[idx - 1] == Key)
+                if (idx != 0 && *(cur.keyLeaf(cur.keySize - 1)) == Key)
                     return false;
             }
 
             if (idx == -1) {
-                cur->key.push_back(Key);
-                cur->value.push_back(Value);
+                cur.insert_key_leaf(cur.keySize, Key);
+                cur.insert_value(cur.keySize, Value);
+                cur.keySize++;
+
                 return true;
             }
             else {
-                cur->key.insert(idx, Key);
-                cur->value.insert(idx, Value);
+                cur.insert_key_leaf(idx, Key);
+                cur.insert_value(idx, Value);
+                cur.keySize++;
+
                 return true;
             }
-
         }
 
         //我去到底哪里写错了，insert写的非常有道理啊
-        bool insert_node(Node *cur, const key_t &Key, const value_t &Value) {
-            if (cur->isLeaf) {
+        bool insert_node(Node &cur, const key_t &Key, const value_t &Value) {
+            if (cur.isLeaf) {
                 bool flag = insert_in_leaf(cur, Key, Value);
                 return flag;
             }
+            //curent node is inner node
             else {
                 //先找到孩子ch和它的位置
-                Node *ch;
-                Rank chPos = cur->search_upper(Key);
-                if (chPos == -1) {
-                    ch = cur->child.back();
-                    chPos = cur->child.size() - 1;
-                }
-                else {
-                    ch = cur->child[chPos];
-                }
+                Node &ch = pool[cnt++];
+                ch.init();
+
+                Rank chPos = find_child(Key, cur, ch);
 
                 //往下递归
                 bool flag = insert_node(ch, Key, Value);
 
                 if (!flag) {
+                    cnt--;
+
                     return false;
                 }
                 else {
-                    if (ch->isLeaf) {
-                        if (ch->key.size() <= leaf_max) {
+                    if (ch.isLeaf) {
+                        if (ch.keySize <= leaf_max) {
+                            alloc.write_block(ch);
+                            cnt--;
+
                             return true;
                         }
                         else {
-                            Node *newLeaf = new Node();
-                            newLeaf->next = ch->next;
-                            ch->next = newLeaf;
+                            Node &newLeaf = pool[cnt++];
+                            newLeaf.init();
+                            alloc.append_block(newLeaf, true);
+
+                            newLeaf.next = ch.next;
+                            ch.next = newLeaf;
 
                             split_leaf(ch, newLeaf);
 
-                            cur->key.insert(chPos, newLeaf->key[0]);
-                            cur->child.insert(chPos + 1, newLeaf);
+                            cur.insert_key_inner(chPos, *(newLeaf.keyInner(0)));
+                            cur.insert_child(chPos + 1, newLeaf.addr);
+                            cur.keySize++;
+                            cur.childSize++;
+
+                            alloc.write_block(ch);
+                            alloc.write_block(newLeaf);
+                            cnt -= 2;
 
                             return true;
                         }
                     }
                     else {
-                        if (ch->child.size() <= nonleaf_max) {
+                        if (ch.childSize <= nonleaf_max) {
+                            alloc.write_block(ch);
+                            cnt--;
+
                             return true;
                         }
                         else {
                             key_t midKey;
-                            Node *newInner = new Node(false);
+                            Node &newInner = pool[cnt++];
+                            newInner.init();
+                            alloc.append_block(newInner, false);
 
                             midKey = split_nonleaf(ch, newInner);
 
-                            cur->key.insert(chPos, midKey);
-                            cur->child.insert(chPos + 1, newInner);
+                            cur.insert_key_inner(chPos, midKey);
+                            cur.insert_child(chPos + 1, newInner.addr);
+                            cur.keySize++;
+                            cur.childSize++;
+
+                            alloc.write_block(ch);
+                            alloc.write_block(newInner);
+
+                            cnt -= 2;
 
                             return true;
                         }
@@ -155,190 +199,240 @@ namespace sjtu{
         }
 
         //
-        bool erase_node(Node *cur, const key_t &Key) {
-            if (cur->isLeaf) {
-                Rank delPos = cur->search(Key);
+        bool erase_node(Node &cur, const key_t &Key) {
+            if (cur.isLeaf) {
+                Rank delPos = cur.search_leaf(Key);
 
-                if (delPos == -1) {
+                if (delPos == -1)
                     return false;
-                }
                 else {
-                    cur->key.erase(delPos);
-                    cur->value.erase(delPos);
+                    cur.erase_key_leaf(delPos);
+                    cur.erase_value(delPos);
+                    cur.keySize--;
+
                     return true;
                 }
             }
             else {
-                Node *ch;
+                Node &ch = pool[cnt++];
+                ch.init();
                 //先找到孩子ch以及它的位置
-                Rank chPos = cur->search_upper(Key);
-                if (chPos == -1) {
-                    ch = cur->child.back();
-                    chPos = cur->child.size() - 1;
-                }
-                else {
-                    ch = cur->child[chPos];
-                }
+                Rank chPos = find_child(Key, cur, ch);
 
-                //往下递归
                 bool flag = erase_node(ch, Key);
 
                 if (!flag) {
+                    cnt--;
                     return false;
                 }
                 else {
-                    if (ch->isLeaf) {
-                        if (ch->key.size() >= (leaf_max + 1) / 2) {
+                    if (ch.isLeaf) {
+                        if (ch.keySize >= (leaf_max + 1) / 2) {
+                            alloc.write_block(ch);
+                            cnt--;
+
                             return true;
                         }
                         else {
-                            Node *sbl;
+                            Node &sbl = pool[cnt++];
+                            sbl.init();
+
                             Rank sblPos;
                             Rank keyPos;
+
                             Node *leftNode, *rightNode;
 
                             if (chPos == 0) {
-                                sbl = cur->child[1];
                                 sblPos = 1;
+                                alloc.get_block(*(cur.child(sblPos)), sbl);
                             }
                             else {
-                                sbl = cur->child[chPos - 1];
                                 sblPos = chPos - 1;
+                                alloc.get_block(*(cur.child(sblPos)), sbl);
                             }
 
-                            keyPos = std::min(chPos, sblPos);
+                            keyPos = std:;min(chPos, sblPos);
 
                             // 合并叶子节点
-                            if (ch->key.size() + sbl->key.size() <= leaf_max) {
+                            if (ch.keySize + sbl.keySize <= leaf_max) {
                                 if (chPos < sblPos) {
-                                    leftNode = ch;
-                                    rightNode = sbl;
+                                    leftNode = &ch;
+                                    rightNode = &sbl;
                                 }
                                 else {
-                                    leftNode = sbl;
-                                    rightNode = ch;
+                                    leftNode = &sbl;
+                                    rightNode = &ch;
                                 }
 
                                 leftNode->next = rightNode->next;
 
-                                for (Rank i = 0; i < rightNode->key.size(); ++i) {
-                                    leftNode->key.push_back(rightNode->key[i]);
-                                    leftNode->value.push_back(rightNode->value[i]);
+                                for (Rank i = 0; i < rightNode->keySize; ++i) {
+                                    leftNode->insert_key_leaf(leftNode->keySize + i, *(rightNode->keyLeaf(i)));
+                                    leftNode->insert_value(leftNode->keySize + i, *(rightNode->value(i)));
                                 }
+                                leftNode->keySize += rightNode->keySize;
 
-                                cur->key.erase(keyPos);
-                                cur->child.erase(keyPos + 1);
+                                cur.erase_key_inner(keyPos);
+                                cur.erase_child(keyPos + 1);
+                                cur.keySize--;
+                                cur.childSize--;
 
-                                delete rightNode;
+                                rightNode->next = alloc.trash_off;
+                                alloc.trash_off = rightNode->addr;
+
+                                alloc.write_block(*leftNode);
+                                alloc.write_block(*rightNode);
+                                cnt -= 2;
 
                                 return true;
                             }
-                            //不合并就借，这里好像也没有问题
                             else {
                                 if (sblPos < chPos) {
-                                    key_t borrow_key = sbl->key.back();
-                                    value_t borrow_value = sbl->value.back();
+                                    key_t borrow_key = sbl.keyLeaf(sbl.keySize - 1);
+                                    value_t borrow_value = sbl.value(sbl.keySize - 1);
 
-                                    sbl->key.pop_back();
-                                    sbl->value.pop_back();
+                                    sbl.erase_key_leaf(sbl.keySize - 1);
+                                    sbl.erase_value(sbl.keySize - 1);
+                                    sbl.keySize--;
 
-                                    ch->key.insert(0, borrow_key);
-                                    ch->value.insert(0, borrow_value);
+                                    ch.insert_key_leaf(0, borrow_key);
+                                    ch.insert_value(0, borrow_value);
+                                    ch.keySize--;
 
-                                    cur->key[keyPos] = ch->key[0];
+                                    *(cur.keyInner(keyPos)) = *(ch.keyLeaf(0));
+
+                                    alloc.write_block(ch);
+                                    alloc.write_block(sbl);
+                                    cnt -= 2;
 
                                     return true;
                                 }
                                 else {
-                                    key_t borrow_key = sbl->key.front();
-                                    value_t borrow_value = sbl->value.front();
+                                    key_t borrow_key = sbl.keyLeaf(0);
+                                    value_t borrow_value = sbl.value(0);
 
-                                    sbl->key.erase(0);
-                                    sbl->value.erase(0);
+                                    sbl.erase_key_leaf(0);
+                                    sbl.erase_value(0);
 
-                                    ch->key.push_back(borrow_key);
-                                    ch->value.push_back(borrow_value);
+                                    ch.insert_key_leaf(ch.keySize, borrow_key);
+                                    ch.insert_value(ch.keySize, borrow_value);
+                                    ch.keySize++;
 
-                                    cur->key[keyPos] = sbl->key[0];
+                                    *(cur.keyLeaf(keyPos)) = *(sbl.keyLeaf(0));
+
+                                    alloc.write_block(ch);
+                                    alloc.write_block(sbl);
+                                    cnt -= 2;
 
                                     return true;
                                 }
                             }
                         }
                     }
-                        //ch is nonleaf
+                    //child is inner node
                     else {
-                        if (ch->child.size() >= (nonleaf_max + 1) / 2) {
+                        if (ch.childSize >= (nonleaf_max + 1) / 2) {
+                            alloc.write_block(ch);
+                            cnt--;
+
                             return true;
                         }
                         else {
-                            Node *sbl;
+                            Node &sbl = pool[cnt++];
+                            sbl.init();
+
                             Rank sblPos;
                             Rank keyPos;
+
                             Node *leftNode, *rightNode;
 
                             if (chPos == 0) {
-                                sbl = cur->child[1];
                                 sblPos = 1;
-                            } else {
-                                sbl = cur->child[chPos - 1];
+                                alloc.get_block(*(cur.child(sblPos)), sbl);
+                            }
+                            else {
                                 sblPos = chPos - 1;
+                                alloc.get_block(*(cur.child(sblPos)), sbl);
                             }
 
-                            keyPos = std::min(chPos, sblPos);
+                            keyPos = std:;min(chPos, sblPos);
 
-                            //合并内部节点,没毛病啊
-                            if (ch->child.size() + sbl->child.size() <= nonleaf_max) {
+                            //合并内部节点
+                            if (ch.childSize + sbl.childSize <= nonleaf_max) {
                                 if (chPos < sblPos) {
-                                    leftNode = ch;
-                                    rightNode = sbl;
+                                    leftNode = &ch;
+                                    rightNode = &sbl;
                                 }
                                 else {
-                                    leftNode = sbl;
-                                    rightNode = ch;
+                                    leftNode = &sbl;
+                                    rightNode = &ch;
                                 }
 
-                                leftNode->key.push_back(cur->key[keyPos]);
-                                for (Rank i = 0; i < rightNode->key.size(); ++i)
-                                    leftNode->key.push_back(rightNode->key[i]);
-                                for (Rank i = 0; i < rightNode->child.size(); ++i)
-                                    leftNode->child.push_back(rightNode->child[i]);
+                                leftNode->insert_key_inner(leftNode->keySize, *(cur.keyInner(keyPos)));
+                                for (Rank i = 0; i < rightNode->keySize; ++i)
+                                    leftNode->insert_key_inner(leftNode->keySize + 1 + i, *(rightNode->keyInner(i)));
+                                for (Rank i = 0; i < rightNode->keySize; ++i)
+                                    leftNode->insert_child(leftNode->keySize + i, *(rightNode->child(i)));
+                                leftNode->keySize += 1 + rightNode->keySize;
+                                leftNode->childSize = leftNode->keySize + 1;
 
+                                cur.erase_key_inner(keyPos);
+                                cur.erase_child(keyPos + 1);
+                                cur.keySize--;
+                                cur.childSize--;
 
-                                cur->key.erase(keyPos);
-                                cur->child.erase(keyPos + 1);
+                                rightNode->next = alloc.trash_off;
+                                alloc.trash_off = rightNode->addr;
 
-                                delete rightNode;
+                                alloc.write_block(*leftNode);
+                                alloc.write_block(*rightNode);
+                                cnt -= 2;
 
                                 return true;
                             }
-                                //borrow from sibling
+                            //borrow from sibling
                             else {
                                 if (sblPos < chPos) {
-                                    key_t borrow_key = sbl->key.back();
-                                    Node *borrow_child = sbl->child.back();
+                                    key_t borrow_key = *(sbl.keyInner(sbl.keySize - 1));
+                                    offset borrow_child = *(sbl.child(sbl.keySize));
 
-                                    sbl->key.pop_back();
-                                    sbl->child.pop_back();
+                                    sbl.erase_key_inner(sbl.keySize - 1);
+                                    sbl.erase_child(sbl.childSize - 1);
+                                    sbl.keySize--;
+                                    sbl.childSize--;
 
-                                    ch->key.insert(0, cur->key[keyPos]);
-                                    ch->child.insert(0, borrow_child);
+                                    ch.insert_key_inner(0, *(cur.keyInner(keyPos)));
+                                    ch.insert_child(0, borrow_child);
+                                    ch.keySize++;
+                                    ch.childSize++;
 
-                                    cur->key[keyPos] = borrow_key;
+                                    *(cur.keyInner(keyPos)) = borrow_key;
+
+                                    alloc.write_block(ch);
+                                    alloc.write_block(sbl);
+                                    cnt -= 2;
 
                                     return true;
                                 }
                                 else {
-                                    key_t borrow_key = sbl->key.front();
-                                    Node *borrow_child = sbl->child.front();
+                                    key_t borrow_key = *(sbl.keyInner(0));
+                                    offset borrow_child = *(sbl.child(0));
 
-                                    sbl->key.erase(0);
-                                    sbl->child.erase(0);
+                                    sbl.erase_key_inner(0);
+                                    sbl.erase_child(0);
+                                    sbl.keySize--;
+                                    sbl.childSize--;
 
-                                    ch->key.push_back(cur->key[keyPos]);
-                                    ch->child.push_back(borrow_child);
+                                    ch.insert_key_inner(*(cur.keyInner(keyPos)));
+                                    ch.insert_child(borrow_child);
+                                    ch.keySize++;
+                                    ch.childSize++;
 
-                                    cur->key[keyPos] = borrow_key;
+                                    *(cur.keyInner(keyPos)) = borrow_key;
+
+                                    alloc.write_block(ch);
+                                    alloc.write_block(sbl);
+                                    cnt -= 2;
 
                                     return true;
                                 }
@@ -349,47 +443,52 @@ namespace sjtu{
             }
         }
 
-        void clear(const Node *t) {
-            if (t == NULL)
-                return;
-
-            for (Rank i = 0; i < t->child.size(); ++i)
-                clear(t->child[i]);
-
-            delete t;
-        }
 
     public:
         bptree() {
-            root = NULL;
+            cnt = 0;
+            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t));
+            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset));
         }
 
         ~bptree() {
-            clear(root);
-            root = NULL;
+            alloc.close_file();
         }
 
+        void set_filename(const char *fname) {
+            strcpy(filename, fname);
+            alloc.set_filename(filename);
+        }
+
+        void open_file() {
+            alloc.open_file();
+        }
+
+        //todo
         void init() {
-            clear(root);
-            root = NULL;
+
         }
 
         value_t find(const key_t &Key) {
-            Node *t = find_leaf(Key);
+            Node &t = pool[cnt++];
+            find_leaf(Key, t);
 
-            Rank idx = t->search(Key);
+            Rank idx = t.search_leaf(Key);
 
+            cnt--;
             if (idx == -1)
                 return value_t();
             else
-                return t->value[idx];
+                return *(t.keyLeaf(idx));
         }
 
         int count(const key_t &Key) {
-            Node *t = find_leaf(Key);
+            Node &t = pool[cnt++];
+            find_leaf(Key, t);
 
-            Rank idx = t->search(Key);
+            Rank idx = t.search_leaf(Key);
 
+            cnt--;
             if (idx == -1)
                 return 0;
             else
@@ -397,71 +496,108 @@ namespace sjtu{
         }
 
         bool modify(const key_t &Key, const value_t &Value) {
-            Node *t = find_leaf(Key);
+            Node &t = pool[cnt++];
+            find_leaf(Key, t);
 
-            Rank idx = t->search(Key);
+            Rank idx = t.search_leaf(Key);
 
             if (idx == -1)
                 return false;
             else {
-                t->value[idx] = Value;
+                *(t.value(idx)) = Value;
                 return true;
             }
         }
 
         bool insert(const key_t &Key, const value_t &Value) {
-            if (root == NULL) {
-                root = new Node();
+            Node &root = pool[cnt++];
 
-                root->key.push_back(Key);
-                root->value.push_back(Value);
+            if (alloc.root_off == invalid_off) {
+                alloc.append_block(root, true);
+
+                root.insert_key_leaf(Key);
+                root.insert_value(Value);
+                root.keySize++;
+
+                alloc.root_off = root.addr;
+
+                alloc.write_block(root);
+                cnt--;
 
                 return true;
             }
 
+            alloc.get_root(root);
             bool flag = insert_node(root, Key, Value);
 
             if (!flag) {
+                cnt--;
                 return false;
             }
             else {
-                if (root->isLeaf) {
-                    if (root->key.size() > leaf_max) {
-                        Node *newLeaf = new Node();
-                        Node *newRoot = new Node(false);
+                if (root.isLeaf) {
+                    if (root.keySize > leaf_max) {
+                        Node &newLeaf = pool[cnt++];
+                        alloc.append_block(newLeaf, true);
 
                         split_leaf(root, newLeaf);
-                        newLeaf->next = root->next;
-                        root->next = newLeaf;
+                        newLeaf.next = root.next;
+                        root.next = newLeaf.addr;
 
-                        newRoot->key.push_back(newLeaf->key[0]);
-                        newRoot->child.push_back(root);
-                        newRoot->child.push_back(newLeaf);
-                        root = newRoot;
+                        Node &newRoot = pool[cnt++];
+                        alloc.append_block(newRoot, false);
+
+                        newRoot.insert_key_inner(0, *(newLeaf.keyLeaf(0)));
+                        newRoot.insert_child(0, root.addr);
+                        newRoot.insert_child(1, newLeaf.addr);
+                        newRoot.keySize = 1;
+                        newRoot.childSize = 2;
+                        alloc.root_off = newRoot.addr;
+
+                        alloc.write_block(newRoot);
+                        alloc.write_block(root);
+                        alloc.write_block(newLeaf);
+                        cnt -= 3;
 
                         return true;
                     }
                     else {
+                        alloc.write_block(root);
+                        cnt--;
+
                         return true;
                     }
                 }
                 else {
-                    if (root->child.size() > nonleaf_max) {
-                        Node *newInner = new Node(false);
-                        Node *newRoot = new Node(false);
+                    if (root.childSize > nonleaf_max) {
+                        Node &newInner = pool[cnt++];
+                        alloc.append_block(newInner, false);
 
-                        key_t midKey;
+                        split_nonleaf(root, newInner);
 
-                        midKey = split_nonleaf(root, newInner);
+                        Node &newRoot = pool[cnt++];
+                        alloc.append_block(newRoot, false);
 
-                        newRoot->key.push_back(midKey);
-                        newRoot->child.push_back(root);
-                        newRoot->child.push_back(newInner);
-                        root = newRoot;
+                        key_t midKey = split_nonleaf(root, newInner);
+
+                        newRoot.insert_key_inner(0, midKey);
+                        newRoot.insert_child(0, root);
+                        newRoot.insert_child(1, newInner);
+                        newRoot.keySize = 1;
+                        newRoot.childSize = 2;
+                        alloc.root_off = newRoot.addr;
+
+                        alloc.write_block(newRoot);
+                        alloc.write_block(root);
+                        alloc.write_block(newInner);
+                        cnt -= 3;
 
                         return true;
                     }
                     else {
+                        alloc.write_block(root);
+                        cnt--;
+
                         return true;
                     }
                 }
@@ -469,41 +605,69 @@ namespace sjtu{
         }
 
         bool erase(const key_t &Key) {
-            if (root == NULL)
-                return false;
+            Node &root = pool[cnt++];
 
+            if (alloc.root_off == invalid_off) {
+                cnt--;
+                return false;
+            }
+
+            alloc.get_root(root);
             bool flag = erase_node(root, Key);
 
             if (!flag) {
+                cnt--;
                 return false;
             }
             else {
-                if (root->isLeaf) {
-                    if (root->key.size() == 0) {
-                        ;
+                if (root.isLeaf) {
+                    if (root.keySize == 0) {
+                        root.next = alloc.trash_off;
+                        alloc.trash_off = root.addr;
+                        alloc.root_off = invalid_off;
+
+                        alloc.write_block(root);
+                        cnt--;
+
+                        return true;
+                    }
+                    else {
+                        alloc.write_block(root);
+                        cnt--;
+                        return true;
                     }
                 }
                 else {
-                    if (root->child.size() == 1) {
-                        Node *tmp = root;
-                        root = root->child[0];
-                        delete tmp;
+                    if (root.childSize == 1) {
+                        alloc.root_off = *(root.child(0));
+
+                        root.next = alloc.trash_off;
+                        alloc.trash_off = root.addr;
+
+                        alloc.write_block(root);
+                        cnt--;
+
+                        return true;
+                    }
+                    else {
+                        alloc.write_block(root);
+                        cnt--;
+                        return true;
                     }
                 }
-                return true;
             }
         }
 
         class iterator {
             friend class bptree;
         private:
-            Node *ptr;
+            offset addr;
             Rank idx;
 
         public:
-            iterator(Node *p = NULL, Rank i = 0) : ptr(p), idx(i) {}
+            iterator(offset addr = invalid_off, Rank idx = 0) : addr(addr), idx(idx) {}
 
-            iterator(const iterator &other) : ptr(other.ptr), idx(other.idx) {}
+            iterator(const iterator &other) : addr(other.addr), idx(other.idx) {}
 
             iterator operator++(int) {
                 iterator ret = *this;
@@ -513,46 +677,69 @@ namespace sjtu{
             }
 
             iterator & operator++() {
-                if (idx == ptr->key.size() - 1) {
-                    ptr = ptr->next;
+                Node &t = pool[cnt++];
+                alloc.get_block(addr, t);
+
+                if (idx == t.keySize - 1) {
+                    addr = t.next;
                     idx = 0;
                 }
                 else {
-                    ++idx;
+                    idx++;
                 }
+                cnt--;
 
                 return *this;
             }
 
             bool check() {
-                if (ptr == NULL)
+                if (addr == invalid_off)
                     return false;
                 else
                     return true;
             }
 
             key_t retKey() {
-                return ptr->key[idx];
+                Node &t = pool[cnt++];
+                alloc.get_block(addr, t);
+
+                key_t k = *(t.keyLeaf(idx));
+                cnt--;
+                return k;
             }
 
             value_t retValue() {
-                return ptr->value[idx];
+                Node &t = pool[cnt++];
+                alloc.get_block(addr, t);
+
+                value_t v = *(t.value(idx));
+                cnt--;
+                return v;
             }
         };
 
         iterator lower_bound(const key_t &Key) {
-            Node *tmp = find_leaf(Key);
+            Node &tmp = pool[cnt++];
+            find_leaf(Key, tmp);
+
             Rank idx;
-            for (idx = 0; idx < tmp->key.size(); ++idx) {
-                if (tmp->key[idx] >= Key)
+            for (idx = 0; idx < tmp.keySize; ++idx) {
+                if (*(tmp.keyLeaf(idx) >= Key))
                     break;
             }
-            if (idx == tmp->key.size()) {
-                tmp = tmp->next;
+
+            offset retaddr;
+            if (idx == tmp.keySize) {
+                retaddr = tmp.next;
                 idx = 0;
             }
+            else {
+                retaddr = tmp.addr;
+            }
 
-            iterator ret(tmp, idx);
+            cnt--;
+
+            iterator ret(retaddr, idx);
             return ret;
         }
 
