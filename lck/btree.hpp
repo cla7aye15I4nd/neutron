@@ -6,7 +6,8 @@
 #include <cstring>
 #include "myVector.hpp"
 #include "exceptions.hpp"
-#include "node.hpp"
+#include "constant.hpp"
+#include "alloc.hpp"
 
 using std::cout;
 using std::cin;
@@ -17,15 +18,188 @@ namespace sjtu{
     template <class key_t, class value_t>
     class bptree {
         friend class iterator;
-        typedef node<key_t, value_t> Node;
+    private:
+        typedef char buffer_t [blockSize];
+        typedef char * buffer_p;
 
-        Rank leaf_max;
-        Rank nonleaf_max;
+        char *filename;
+        char *indexfile;
+        FILE *file;
+        file_alloc alloc;
+
+
+        const Rank leaf_max;
+        const Rank nonleaf_max;
+
+        struct Node {
+            offset addr;
+            offset next;
+
+            bool isLeaf;
+            int _size;
+
+
+            Node(offset add, bool is_leaf = true) {
+                isLeaf = is_leaf;
+                addr = add;
+                next = invalid_off;
+                _size = 0;
+            }
+
+            ~Node() {
+
+            }
+
+            void view() {
+                cout << "Nodesize = " << key.size() << endl;
+                if (isLeaf) {
+                    for (Rank i = 0; i < key.size(); ++i) {
+                        cout << key[i] << ":" << value[i] << ' ';
+                    }
+                    puts("");
+                }
+                else {
+                    for (Rank i = 0; i < key.size(); ++i) {
+                        cout << key[i] << ' ';
+                    }
+                    puts("");
+                }
+            }
+
+            Rank search(const key_t &Key) {
+                Rank idx;
+                for (idx = 0; idx < key.size(); ++idx) {
+                    if (key[idx] == Key)
+                        break;
+                }
+
+                if (idx == key.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
+                }
+            }
+
+            Rank search_upper(const key_t &Key) {
+                Rank idx;
+                for (idx = 0; idx < key.size(); ++idx) {
+                    if (key[idx] > Key)
+                        break;
+                }
+
+                if (idx == key.size()) {
+                    return -1;
+                }
+                else {
+                    return idx;
+                }
+            }
+        };
+
+        inline void file_reopen() {
+            if (file)
+                fflush(file);
+        }
+
+        inline void move_to_data(const Node &p) {
+            fseek(file, p.addr + sizeof(Node), SEEK_SET);
+        }
+
+        inline void load_inner(char *b, Node p) {
+            move_to_data(p);
+
+            if (p._size == 0)
+                return;
+
+            fread(b, 1, sizeof(offset) * (p._size + 1) + sizeof(key_t) * p._size, file);
+            file_reopen();
+        }
+
+        inline void load_leaf(char *b, Node p) {
+            move_to_data(p);
+
+            if (p._size == 0)
+                return;
+
+            fread(b, 1, sizeof(value_t) * p._size + sizeof(key_t) * p._size, file);
+        }
+
+        inline void save_inner(char *b, Node p) {
+            move_to_data(p);
+            fwrite(b, 1, sizeof(offset) * (p._size + 1) + sizeof(key_t) * p._size, file);
+            file_reopen();
+        }
+
+        inline void save_leaf(char *b, Node p) {
+            move_to_data(p);
+            fwrite(b, 1, sizeof(value_t) * p._size + sizeof(key_t) * p._size, file);
+            file_reopen();
+        }
+
+        inline void save_node(const Node &p) {
+            fseek(file, p.addr, SEEK_SET);
+            fwrite(&p, sizeof(Node), 1, file);
+            file_reopen();
+        }
+
+        inline void free_node(const Node &p) {
+            alloc.free(p.addr, blockSize);
+            save_index();
+        }
+
+        key_t *InnerKey(char *b, Rank n) {
+            return (key_t *)(b + sizeof(offset) * (n + 1) + sizeof(key_t) * n);
+        }
+
+        offset *InnerChild(char *b, Rank n) {
+            return (offset *n)(b + sizeof(offset) * n + sizeof(key_t) * n);
+        }
+
+        key_t *LeafKey(char *b, Rank n) {
+            return (key_t *)(b + sizeof(value_t) * (n + 1) + sizeof(key_t) * n);
+        }
+
+        value_t *LeafValue(char *b, Rank n) {
+            return (value_t *)(b + sizeof(value_t) * n + sizeof(key_t) * n);
+        }
+
+        Node read_node(offset off) {
+            Node ret;
+
+            fseek(file, off, SEEK_SET);
+            fread(&ret, sizeof(Node), 1, file);
+
+            return ret;
+        }
+
+        inline offset new_node() {
+            save_index();
+            return alloc.alloc(blockSize);
+        }
+
+        inline Node new_inner() {
+            offset off = new_node();
+            return Node(off, false);
+        }
+
+        inline Node new_leaf() {
+            offset off = new_node();
+            return Node(off, true);
+        }
+
 
     public:
-        Node *root;
+        offset root;
 
     private:
+        inline void load_index() {
+            alloc.load(indexfile);
+        }
+
+        inline void save_index() {
+            alloc.dump(indexfile);
+        }
 
         Node *find_leaf(const key_t &Key) {
             Node *t = root;
@@ -233,7 +407,7 @@ namespace sjtu{
 
                                 return true;
                             }
-                            //不合并就借，这里好像也没有问题
+                                //不合并就借，这里好像也没有问题
                             else {
                                 if (sblPos < chPos) {
                                     key_t borrow_key = sbl->key.back();
