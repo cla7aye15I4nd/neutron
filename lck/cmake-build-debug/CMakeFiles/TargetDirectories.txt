@@ -1,3 +1,0 @@
-/Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/lck/Desktop/neutron/lck/cmake-build-debug/CMakeFiles/lck2.dir
