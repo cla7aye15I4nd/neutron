@@ -107,3 +107,6 @@ venv.bak/
 test/
 .vscode
 ext/template/bin.html
+
+#java
+.class

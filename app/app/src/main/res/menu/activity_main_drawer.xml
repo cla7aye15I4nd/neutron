@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_index"
+            android:icon="@drawable/ic_bookmark_black"
+            android:title="@string/text_menu_index" />
+
+        <item
+            android:id="@+id/nav_booking"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/text_menu_booking" />
+
+        <item
+            android:id="@+id/nav_ticket"
+            android:icon="@drawable/ic_add_circle_outline_black"
+            android:title="@string/text_menu_ticket" />
+
+        <item
+            android:id="@+id/nav_theme"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/text_menu_theme" />
+
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings_black"
+            android:title="@string/text_menu_setting" />
+    </group>
+
+</menu>

@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>activity_main.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #bababa;}
+.s2 { color: #6a8759;}
+.s3 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+activity_main.xml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version=</span><span class="s2">&quot;1.0&quot; </span><span class="s1">encoding=</span><span class="s2">&quot;utf-8&quot;</span><span class="s0">?&gt;</span>
+&lt;android.support.v4.widget.DrawerLayout <span class="s1">xmlns:android=</span><span class="s2">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="s1">xmlns:app=</span><span class="s2">&quot;http://schemas.android.com/apk/res-auto&quot;</span>
+    <span class="s1">xmlns:tools=</span><span class="s2">&quot;http://schemas.android.com/tools&quot;</span>
+    <span class="s1">android:id=</span><span class="s2">&quot;@+id/drawer_layout&quot;</span>
+    <span class="s1">android:layout_width=</span><span class="s2">&quot;match_parent&quot;</span>
+    <span class="s1">android:layout_height=</span><span class="s2">&quot;match_parent&quot;</span>
+    <span class="s1">android:fitsSystemWindows=</span><span class="s2">&quot;true&quot;</span>
+    <span class="s1">tools:openDrawer=</span><span class="s2">&quot;start&quot;</span><span class="s0">&gt;</span>
+
+    &lt;include
+        <span class="s1">layout=</span><span class="s2">&quot;@layout/app_bar_main&quot;</span>
+        <span class="s1">android:layout_width=</span><span class="s2">&quot;match_parent&quot;</span>
+        <span class="s1">android:layout_height=</span><span class="s2">&quot;match_parent&quot; </span><span class="s0">/&gt;</span>
+
+    &lt;android.support.design.widget.NavigationView
+        <span class="s1">android:id=</span><span class="s2">&quot;@+id/nav_view&quot;</span>
+        <span class="s1">android:layout_width=</span><span class="s2">&quot;wrap_content&quot;</span>
+        <span class="s1">android:layout_height=</span><span class="s2">&quot;match_parent&quot;</span>
+        <span class="s1">android:layout_gravity=</span><span class="s2">&quot;start&quot;</span>
+        <span class="s1">android:fitsSystemWindows=</span><span class="s2">&quot;true&quot;</span>
+        <span class="s1">app:headerLayout=</span><span class="s2">&quot;@layout/nav_header_main&quot;</span>
+        <span class="s1">app:menu=</span><span class="s2">&quot;@menu/activity_main_drawer&quot; </span><span class="s0">/&gt;</span>
+
+&lt;/android.support.v4.widget.DrawerLayout&gt;
+</pre>
+</body>
+</html>
