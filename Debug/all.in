@@ -1,14 +1,28 @@
-register С��ñ xiaohongmao xiaohongmao@mao.com 12332123212
-login 2019 xiaohongmao
-login 2019 xiaolvmao
-login 2020 xiaohongmao
-query_profile 2019
-query_profile 2020
-modify_profile 2019 С��ñ xiaohuangmao huang@mao.com 54749110
-modify_profile 2021 С��ñ xiaohuangmao huang@mao.com 54749110
-query_profile 2019
-register С��ñ xiaozimao zi@mao.com 110
-modify_privilege 2019 2019 1
-modify_privilege 2019 2020 2
-clean
+add_train 11000C100102 C1001(长春-延吉西) C 4 2 硬卧 软卧
+长春 xx:xx 05:47 xx:xx ￥0.0 ￥0.0
+吉林 06:27 06:29 00:02 ￥478.97 ￥980.89
+敦化 07:23 07:25 00:02 ￥911.62 ￥2748.9
+延吉西 08:04 08:04 xx:xx ￥1454.54 ￥2489.5
+add_train 1c000C100205 C1002(延吉西-长春) C 5 2 软座 软卧
+延吉西 xx:xx 06:07 xx:xx ￥0.0 ￥0.0
+安图西 06:26 06:28 00:02 ￥2068.36 ￥1165.01
+敦化 06:51 06:53 00:02 ￥1083.65 ￥1084.7
+吉林 07:48 07:50 00:02 ￥654.75 ￥547.94
+长春 08:30 08:30 xx:xx ￥3335.63 ￥1620.16
+sale_train 11000C100102
+sale_train 11000C100102
+query_train 11000C100102
+exit
+query_train 1c000C100205
+modify_train 11000C100102 我是火车王 G 2 1 大师座
+北京 xx:xx 08:00 00:00 ￥0.0
+夏威夷 08:02 xx:xx 00:00 ￥1.5
+modify_train 1c000C100205 我是火车王 G 2 1 大师座
+北京 xx:xx 08:00 00:00 ￥0.0
+夏威夷 08:02 xx:xx 00:00 ￥1.5
+query_train 1c000C100205
+delete_train 1c000C100205
+modify_train 1c000C100205 我是火车王 G 2 1 大师座
+北京 xx:xx 08:00 00:00 ￥0.0
+夏威夷 08:02 xx:xx 00:00 ￥1.5
 exit

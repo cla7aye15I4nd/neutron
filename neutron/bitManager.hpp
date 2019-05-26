@@ -6,36 +6,38 @@
 #include "hash.hpp"
 
 extern bool debug;
-extern hash<0> hashC;
-extern hash<1> hashT;
+extern const int cityP;
+extern hashCity hashC;
+extern hashTrain hashT;
 
 class bitManager {
-	bitset b[30011];
+	bitset b[2750];
 	FILE *file;
 public:
-	bitManager() {
-		if (!debug) {
-			file = fopen("cityBitset", "rb");
-			if (file == nullptr) {
-				file = fopen("cityBitset", "wb");
-				fclose(file);
-			}
-			else {
-				file = fopen("cityBitset", "rb");
-				fread(b, sizeof(bitset), 3000, file);
-				fclose(file);
-			}
-		}
-	}
-	~bitManager() {
-		if (!debug) {
-			file = fopen("cityBitset", "wb");
-			fwrite(b, sizeof(bitset), 3000, file);
-			fclose(file);
-		}
-	}
+    bitManager() {
+        if (!debug) {
+            file = fopen("cityBitset", "rb");
+            if (file == nullptr) {
+                file = fopen("cityBitset", "wb");
+                fclose(file);
+            }
+            else {
+                file = fopen("cityBitset", "rb");
+                fread(b, sizeof(bitset), 2750, file);
+                fclose(file);
+            }
+        }
+    }
+    ~bitManager() {
+        if (!debug) {
+            file = fopen("cityBitset", "wb");
+            fwrite(b, sizeof(bitset), 2750, file);
+            fclose(file);
+        }
+    }
 	//add a newLine to a city
 	void add(int city, int newLine) {
+	    fprintf(stderr, "City %d has added a new line %d\n", city, newLine);
 		b[city].to1(newLine);
 	}
 	//return bitset of train-intersection between two cities

@@ -6,14 +6,6 @@
 #include "hash.hpp"
 #include "bitManager.hpp"
 
-bool isLinux = false;
-bool debug = true;
-hash<0> hashC;
-hash<1> hashT;
-bitManager bitMgr;
-int bridgeN = 0;
-ticketData bridge[100];
-
 class saleSystem {
 	static const int orderN = 17;
 	const std::string string_orders[orderN] = { 
@@ -34,7 +26,7 @@ public:
 	void processing() {
 		str<20> order;
 		while (1) {
-			scanf("%s", order.ch);
+			if (scanf("%s", order.ch) == -1) break;
 			int p = 0;
 			while (p < orderN && orders[p] != order) p++;
 			switch (p)
@@ -63,7 +55,8 @@ public:
 					break;
 				case 16:
 					printf("BYE\n");
-					exit(0);
+					//fprintf(stderr, "321489729\n");
+					//exit(0);
 			default:
 				break;
 			}
