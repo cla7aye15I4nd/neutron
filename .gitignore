@@ -110,3 +110,8 @@ ext/template/bin.html
 /.vs
 
 Debug/
+neutron/Debug
+neutron/bin
+all.in
+all.out
+tmp.in
