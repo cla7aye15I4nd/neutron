@@ -108,3 +108,5 @@ test/
 .vscode
 ext/template/bin.html
 /.vs
+
+Debug/
