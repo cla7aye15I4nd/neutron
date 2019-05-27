@@ -8,6 +8,37 @@
 #include "hash.hpp"
 #include "bitManager.hpp"
 
+#ifdef __linux__
+#define getchar getchar_unlocked
+#define putchar putchar_unlocked
+#endif
+
+#define sp() putchar(' ')
+#define ln() putchar('\n')
+
+template<class K> inline void readNumber(K& x) {
+  char c = getchar();
+  for(x = 0; !isdigit(c); c = getchar());
+  for(;isdigit(c); c = getchar())
+    x = x * 10 + c - '0';
+}
+
+template<class K> inline void writeNumber(K x) {
+  static int fout[20], top;
+  do fout[top++] = x % 10, x /= 10; while(x);
+  while(top) putchar(fout[--top] + '0');
+}
+
+inline void readString(char *s) {
+    for (*s = getchar(); isspace(*s); *s = getchar());
+    for (*++s = getchar(); !isspace(*s); *++s = getchar());
+    *s = 0;
+}
+
+inline void putString(char *s) {
+    while (*s) putchar(*s++);
+}
+
 extern bool isLinux;
 extern hashCity hashC;
 extern hashTrain hashT;

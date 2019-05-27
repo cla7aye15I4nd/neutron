@@ -6,6 +6,8 @@
 #define BLOCK4    (14)
 #define BLOCK8    (7)
 
+using u64 = unsigned long long;
+
 void normal_and(u64 *a, u64 *b, u64 *c) {
     for (int i = 0; i < BLOCKSIZE; ++i) {
         *c = *a & *b;
@@ -37,7 +39,6 @@ void fast_and8(u64 *a, u64 *b, u64 *c) {
     }
 }
 
-using u64 = unsigned long long;
 
 class bitset {
     u64 block[BLOCKSIZE];
@@ -49,8 +50,7 @@ public:
     bool operator [] (int k) { return block[k >> 6] & (1ull << (k & 63)); }
     bitset operator & (bitset &other) {
         bitset ret;
-        for (int i = 0; i < B; i++)
-            ret.block[i] = block[i] & other.block[i];
+        fast_and4(block, other.block, ret.block);
         return ret;
     }
 };
