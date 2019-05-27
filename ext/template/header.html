@@ -47,6 +47,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#"> About </a>
                 </li>
+                {% if user != None and user.decode() == "2019" %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/manage"> Manage </a>
+                </li>
+                {% end %}
             </ul>
         </div>
     </div>

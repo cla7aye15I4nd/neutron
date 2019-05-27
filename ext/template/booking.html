@@ -3,15 +3,24 @@
 
 {% block content %}
 
+<script src="../static/js/booking.js"></script>
+<li id="userid" value="{{user}}"></li>
 <div class="container" style="margin-top: 10px">
+    {% raw xsrf_form_html() %}
     <div class="row">
-
         <div class="col-md-3">
             {% include leftbar.html %}
         </div>
         <div class="col-md-9">
             <div class="card card-body text-left" style="background: rgba(255, 255, 255, 0.85)">
                 <h2> My booking </h2>
+
+                <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
+                      rel="stylesheet" type="text/css" media="all">
+
+                <div id="trainlist">
+
+                </div>
             </div>
         </div>
     </div>

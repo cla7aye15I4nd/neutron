@@ -19,7 +19,7 @@
         font-size: 11px;
     }
 </style>
-<div class="container" style="margin-top: 15px;">
+<div class="container" style="margin-top: 15px; background: rgba(255, 255, 255, 0.85);">
     {% raw xsrf_form_html() %}
     <div class="row light-text">
         <div class='col-sm-2'>
@@ -49,7 +49,9 @@
             <div class="form-group">
                 <label> Train type.(optional) </label>
                 <input type='text' class="form-control" name="type" placeholder="Type of train." />
+                <span name="type" style="color :red"></span>
             </div>
+            
         </div>
         <div class='col-sm-1'>
             <button type="button" id="search" value="SHITE" class="btn btn-raised btn-success" style="margin-top:20px">Search</button>
@@ -60,8 +62,8 @@
 
     </div>
 </div>
-
-<div class="jumbotron" style="padding-top : 30px">
+<li id="userid" value="{{user}}"></li>
+<div class="jumbotron" style="background: rgba(255, 255, 255, 0.85); padding-top : 30px">
     <div class="container">
         <div class="row">
             <div class='col-md-3'>
@@ -89,74 +91,14 @@
                 <hr>
             </div>
             <div class='col-md-9'>
-                <link href="//webresource.english.c-ctrip.com/resaresenglish/ibu/ibucommon/stylesheets/global.ce32b2fd.css"
-                      rel="Stylesheet" type="text/css" media="all">
+                
                 <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
                       rel="stylesheet" type="text/css" media="all">
-                <div class="mod-new-result-main">
-                    <div class="mod-week-table">
-                        <ul class="week-list clearfix">
-                            <li class="week-control control-enabled week-prev">
-                                <a href="javascript:;" data-departuredate="04-23-2019">
-                                    <i class="t-icon icon-arrow-left"></i>
-                                </a>
-                            </li>
-
-                            <li class=" near-day ">
-                                <a href="javascript:;" data-departuredate="04-23-2019">
-                                    <span class="date-day">Apr 23</span>
-                                    <span class="week-day">Tue</span>
-                                </a>
-                            </li>
-                            <li class="active  ">
-                                <a href="javascript:;" data-departuredate="04-24-2019">
-                                    <span class="date-day">Apr 24</span>
-                                    <span class="week-day">Wed</span>
-                                    <input type="text" readonly="readonly" value="Apr 24 Wed">
-                                </a>
-                            </li>
-                            <li class=" near-day ">
-                                <a href="javascript:;" data-departuredate="04-25-2019">
-                                    <span class="date-day">Apr 25</span>
-                                    <span class="week-day">Thu</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-26-2019">
-                                    <span class="date-day">Apr 26</span>
-                                    <span class="week-day">Fri</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-27-2019">
-                                    <span class="date-day">Apr 27</span>
-                                    <span class="week-day">Sat</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-28-2019">
-                                    <span class="date-day">Apr 28</span>
-                                    <span class="week-day">Sun</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-29-2019">
-                                    <span class="date-day">Apr 29</span>
-                                    <span class="week-day">Mon</span>
-                                </a>
-                            </li>
-                            <li class="week-control control-enabled week-next">
-                                <a href="javascript:;" data-departuredate="04-23-2019">
-                                    <i class="t-icon icon-arrow-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                
                 <div id="trainlist">
 
-                    
-                    
+
+
                 </div>
 
             </div>
@@ -164,8 +106,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 
