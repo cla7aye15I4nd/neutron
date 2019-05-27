@@ -60,13 +60,13 @@ struct userData {
 
 //store infomation about one stop station
 struct stopInfo {
-	int loc, t[3], left[31][5], sumPrice[5];
-	str<5> t_s[3];
-	stopInfo() {
-		for (int date = 1; date < 31; date++)
-			for (int i = 0; i < 5; i++)
-				left[date][i] = 2000;
-	}
+    int loc, t[3], left[31][5], sumPrice[5];
+    str<5> t_s[3];
+    stopInfo() {
+        for (int date = 1; date < 31; date++)
+            for (int i = 0; i < 5; i++)
+                left[date][i] = 2000;
+    }
 };
 
 //store information about saled tickets
