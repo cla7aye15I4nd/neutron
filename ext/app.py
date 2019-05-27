@@ -7,6 +7,7 @@ import tornado.ioloop
 from tornado.options import define, options
 
 import config
+import admin
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler, VerifyHandler
 from user import ProfileHandler, SettingHandler, AvatarHandler, UploadAvatarHandler
 from query import TrainHandler, TicketHandler, BookingHandler
@@ -37,11 +38,15 @@ def make_app():
         (r'/avatar', AvatarHandler),
         (r'/upload_avatar', UploadAvatarHandler),
         (r'/verify_code', VerifyHandler),
+<<<<<<< HEAD
         (r'/buyticket', TicketHandler),
         (r'/manage', ManageHandler),
         (r".*", BaseHandler)
 
     ], **config.app_settings)
+=======
+    ] + admin.route, **config.app_settings)
+>>>>>>> master
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
