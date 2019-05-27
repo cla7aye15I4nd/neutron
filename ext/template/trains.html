@@ -1,156 +1,108 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block content %}
 
-<script
-    src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
-<link
-    href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css"
-    rel="stylesheet">
+<script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+<link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css"
+      rel="stylesheet">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="//webresource.english.c-ctrip.com/resaresenglish/ibu/ibucommon/stylesheets/global.ce32b2fd.css" rel="Stylesheet" type="text/css" media="all" />
+  <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R5/CSS/v3/trains.css?2019_04_02_15_58_22" rel="stylesheet" type="text/css" media="all" />
+  <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R5/CSS/v3/flight-logo-domastic-28.css?2019_04_02_15_58_22" rel="stylesheet" type="text/css" media="all" />
+</head>
+
 
 <style>
-    .light-text {
-        font-weight: 0;
-        font-size: 11px;
-    }
+  .light-text {
+  font-weight: 0;
+  font-size: 11px;
+  }
 </style>
-<div class="container" style="margin-top: 15px;">
-    <div class="row light-text">
-        <div class='col-sm-2'>
-            <div class="form-group">
-                <label> From </label>
-                <input type='text' class="form-control" name="from" />
-            </div>
-        </div>
-        <div class='col-sm-2'>
-            <div class="form-group">
-                <label> To </label>
-                <input type='text' class="form-control" name="arrival" />
-            </div>
-        </div>
-        <div class='col-sm-2'>
-            <div class="form-group">
-                <label> Depart </label>
-                <div class='input-group date' id='datetimepicker'>
-                    <input type='date' class="form-control" name="date" />
-                </div>
-            </div>
-        </div>
-        <div class='col-sm-2'>
-            <div class="form-group">
-                <label> Train no.(optional) </label>
-                <input type='text' class="form-control" name="arrival" />
-            </div>
-        </div>
-        <div class='col-sm-1'>
-            <button type="button" class="btn btn-raised btn-success" style="margin-top:20px">Search</button>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker').datetimepicker({
-                    format: 'YYYY/MM/DD'
-                }
-                );
-            });
-        </script>
+<div class="container" style="margin-top: 15px; background: rgba(255, 255, 255, 0.85);">
+  {% raw xsrf_form_html() %}
+  <div class="row light-text">
+    <div class='col-md-2'>
+      <div class="form-group">
+        <label> From </label>
+        <input type='text' class="form-control" name="froms" placeholder="Where to start." />
+        <span name="froms" style="color :red"></span>
+      </div>
     </div>
+    <div class='col-md-2'>
+      <div class="form-group">
+        <label> To </label>
+        <input type='text' class="form-control" name="arrival" placeholder="Where to go." />
+        <span name="arrival" style="color :red"></span>
+      </div>
+    </div>
+    <div class='col-sm-2'>
+      <div class="form-group">
+        <label> Depart </label>
+        <div class='input-group date' id='datetimepicker'>
+          <input type='date' class="form-control" name="date" />
+        </div>
+        <span name="date" style="color :red"></span>
+      </div>
+    </div>
+    <div class='col-sm-2'>
+      <div class="form-group">
+        <label> Train type.(optional) </label>
+        <input type='text' class="form-control" name="type" placeholder="Type of train." />
+        <span name="type" style="color :red"></span>
+      </div>
+      
+    </div>
+    <div class='col-sm-1'>
+      <button type="button" id="search" value="SHITE" class="btn btn-raised btn-success" style="margin-top:20px">Search</button>
+      <script src="../static/js/search.js"></script>
+    </div>
+
+
+
+  </div>
+</div>
+<li id="userid" value="{{user}}"></li>
+
+<div class="container" style="background: rgba(255, 255, 255, 0.85); padding-top : 30px">
+  <div class="row">
+    <div class='col-md-12'>
+      <div class="container-fluid">
+        <div class="row">
+          <div class='col-md-3'>
+            <h3 style="margin-bottom: 20px"> Filter </h3>
+            <div style="padding-top: 0px">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="available" id="available" value="1"> Available trains
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="change" id="change" value="2"> Allow to change trains
+                </label>
+              </div>
+              <hr />
+            </div>
+            <h5> Departure Time </h5>
+            <hr />
+            <h5> Arrival Time </h5>
+            <hr />
+            <h5> Departure Station </h5>
+            <hr />
+            <h5> Arrival Station </h5>
+            <hr>
+          </div>
+          <div class='col-md-9'>              
+            <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
+                  rel="stylesheet" type="text/css" media="all">           
+            <div id="trainlist">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="jumbotron" style="padding-top : 30px">
-    <div class="container">
-        <div class="row">
-            <div class='col-md-3'>
-                <h3 style="margin-bottom: 20px"> Filter </h3>
-                <div style="padding-top: 0px">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="save"> Available trains
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="save"> High-speed trains
-                        </label>
-                    </div>
-                    <hr />
-                </div>
-                <h5> Departure Time </h5>
-                <hr />
-                <h5> Arrival Time </h5>
-                <hr />
-                <h5> Departure Station </h5>
-                <hr />
-                <h5> Arrival Station </h5>
-                <hr>
-            </div>
-            <div class='col-md-9'>
-                <link
-                    href="//webresource.english.c-ctrip.com/resaresenglish/ibu/ibucommon/stylesheets/global.ce32b2fd.css"
-                    rel="Stylesheet" type="text/css" media="all">
-                <link
-                    href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
-                    rel="stylesheet" type="text/css" media="all">
-                <div class="mod-new-result-main">
-                    <div class="mod-week-table">
-                        <ul class="week-list clearfix">
-                            <li class="week-control control-enabled week-prev">
-                                <a href="javascript:;" data-departuredate="04-23-2019">
-                                    <i class="t-icon icon-arrow-left"></i>
-                                </a>
-                            </li>
-
-                            <li class=" near-day ">
-                                <a href="javascript:;" data-departuredate="04-23-2019">
-                                    <span class="date-day">Apr 23</span>
-                                    <span class="week-day">Tue</span>
-                                </a>
-                            </li>
-                            <li class="active  ">
-                                <a href="javascript:;" data-departuredate="04-24-2019">
-                                    <span class="date-day">Apr 24</span>
-                                    <span class="week-day">Wed</span>
-                                    <input type="text" readonly="readonly" value="Apr 24 Wed">
-                                </a>
-                            </li>
-                            <li class=" near-day ">
-                                <a href="javascript:;" data-departuredate="04-25-2019">
-                                    <span class="date-day">Apr 25</span>
-                                    <span class="week-day">Thu</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-26-2019">
-                                    <span class="date-day">Apr 26</span>
-                                    <span class="week-day">Fri</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-27-2019">
-                                    <span class="date-day">Apr 27</span>
-                                    <span class="week-day">Sat</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-28-2019">
-                                    <span class="date-day">Apr 28</span>
-                                    <span class="week-day">Sun</span>
-                                </a>
-                            </li>
-                            <li class="  ">
-                                <a href="javascript:;" data-departuredate="04-29-2019">
-                                    <span class="date-day">Apr 29</span>
-                                    <span class="week-day">Mon</span>
-                                </a>
-                            </li>
-                            <li class="week-control control-enabled week-next">
-                                <a href="javascript:;" data-departuredate="04-23-2019">
-                                    <i class="t-icon icon-arrow-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% end %}
+{% end %}

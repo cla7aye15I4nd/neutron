@@ -103,10 +103,3 @@ class UploadAvatarHandler(BaseHandler):
         with open(file, 'wb') as f:
             f.write(meta['body'])
 
-
-class BookingHandler(BaseHandler):
-    @tornado.gen.coroutine
-    @tornado.web.authenticated
-    def get(self):
-        self.render('booking.html', title="my booking", user=self.current_user,
-                    info=UserSystem.queryById(self.current_user.decode()).fetchone())

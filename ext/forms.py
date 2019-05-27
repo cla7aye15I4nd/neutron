@@ -139,3 +139,38 @@ class UpdateForm(Form):
         validators.Required(message='Phone number is required.'),
         PhoneUpdateValidator()
     ])
+
+
+class SearchValidators(object):
+    def __init__(self):
+        self.illegalMessage = 'Containing illegal characters!'
+
+    def __call__(self, form, field):
+        if str(field.data)!="" and not str(field.data).isalnum():
+            raise ValidationError(self.illegalMessage)
+
+class SearchForm(Form):
+    froms = TextField('Departure city', [
+        validators.Required(message='Departure city is required.'),
+        SearchValidators()
+    ])
+    arrival = TextField('Arrival city', [
+        validators.Required(message='Arrival city is required.'),
+        SearchValidators()
+    ])
+    date = TextField('Departure time', [
+        validators.Required(message='Departure time is required.'),
+    ])
+
+    type = TextField('Train type', [
+        SearchValidators()
+    ])
+
+class SearchForm2(Form):
+    
+    search_id = TextField('Search Id', [
+        validators.Required(message='Train Id is required.'),
+        SearchValidators()
+    ])
+    
+    
