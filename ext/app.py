@@ -8,10 +8,14 @@ from tornado.options import define, options
 
 import config
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler, VerifyHandler
-from user import ProfileHandler, SettingHandler, BookingHandler, AvatarHandler, UploadAvatarHandler
-from query import TrainHandler
+from user import ProfileHandler, SettingHandler, AvatarHandler, UploadAvatarHandler
+from query import TrainHandler, TicketHandler, BookingHandler
+from manage import ManageHandler
+from link import link_start
 
 define("port", **config.global_settings)
+
+link_start()
 
 class IndexHandler(BaseHandler):
     @tornado.gen.coroutine
@@ -33,6 +37,8 @@ def make_app():
         (r'/avatar', AvatarHandler),
         (r'/upload_avatar', UploadAvatarHandler),
         (r'/verify_code', VerifyHandler),
+        (r'/buyticket', TicketHandler),
+        (r'/manage', ManageHandler),
         (r".*", BaseHandler)
 
     ], **config.app_settings)
