@@ -1,0 +1,32 @@
+﻿{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="../static/css/dist/bootstrap-clockpicker.min.css">
+<link rel="stylesheet" type="text/css" href="../static/css/assets/css/github.min.css">
+
+
+<div class="container">
+    <div class="form-group">
+        <h4>Default: </h4>
+        <div class="input-group clockpicker">
+            <input type="text" class="form-control" value="09:30">
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript" src="../static/css/dist/bootstrap-clockpicker.min.js"></script>
+<script type="text/javascript">
+    $('.clockpicker').clockpicker()
+        .find('input').change(function () {
+            console.log(this.value);
+        });
+</script>
+<script type="text/javascript" src="../static/css/assets/js/highlight.min.js"></script>
+<script type="text/javascript">
+    hljs.configure({ tabReplace: '    ' });
+    hljs.initHighlightingOnLoad();
+</script>
+{% end %}
