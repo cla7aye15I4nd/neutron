@@ -64,47 +64,45 @@
 </div>
 <li id="userid" value="{{user}}"></li>
 
-<div class="container">
+<div class="container" style="background: rgba(255, 255, 255, 0.85); padding-top : 30px">
   <div class="row">
     <div class='col-md-12'>
-      <div class="jumbotron" style="background: rgba(255, 255, 255, 0.85); padding-top : 30px">
-	<div class="container-fluid">
-          <div class="row">
-            <div class='col-md-3'>
-              <h3 style="margin-bottom: 20px"> Filter </h3>
-              <div style="padding-top: 0px">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="available" id="available" value="1"> Available trains
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="change" id="change" value="2"> Allow to change trains
-                  </label>
-                </div>
-                <hr />
+      <div class="container-fluid">
+        <div class="row">
+          <div class='col-md-3'>
+            <h3 style="margin-bottom: 20px"> Filter </h3>
+            <div style="padding-top: 0px">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="available" id="available" value="1"> Available trains
+                </label>
               </div>
-              <h5> Departure Time </h5>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="change" id="change" value="2"> Allow to change trains
+                </label>
+              </div>
               <hr />
-              <h5> Arrival Time </h5>
-              <hr />
-              <h5> Departure Station </h5>
-              <hr />
-              <h5> Arrival Station </h5>
-              <hr>
             </div>
-            <div class='col-md-9'>              
-              <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
-                    rel="stylesheet" type="text/css" media="all">           
-              <div id="trainlist">
-              </div>
+            <h5> Departure Time </h5>
+            <hr />
+            <h5> Arrival Time </h5>
+            <hr />
+            <h5> Departure Station </h5>
+            <hr />
+            <h5> Arrival Station </h5>
+            <hr>
+          </div>
+          <div class='col-md-9'>              
+            <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
+                  rel="stylesheet" type="text/css" media="all">           
+            <div id="trainlist">
             </div>
           </div>
-	</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-      {% end %}
+{% end %}
