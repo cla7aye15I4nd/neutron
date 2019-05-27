@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+//TODO 读入也加入循环展开
+
 //string with fixed length
 template <size_t len>
 class str {
