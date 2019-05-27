@@ -1,33 +1,33 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <style>
 
-    .back {
-        background-repeat: repeat;
-        background-attachment: fixed;
-        background-size: cover;
-        height: 100%;
-    }
+  .back {
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100%;
+  }
 
-    html, body {
-        height: 100%;
-        margin: 0;
-    }
+  html, body {
+  height: 100%;
+  margin: 0;
+  }
 
-    .wrapper {
-        min-height: 100%;
-        margin-bottom: -500px;
-    }
+  .wrapper {
+  min-height: 100%;
+  margin-bottom: -70px;
+  }
 
-    
-    .push {
-        height: 500px;
-    }
+  .footer,
+  .push {
+  height: 70px;
+  }
 </style>
 
 <html lang="zh-CN">
 
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,22 +43,23 @@
             integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
             crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () {
-            $('body').bootstrapMaterialDesign();
-            $('body').attr('style', 'background-image: url(static/img/background/' + Math.floor(Math.random() * 15) + '.jpg)')
-        });
+      $(document).ready(function () {
+      $('body').bootstrapMaterialDesign();
+      $('body').attr('style', 'background-image: url(static/img/background/' + Math.floor(Math.random() * 15) + '.jpg)')
+      });
     </script>
 
-</head>
+  </head>
 
-<body class="back">
-    {% include "header.html" %}
+  <body class="back">
+    
 
     <div class="wrapper">
-        {% block content %} {% end %}
-        <div class="push"></div>
+      {% include "header.html" %}
+      {% block content %} {% end %}
+      <div class="push"></div>
     </div>
     {% include "footer.html" %}
-</body>
+  </body>
 
 </html>
