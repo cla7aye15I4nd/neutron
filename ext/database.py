@@ -1,6 +1,8 @@
 import os
 import sqlite3
 import hashlib
+from link import link_command, link_read
+
 
 conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "neutron.db"))
 cursor = conn.cursor()
@@ -28,6 +30,10 @@ class UserSystem:
         command = "INSERT INTO user (username, password, email, phone) VALUES('{}', '{}', '{}', '{}')"
         cursor.execute(command.format(username, hashlib.sha256(password.encode('utf-8')).hexdigest(), email, phone))
         conn.commit()
+        
+        command2 = "register " + username + " 0 " + email + " " + phone
+        link_command(command2)
+        link_read()
 
     @classmethod
     def update(self, idx, username, email, phone):
