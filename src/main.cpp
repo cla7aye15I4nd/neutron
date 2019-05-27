@@ -1,5 +1,9 @@
 #include "saleSystem.hpp"
 
+#define DEBUG
+
+#ifdef DEBUG
+#endif
 bool isLinux = true;
 bool debug = true;
 hashCity hashC;

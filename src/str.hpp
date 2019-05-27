@@ -9,6 +9,7 @@ template <size_t len>
 class str {
 public:
     char ch[len + 1];
+    
     int used = 0;
     str(){
         ch[0] = '\0';
