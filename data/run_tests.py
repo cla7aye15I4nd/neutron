@@ -126,7 +126,7 @@ def main():
         if "-quite" not in argv:
             print()
         nw += 1
-
+        
     if "-json" in argv:
         import json
         with open("result.json","w") as f:

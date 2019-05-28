@@ -14,8 +14,7 @@ sale_train 1c000C100205
 exit
 
 
-query_transfer 短春 安度因 2019-06-01 CDG
-query_transfer 长春 安图西 2019-06-01 CDG
+
+query_transfer 短春 安度因 2018-06-01 CDG
+query_transfer 长春 安图西 2018-06-01 CDG
 exit
-
-

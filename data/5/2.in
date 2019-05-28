@@ -1,7 +1,7 @@
 query_ticket 长春 延吉西 2019-06-01 CD
 query_ticket 长春 延吉西 2019-06-01 G
 register 冯念近 123456 hzfengnj@qq.com 12323332333
-buy_ticket 2019 50 11000C100102 长春 吉林 2019-06-01 软卧
+buy_ticket 2019 -50 11000C100102 长春 吉林 2019-06-01 软卧
 query_order 2019 2019-06-01 CDG
 refund_ticket 2019 50 1c000C100205 长春 吉林 2019-06-01 软卧
 refund_ticket 2019 51 11000C100102 长春 吉林 2019-06-01 软卧
