@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstring>
 #include <unistd.h>
-#include <sys/stat.h>
+#include <fcntl.h>
 
 #ifdef __linux__
 #define putchar putchar_unlocked
@@ -15,9 +15,8 @@
 #define sp() putchar(' ')
 #define ln() putchar('\n')
 
-#define PRIV_BLOCK_SIZE (131072)
+#define PRIV_BLOCK_SIZE (125000)
 #define USER_INFO_SIZE 128
-#define USER_DB "user.db"
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
 template<class K> inline void read(K& x) {
@@ -33,37 +32,40 @@ template<class K> inline void write(K x) {
     while(top) putchar(fout[--top] + '0');
 }
 
+const char* USER_DB = "user.db";
+
 class UserSystem{
 public:
     UserSystem () {
-        file = fopen(USER_DB, "rb+");
-        if (!file) {
-            file = fopen(USER_DB, "wb+");
+        fd = open(USER_DB, O_RDWR);
+        if (fd == -1) {
+            fclose(fopen(USER_DB, "a+"));
             memset(priviege, 0, sizeof priviege);
             xor_privilege(2019);
-            fwrite(priviege, PRIV_BLOCK_SIZE, 1, file);
+            
+            fd = open(USER_DB, O_RDWR);
+            write(fd, priviege, PRIV_BLOCK_SIZE);
         } else {
-            fread(priviege, PRIV_BLOCK_SIZE, 1, file);
+            read(fd, priviege, PRIV_BLOCK_SIZE);
         }
         
-        fseek(file, 0, SEEK_END);
-        userID = (ftell(file) - PRIV_BLOCK_SIZE) / USER_INFO_SIZE + 2019;
+        userID = (lseek(fd, 0, SEEK_END) - PRIV_BLOCK_SIZE) / USER_INFO_SIZE + 2019;
     }
 
     ~UserSystem () {
-        fseek(file, 0, SEEK_SET);
-        fwrite(priviege, PRIV_BLOCK_SIZE, 1, file);
-        fclose(file);
+        lseek(fd, 0, SEEK_SET);
+        write(fd, priviege, PRIV_BLOCK_SIZE);
+        close(fd);
     }
 
     void append() {
-        char *ptr = info;
+        register char *ptr = info;
         for (*ptr = getchar(); isspace(*ptr); *ptr = getchar());
         for (*++ptr = getchar();  *ptr != '\n'; *++ptr = getchar());
         *ptr = 0;
         
-        fseek(file, 0, SEEK_END);
-        fwrite(info, 1, USER_INFO_SIZE, file);
+        lseek(fd, 0, SEEK_END);
+        write(fd, info, USER_INFO_SIZE);
         printf("%d\n", userID++);
     }
     
@@ -78,8 +80,8 @@ public:
         
         if (id < 2019 || id >= userID) puts("0");
         else {
-            fseek(file, OFFSET(id), SEEK_SET);
-            fwrite(info, ptr - info + 1, 1, file);
+            lseek(fd, OFFSET(id), SEEK_SET);
+            write(fd, info, ptr - info + 1);
             puts("1");
         }
     }
@@ -91,8 +93,8 @@ public:
 
         if (id < 2019 || id >= userID) puts("0");
         else {
-            fseek(file, OFFSET(id), SEEK_SET);
-            fread(info, USER_INFO_SIZE, 1, file);
+            lseek(fd, OFFSET(id), SEEK_SET);
+            read(fd, info, USER_INFO_SIZE);
 
             for (int i = 0, cnt = 0; i < USER_INFO_SIZE; ++i) {
                 if (cnt == 1) {
@@ -139,8 +141,8 @@ public:
         int id; read(id);
         if (id < 2019 || id >= userID) puts("0");
         else {
-            fseek(file, OFFSET(id), SEEK_SET);
-            fread(info, USER_INFO_SIZE, 1, file);
+            lseek(fd, OFFSET(id), SEEK_SET);
+            read(fd, info, USER_INFO_SIZE);
 
             for (int i = 0, cnt = 0; i < USER_INFO_SIZE && info[i]; ++i) {
                 cnt += info[i] == ' ';
@@ -152,16 +154,15 @@ public:
     }
 
     void clear() {
-        fclose(file);
-        file = fopen(USER_DB, "wb+");
+        close(fd);
+        fd = open(USER_DB, O_RDWR);
         memset(priviege, 0, sizeof priviege);
         xor_privilege(2019);
-        fwrite(priviege, PRIV_BLOCK_SIZE, 1, file);
+        write(fd, priviege, PRIV_BLOCK_SIZE);
     }
     
 private:
-    int userID;
-    FILE* file;
+    int userID, fd;
 
     char passwd[25];
     char info[USER_INFO_SIZE];
