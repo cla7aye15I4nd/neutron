@@ -30,15 +30,15 @@ namespace sjtu{
 
     private:
         struct Node {
-            char info[blockSize - node_byte];
+            offset addr;
+            offset next;
 
             Rank keySize;  //number of key
             Rank pointSize; //number of value or child
 
             bool isLeaf;
 
-            offset addr;
-            offset next;
+            char info[blockSize - node_byte];
 
             Node(bool leaf = true) {
                 isLeaf = leaf;
@@ -60,20 +60,38 @@ namespace sjtu{
             }
 
             key_t *key_inner(Rank n) {
-                return (key_t *)(info + sizeof(offset) * (n + 1) + sizeof(key_t) * n);
+                return (key_t *)(info + (sizeof(offset) + sizeof(key_t)) * n + sizeof(offset));
             }
 
             key_t *key_leaf(Rank n) {
-                return (key_t *)(info + sizeof(value_t) * (n + 1) + sizeof(key_t) * n);
+                return (key_t *)(info + (sizeof(value_t) + sizeof(key_t)) * n + sizeof(value_t));
             }
 
             value_t *value(Rank n) {
-                return (value_t *)(info + sizeof(value_t) * n + sizeof(key_t) * n);
+                return (value_t *)(info + (sizeof(value_t) + sizeof(key_t)) * n);
             }
 
             offset *child(Rank n) {
-                return (offset *)(info + sizeof(offset) * n + sizeof(key_t) * n);
+                return (offset *)(info + (sizeof(offset) + sizeof(key_t)) * n);
             }
+
+#define BINARY_SEARCH_LOWER(statement, rejudge) do{                     \
+                Rank l = 0, r = keySize;                                \
+                while (l < r) {                                         \
+                    Rank mid = l + (r - l) / 2;                         \
+                    if (statement) l = mid + 1;                         \
+                    else r = mid;                                       \
+                }                                                       \
+                return (rejudge) ? l: -1;                               \
+            } while (0);                                                \
+
+#define LINEAR_SEARCH(statement) do {                                   \
+                Rank idx;                                               \
+                for (idx = 0; idx < keySize; ++idx) {                   \
+                    if (statement) break;                               \
+                }                                                       \
+                return idx == keySize ? -1: idx;                        \
+            } while(0);                                                 \
 
 #ifdef VIEW
             void view() {
@@ -93,83 +111,51 @@ namespace sjtu{
             }
 
 #endif
-            Rank search_leaf(const key_t &Key) {
-                Rank idx;
-                for (idx = 0; idx < keySize; ++idx) {
-                    if (*key_leaf(idx) == Key)
-                        break;
-                }
 
-                if (idx == keySize) {
-                    return -1;
-                }
-                else {
-                    return idx;
+#define MAX_SIZE_LOWER 8
+            Rank search_leaf(const key_t &Key) {
+                if (keySize <= MAX_SIZE_LOWER) {
+                    LINEAR_SEARCH(*key_leaf(idx) == Key);
+                } else {
+                    BINARY_SEARCH_LOWER(*key_leaf(mid) < Key, *key_leaf(l) == Key);
                 }
             }
 
             Rank search_inner(const key_t &Key) {
-                Rank idx;
-                for (idx = 0; idx < keySize; ++idx) {
-                    if (*key_inner(idx) == Key)
-                        break;
-                }
-
-                if (idx == keySize)
-                    return -1;
-                else
-                    return idx;
-            }
-
-            Rank search_upper_leaf(const key_t &Key) {
-                Rank idx;
-                for (idx = 0; idx < keySize; ++idx) {
-                    if (*key_leaf(idx) > Key)
-                        break;
-                }
-
-                if (idx == keySize) {
-                    return -1;
-                }
-                else {
-                    return idx;
-                }
-            }
-
-            Rank search_upper_inner(const key_t &Key) {
-                Rank idx;
-                for (idx = 0; idx < keySize; ++idx) {
-                    if (*key_inner(idx) > Key)
-                        break;
-                }
-
-                if (idx == keySize) {
-                    return -1;
-                }
-                else {
-                    return idx;
+                if (keySize <= MAX_SIZE_LOWER) {
+                    LINEAR_SEARCH(*key_inner(idx) == Key);
+                } else {
+                    BINARY_SEARCH_LOWER(*key_inner(mid) < Key, *key_inner(l) == Key);
                 }
             }
 
             Rank search_lower_leaf(const key_t &Key) {
-                Rank idx;
-                for (idx = 0; idx < keySize; ++idx) {
-                    if (*key_leaf(idx) >= Key)
-                        break;
+                if (keySize <= MAX_SIZE_LOWER) {
+                    LINEAR_SEARCH(*key_leaf(idx) >= Key);
+                } else {
+                    BINARY_SEARCH_LOWER(*key_leaf(mid) < Key, *key_leaf(l) >= Key);
                 }
+            }
 
-                if (idx == keySize) {
-                    return -1;
+            Rank search_upper_inner(const key_t &Key) {
+                if (keySize <= MAX_SIZE_LOWER) {
+                    LINEAR_SEARCH(*key_inner(idx) > Key);
+                } else {
+                    BINARY_SEARCH_LOWER(*key_inner(mid) <= Key, *key_inner(l) > Key)
                 }
-                else {
-                    return idx;
+            }
+
+            Rank search_upper_leaf(const key_t &Key) {
+                if (keySize <= MAX_SIZE_LOWER) {
+                    LINEAR_SEARCH(*key_leaf(idx) > Key);
+                } else {
+                    BINARY_SEARCH_LOWER(*key_leaf(mid) <= Key, *key_leaf(l) > Key)
                 }
             }
 
             void insert_key_leaf(Rank idx, const key_t &Key) {
                 for (Rank i = keySize; i > idx; --i)
                     *key_leaf(i) = *key_leaf(i - 1);
-
                 *key_leaf(idx) = Key;
                 keySize++;
             }
@@ -280,6 +266,8 @@ namespace sjtu{
 
     private:
         void get_block(offset off, Node &ret) {
+            if (ret.addr == off)
+                return;
             ret.addr = off;
             fseek(file, off, SEEK_SET);
 

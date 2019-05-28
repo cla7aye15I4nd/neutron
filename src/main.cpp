@@ -1,4 +1,3 @@
-#pragma warning(disable:4996)
 #include "saleSystem.hpp"
 
 hashCity hashC;

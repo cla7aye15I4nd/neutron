@@ -56,8 +56,7 @@ public:
 					break;
 				case 16:
 					printf("BYE\n");
-					//fprintf(stderr, "321489729\n");
-					//exit(0);
+					exit(0);
 			default:
 				break;
 			}
