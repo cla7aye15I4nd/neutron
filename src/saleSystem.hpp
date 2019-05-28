@@ -37,8 +37,7 @@ public:
                 {
                 case 0:user_system.append(); break;
                 case 1:user_system.login(); break;
-                case 2:user_system
-                        .query_profie(); break;
+                case 2:user_system.query_profile(); break;
                 case 3:user_system.modify_profile(); break;
                 case 4:user_system.modify_privilege(); break;
                 case 5:Train.qryDirect(); break;

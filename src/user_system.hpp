@@ -135,7 +135,7 @@ public:
         }
     }
 
-    void query_profie() {
+    void query_profile() {
         int id; read(id);
         if (id < 2019 || id >= userID) puts("0");
         else {
