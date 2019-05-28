@@ -6,66 +6,76 @@
 #include "bitManager.hpp"
 #include "user_system.hpp"
 
-class saleSystem {
-    static const int orderN = 17;
-    
-    const std::string string_orders[orderN] = { 
-        "register", "login", "query_profile", "modify_profile", "modify_privilege",
-        "query_ticket", "query_transfer", "buy_ticket", "query_order", "refund_ticket",
-        "add_train", "sale_train", "query_train", "delete_train", "modify_train",
-        "clean", "exit"
-    };
+const std::string operators[] = {
+    "exit",
+    "clean",
+    "login", 
+    "add_train",
+    "buy_ticket",
+    "sale_train",
+    "delete_train",
+    "register", "refund_ticket",
+    "modify_profile", "modify_privilege", "modify_train",
+    "query_ticket", "query_transfer", "query_order", "query_train", "query_profile"
+};
 
-    str<20> orders[orderN];
+class saleSystem {
     UserSystem user_system;
     train Train;
 
 public:
-    saleSystem() {
-        for (int i = 0; i < orderN; i++)
-            orders[i] = string_orders[i];
-    }
-    ~saleSystem() {}
     void processing() {
-        str<20> order;
-        while (1) {
-            memset(order.ch, 0, sizeof(order.ch));
-            if (scanf("%s", order.ch) == -1) break;
-            int p = 0;
-            while (p < orderN && orders[p] != order) p++;
-            switch (p)
-                {
-                case 0:user_system.append(); break;
-                case 1:user_system.login(); break;
-                case 2:user_system
-                        .query_profie(); break;
-                case 3:user_system.modify_profile(); break;
-                case 4:user_system.modify_privilege(); break;
-                case 5:Train.qryDirect(); break;
-                case 6:Train.qryTrans(); break;
-                case 7:printf("%d\n", Train.buy()); break;
-                case 8:Train.qryTicket(); break;
-                case 9:printf("%d\n", Train.refund()); break;
-                case 10:printf("%d\n", Train.add()); break;
-                case 11:printf("%d\n", Train.sale()); break;
-                case 12:Train.qry(); break;
-                case 13:printf("%d\n", Train.del()); break;
-                case 14:printf("%d\n", Train.mod()); break;
-                case 15:
-                    printf("1\n");
-                    user_system.clear();
-                    Train.clear();
-                    hashT.clear();
-                    hashC.clear();
-                    break;
-                case 16:
-                    printf("BYE\n");
-                    exit(0);
-                default:
-                    break;
-                }
+        char oper[20];
+        
+        while (true) {
+            scanf("%s", oper);
+            switch (oper[0]) {
+            case 'e' :  //exit
+                puts("BYE");
+                return;
+            case 'c': //clean
+                printf("1\n");
+                user_system.clear();
+                Train.clear();
+                hashT.clear();
+                hashC.clear();
+                break;
+            case 'l': //login
+                user_system.login();
+                break;
+            case 'a': //add_train
+                printf("%d\n", Train.add());
+                break;
+            case 'b': //buy_ticket
+                printf("%d\n", Train.buy());
+                break;
+            case 's': //sale_train
+                printf("%d\n", Train.sale());
+                break;
+            case 'd': //delete
+                printf("%d\n", Train.del());
+                break;
+            case 'r':
+                if (oper[2] == 'g') user_system.append(); //register
+                else printf("%d\n", Train.refund()); //refund_ticket
+                break;
+            case 'm':
+                if (oper[9] == 'o') user_system.modify_profile(); //modify_profile
+                else if (oper[9] == 'i') user_system.modify_privilege(); //modify_privilege
+                else printf("%d\n", Train.mod()); //modify_train
+                break;
+            case 'q':
+                if (oper[9] == 'k') Train.qryDirect(); //query_ticket
+                else if (oper[9] == 'n') Train.qryTrans(); //query_transfer
+                else if (oper[9] == 'e') Train.qryTicket();//query_order
+                else if (oper[9] == 'i') Train.qry();
+                else user_system.query_profile();
+                break;
+            default:
+                break;
+            }
         }
     }
 };
 
-#endif // !SALESYSTEM_HPP
+#endif
