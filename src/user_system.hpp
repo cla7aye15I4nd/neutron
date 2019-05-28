@@ -15,7 +15,7 @@
 #define sp() putchar(' ')
 #define ln() putchar('\n')
 
-#define PRIV_BLOCK_SIZE (125000)
+#define PRIV_BLOCK_SIZE (131072)
 #define USER_INFO_SIZE 128
 #define USER_DB "user.db"
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
@@ -69,7 +69,7 @@ public:
     
     void modify_profile() {
         int id;
-        scanf("%d", &id);
+        read(id);
 
         char *ptr = info;
         for (*ptr = getchar(); isspace(*ptr); *ptr = getchar());
