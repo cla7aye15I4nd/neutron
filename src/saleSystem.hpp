@@ -1,22 +1,25 @@
 #ifndef SALESYSTEM_HPP
 #define SALESYSTEM_HPP
 
-#include "user.hpp"
 #include "train.hpp"
 #include "hash.hpp"
 #include "bitManager.hpp"
 #include "user_system.hpp"
+
 class saleSystem {
     static const int orderN = 17;
+    
     const std::string string_orders[orderN] = { 
         "register", "login", "query_profile", "modify_profile", "modify_privilege",
         "query_ticket", "query_transfer", "buy_ticket", "query_order", "refund_ticket",
         "add_train", "sale_train", "query_train", "delete_train", "modify_train",
         "clean", "exit"
     };
+
     str<20> orders[orderN];
     UserSystem user_system;
     train Train;
+
 public:
     saleSystem() {
         for (int i = 0; i < orderN; i++)

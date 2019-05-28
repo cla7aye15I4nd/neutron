@@ -20,9 +20,18 @@
 #define USER_DB "user.db"
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
-struct userInfo{
-    char info[USER_INFO_SIZE];
-};
+template<class K> inline void read(K& x) {
+    register char c = getchar();
+    for(x = 0;!isdigit(c); c = getchar());
+    for(;isdigit(c); c = getchar())
+        x = x * 10 + c - '0';
+}
+
+template<class K> inline void write(K x) {
+    static int fout[20], top;
+    do fout[top++] = x % 10, x /= 10; while(x);
+    while(top) putchar(fout[--top] + '0');
+}
 
 class UserSystem{
 public:
@@ -57,13 +66,6 @@ public:
         fwrite(info, 1, USER_INFO_SIZE, file);
         printf("%d\n", userID++);
     }
-
-    userInfo get(int id) {
-        userInfo user;
-        fseek(file, OFFSET(id), SEEK_SET);
-        fread(&user, USER_INFO_SIZE, 1, file);
-        return user;
-    }
     
     void modify_profile() {
         int id;
@@ -84,8 +86,7 @@ public:
 
     void login() {
         int id;
-        char passwd[25];
-
+        
         scanf("%d%s", &id, passwd);
 
         if (id < 2019 || id >= userID) puts("0");
@@ -135,7 +136,7 @@ public:
     }
 
     void query_profie() {
-        int id; scanf("%d", &id);
+        int id; read(id);
         if (id < 2019 || id >= userID) puts("0");
         else {
             fseek(file, OFFSET(id), SEEK_SET);
@@ -161,6 +162,8 @@ public:
 private:
     int userID;
     FILE* file;
+
+    char passwd[25];
     char info[USER_INFO_SIZE];
     char priviege[PRIV_BLOCK_SIZE];
 };
