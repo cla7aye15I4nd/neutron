@@ -65,8 +65,7 @@ public:
         phone.read();
 		if (!userInfo.count(id)) return 0;//TODO optimize: judge out of bound
 		priv = userInfo.find(id).priv;
-        userInfo.erase(id);
-        userInfo.insert(id, userData(used, name, password, email, phone, priv));
+        userInfo.modify(id, userData(used, name, password, email, phone, priv));
 		return 1;
 	}
 	int mop() {
@@ -78,9 +77,8 @@ public:
 		if (p1 != 2) return 0;
 		if (p2 == 2) return priv == 2;
 		if (priv < 2) return priv;
-        userInfo.erase(id2);
-		u.priv = 2;
-        userInfo.insert(id2, u);
+        u.priv = 2;
+        userInfo.modify(id2, u);
 		return 1;
 	}
 	void clear() {
