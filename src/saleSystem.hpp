@@ -33,8 +33,7 @@ public:
             if (scanf("%s", order.ch) == -1) break;
             int p = 0;
             while (p < orderN && orders[p] != order) p++;
-            switch (p)
-                {
+            switch (p) {
                 case 0:user_system.append(); break;
                 case 1:user_system.login(); break;
                 case 2:user_system.query_profile(); break;
@@ -59,7 +58,7 @@ public:
                     break;
                 case 16:
                     printf("BYE\n");
-                    exit(0);
+                    //exit(0);
                 default:
                     break;
                 }

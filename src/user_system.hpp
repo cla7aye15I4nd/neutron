@@ -6,6 +6,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <fcntl.h>
+#include <cassert>
 
 #ifdef __linux__
 #define putchar putchar_unlocked
@@ -15,7 +16,8 @@
 #define sp() putchar(' ')
 #define ln() putchar('\n')
 
-#define PRIV_BLOCK_SIZE (125000)
+#define BLOCK_SIZE 4096
+#define PRIV_BLOCK_SIZE (131072)
 #define USER_INFO_SIZE 128
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
@@ -41,20 +43,26 @@ public:
         if (fd == -1) {
             fclose(fopen(USER_DB, "a+"));
             memset(priviege, 0, sizeof priviege);
-            xor_privilege(2019);
-            
+            priviege[0] = 1;
             fd = open(USER_DB, O_RDWR);
             write(fd, priviege, PRIV_BLOCK_SIZE);
         } else {
             read(fd, priviege, PRIV_BLOCK_SIZE);
         }
-        
+
+        dirty = 0;
         userID = (lseek(fd, 0, SEEK_END) - PRIV_BLOCK_SIZE) / USER_INFO_SIZE + 2019;
     }
 
     ~UserSystem () {
         lseek(fd, 0, SEEK_SET);
-        write(fd, priviege, PRIV_BLOCK_SIZE);
+
+        for (int i = 0; i < PRIV_BLOCK_SIZE; i += BLOCK_SIZE, dirty >>= 1) {
+            if (dirty & 1) 
+                write(fd, priviege + i, BLOCK_SIZE);
+            else
+                lseek(fd, BLOCK_SIZE, SEEK_CUR);
+        }
         close(fd);
     }
 
@@ -119,6 +127,7 @@ public:
 
     void xor_privilege(int id) {
         id = id - 2019;
+        dirty |= 1 << (id >> 12);
         priviege[id >> 3] ^= (1 << (id & 7));
     }
     
@@ -157,13 +166,14 @@ public:
         close(fd);
         fd = open(USER_DB, O_RDWR);
         memset(priviege, 0, sizeof priviege);
-        xor_privilege(2019);
+        *priviege = 1;
         write(fd, priviege, PRIV_BLOCK_SIZE);
     }
     
 private:
     int userID, fd;
 
+    unsigned int dirty;
     char passwd[25];
     char info[USER_INFO_SIZE];
     char priviege[PRIV_BLOCK_SIZE];
