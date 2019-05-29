@@ -58,7 +58,7 @@ public:
                     break;
                 case 16:
                     printf("BYE\n");
-                    exit(0);
+                    //exit(0);
                 default:
                     break;
                 }
