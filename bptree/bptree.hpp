@@ -312,6 +312,18 @@ namespace sjtu{
             }
         }
 
+        void write_trash(Node &cur) {
+            fseek(file, cur.addr, SEEK_SET);
+            fwrite(&cur.next, sizeof(offset), 1, file);
+        }
+
+        void get_trash(offset off, Node &ret) {
+            ret.addr = off;
+            fseek(file, off, SEEK_SET);
+
+            fread(&ret.next, sizeof(offset), 1, file);
+        }
+
         void append_block(Node &ret, bool leaf) {
             ret.init();
             if (trash_off == invalid_off) {
@@ -321,7 +333,7 @@ namespace sjtu{
             }
             else {
                 ret.addr = trash_off;
-                get_block(trash_off, trashNode);
+                get_trash(trash_off, trashNode);
                 trash_off = trashNode.next;
                 ret.isLeaf = leaf;
             }
@@ -559,7 +571,7 @@ namespace sjtu{
                             trash_off = rightNode->addr;
 
                             write_block(*leftNode);
-                            write_block(*rightNode);
+                            write_trash(*rightNode);
                             cnt -= 2;
 
                             return true;
@@ -653,7 +665,7 @@ namespace sjtu{
                             trash_off = rightNode->addr;
 
                             write_block(*leftNode);
-                            write_block(*rightNode);
+                            write_trash(*rightNode);
                             cnt -= 2;
 
                             return true;
@@ -915,7 +927,7 @@ namespace sjtu{
                     root.next = trash_off;
                     trash_off = root.addr;
 
-                    write_block(root);
+                    write_trash(root);
                     cnt--;
                     return true;
                 }
@@ -932,7 +944,7 @@ namespace sjtu{
                     root.next = trash_off;
                     trash_off = root.addr;
 
-                    write_block(root);
+                    write_trash(root);
                     cnt--;
                     return true;
                 }

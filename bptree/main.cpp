@@ -188,7 +188,7 @@ int main() {
     tree.clear_file();
     tree.tree_info();
 //    test_insert();
-//    test1();
+    test1();
 
     test2();
 //    tree.view(tree.root_off);
