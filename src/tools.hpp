@@ -34,10 +34,10 @@ void printDouble(int x, bool sign = false) {
         printf("%s%d", ch, x / 1000);
     else
         printf("%d", x / 1000);
-    putchar('.');
-    putchar('0' + x / 100 % 10);
-    putchar('0' + x / 10 % 10);
-    putchar('0' + x % 10);
+    x = x % 1000;
+	if (x == 0) ;
+	else if (x % 100 == 0) printf(".%d", x / 100);
+	else if (x % 10 == 0) printf(".%02d", x / 10);
 }
 
 //store single user's data
@@ -92,7 +92,7 @@ class trainData {
 	int numStation, numPrice;
 	str<20> loc, priceName[5];
 	str<40> name;
-	stopInfo stop[60];
+	stopInfo stop[50];
 	int timeParser(str<5> t) {
 		if (t[0] == 'x') return -1;
 		return (t[0] - '0') * 600 + (t[1] - '0') * 60 + (t[3] - '0') * 10 + (t[4] - '0');
@@ -137,8 +137,12 @@ public:
 				//printf("%s\n", time.ch);
 				stop[i].t[j] = timeParser(time);
 				stop[i].t_s[j] = time;
-                if (i > 0 && stop[i].t[j] < stop[i - 1].t[j])
-                    stop[i].t[j] += 1440;
+				if (j) {
+                	if (i > 0 && stop[i].t[1] < stop[i].t[0])
+                    	stop[i].t[j] += 1440;
+				}else
+					if (i > 0 && stop[i].t[0] < stop[i-1].t[1])
+                    	stop[i].t[j] += 1440;
 			}
             time.read();
             stop[i].t[2] = timeParser(time);
