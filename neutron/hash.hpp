@@ -1,10 +1,11 @@
 #ifndef HASH_HPP
 #define HASH_HPP
 
+#include <iostream>
 #include <cstring>
 #include "tools.hpp"
 
-extern bool debug;
+#define IO
 
 //city  p = 4093  size = 4096
 //train p = 12281 size = 12288
@@ -18,35 +19,30 @@ class hashCity {
 public:
 	int used = 0;
 	hashCity() {
-		if (!debug) {
-			file = fopen(STR, "rb");
-			if (file == nullptr) {
-				file = fopen(STR, "wb");
-				fclose(file);
-				memset(nameToNum, -1, sizeof(nameToNum));
-				used = 0;
-			}
-			else {
-				file = fopen(STR, "rb");
-				fread(&used, sizeof(int), 1, file);
-				fread(nameToNum, sizeof(int), 4096, file);
-				fread(numToName, sizeof(str<20>), 2750, file);
-				fclose(file);
-			}
-		}
-		else {
-			memset(nameToNum, -1, sizeof(nameToNum));
-			used = 0;
-		}
+#ifdef IO
+        file = fopen(STR, "rb");
+        if (file == nullptr) {
+            file = fopen(STR, "wb");
+            fclose(file);
+            memset(nameToNum, -1, sizeof(nameToNum));
+            used = 0;
+        }
+        else {
+            fread(&used, sizeof(int), 1, file);
+            fread(nameToNum, sizeof(int), 4096, file);
+            fread(numToName, sizeof(str<20>), 2750, file);
+            fclose(file);
+        }
+#endif
 	}
 	~hashCity() {
-		if (!debug) {
-			file = fopen(STR, "wb");
-			fwrite(&used, sizeof(int), 1, file);
-			fwrite(nameToNum, sizeof(int), 4096, file);
-			fwrite(numToName, sizeof(str<20>), 2750, file);
-			fclose(file);
-		}
+#ifdef IO
+        file = fopen(STR, "wb");
+        fwrite(&used, sizeof(int), 1, file);
+        fwrite(nameToNum, sizeof(int), 4096, file);
+        fwrite(numToName, sizeof(str<20>), 2750, file);
+        fclose(file);
+#endif
 	}
 	int calc(str<20> &s) {//city
 		int ret = 0;
@@ -99,35 +95,30 @@ class hashTrain {
 public:
     int used = 0;
     hashTrain() {
-        if (!debug) {
-            file = fopen(STR, "rb");
-            if (file == nullptr) {
-                file = fopen(STR, "wb");
-                fclose(file);
-                memset(nameToNum, -1, sizeof(nameToNum));
-                used = 0;
-            }
-            else {
-                file = fopen(STR, "rb");
-                fread(&used, sizeof(int), 1, file);
-                fread(nameToNum, sizeof(int), 12288, file);
-                fread(numToName, sizeof(str<20>), 6000, file);
-                fclose(file);
-            }
-        }
-        else {
+#ifdef IO
+        file = fopen(STR, "rb");
+        if (file == nullptr) {
+            file = fopen(STR, "wb");
+            fclose(file);
             memset(nameToNum, -1, sizeof(nameToNum));
             used = 0;
         }
-    }
-    ~hashTrain() {
-        if (!debug) {
-            file = fopen(STR, "wb");
-            fwrite(&used, sizeof(int), 1, file);
-            fwrite(nameToNum, sizeof(int), 12288, file);
-            fwrite(numToName, sizeof(str<20>), 6000, file);
+        else {
+            fread(&used, sizeof(int), 1, file);
+            fread(nameToNum, sizeof(int), 12288, file);
+            fread(numToName, sizeof(str<20>), 6000, file);
             fclose(file);
         }
+#endif
+    }
+    ~hashTrain() {
+#ifdef IO
+        file = fopen(STR, "wb");
+        fwrite(&used, sizeof(int), 1, file);
+        fwrite(nameToNum, sizeof(int), 12288, file);
+        fwrite(numToName, sizeof(str<20>), 6000, file);
+        fclose(file);
+#endif
     }
     int calc(str<20> &s) {//trainID
         int ret = 0;
