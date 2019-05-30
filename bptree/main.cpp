@@ -25,7 +25,7 @@ int rand() {
 }
 
 void make_vector() {
-    for (int i = 1; i <= n; ++i) {
+    for (int i = 1; i <= n + 1; ++i) {
         v1.push_back(rand());
         v2.push_back(rand());
     }
@@ -45,7 +45,6 @@ void test_insert() {
 void test_insert_random() {
     puts("Test: insert randomly");
     for (int i = 1; i <= n; ++i) {
-//        cout << "insert:" << i << endl;
         tree.insert(v1[i], v2[i]);
         mp[v1[i]] = v2[i];
 //        tree.view_root();
@@ -84,7 +83,7 @@ void test_erase() {
     for (int i = 1; i <= n; ++i) {
         flag = tree.erase(i);
         if (!flag) {
-            cout << "error in erase " << i << endl;
+            cerr << "error in erase " << i << endl;
             return;
         }
     }
@@ -98,7 +97,7 @@ void test_erase_random() {
     for (int i = 1; i <= n; ++i) {
         flag = tree.erase(v1[i]);
         if (!flag) {
-            cout << "error in erase " << i << endl;
+            cerr << "error in erase " << i << endl;
             return;
         }
     }
@@ -128,7 +127,6 @@ void test_iterator_random() {
     sjtu::bptree<int, long long>::iterator it;
     it = tree.lower_bound(v1[200]);
 
-    int i = 0;
     while (it.check()) {
         if (mp[tree.retKey(it)] != tree.retValue(it)) {
             puts("iterator error!");
@@ -144,10 +142,9 @@ void test_iterator_random() {
 void test1() {
     test_insert();
 //    tree.view_root();
-//    tree.view(tree.root_off);
+//    tree.traverse();
     test_find();
     test_iterator();
-//    tree.tranverse(tree.root_off, 0);
 
     test_erase();
 
@@ -158,7 +155,7 @@ void test1() {
 void test2() {
     make_vector();
     test_insert_random();
-//    tree.view_root();
+//    tree.traverse();
     test_find_random();
     test_iterator_random();
     test_erase_random();
@@ -191,5 +188,4 @@ int main() {
     test1();
 
     test2();
-//    tree.view(tree.root_off);
 }

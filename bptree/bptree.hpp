@@ -19,13 +19,15 @@ namespace sjtu{
     typedef short Rank;
     typedef int offset;
 
-    const int blockSize = 512;
+    const int blockSize = 4096;
     const offset invalid_off = -1;
 
     //root_off + end_off + trash_off = 12 bytes
-    const offset bptree_byte = 12;
+    const int bptree_byte = 12;
     //isLeaf + next + keySize + pointSize = 1 + 4 + 2 + 2 = 9 bytes
-    const offset node_byte = 9;
+    const int node_byte = 9;
+
+    const int info_byte = blockSize - node_byte;
 
     template <class key_t, class value_t>
     class bptree {
@@ -41,7 +43,7 @@ namespace sjtu{
 
             bool isLeaf;
 
-            char info[blockSize - node_byte];
+            char info[info_byte];
 
             Node(bool leaf = true) {
                 isLeaf = leaf;
@@ -1060,7 +1062,7 @@ namespace sjtu{
         }
 
         void view_root() {
-            Node &root = stack[cnt];
+            Node root;
             get_root(root);
             puts("root");
             cout << "keysize = " << root.keySize << " pointsize = " << root.pointSize << endl;
@@ -1080,7 +1082,7 @@ namespace sjtu{
             if (addr == invalid_off)
                 return;
 
-            Node &t = stack[cnt++];
+            Node t;
             get_block(addr, t);
             cout << "keysize = " << t.keySize << " pointsize = " << t.pointSize << endl;
             t.view();
@@ -1090,13 +1092,48 @@ namespace sjtu{
                     view(*(t.child(i)));
                 }
             }
-            cnt--;
         }
 
-        //todo
-        queue<offset> que;
-        void traverse() {
+        struct node {
+            offset addr;
+            int height;
 
+            node(offset a, int h) : addr(a), height(h) {}
+        };
+
+
+        queue<node> que;
+        void traverse() {
+            tree_info();
+            if (root_off == invalid_off) {
+                puts("empyt");
+                return;
+            }
+            que.push(node(root_off, 0));
+            while (!que.empty()) {
+                node temp = que.front();
+                que.pop();
+
+                Node tmp;
+                get_block(temp.addr, tmp);
+                if (tmp.isLeaf) {
+                    cout << "height:" << temp.height << ", keySize:" << tmp.keySize << ", ";
+                    for (Rank i = 0; i < tmp.keySize; ++i) {
+                        cout << '(' << *tmp.key_leaf(i) << ',' << *tmp.value(i) << ") ";
+                    }
+                    puts("");
+                }
+                else {
+                    cout << "height:" << temp.height << ", keySize:" << tmp.keySize <<", childSize:" << tmp.pointSize << endl;
+                    for (Rank i = 0; i < tmp.keySize; ++i) {
+                        cout << *tmp.key_inner(i) << ' ';
+                    }
+                    puts("");
+
+                    for (Rank i = 0; i < tmp.pointSize; ++i)
+                        que.push(node(*(tmp.child(i)), temp.height + 1));
+                }
+            }
         }
 
 #endif
