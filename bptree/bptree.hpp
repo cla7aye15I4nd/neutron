@@ -13,6 +13,7 @@ using std::cerr;
 using std::queue;
 
 //#define DEBUG
+//#define DEBUG2
 #define VIEW
 
 namespace sjtu{
@@ -734,15 +735,42 @@ namespace sjtu{
             fwrite(&trash_off, sizeof(offset), 1, file);
             fclose(file);
         }
+#ifdef DEBUG2
+        void close_file() {
+            fseek(file, 0, SEEK_SET);
+            fwrite(&root_off, sizeof(offset), 1, file);
+            fwrite(&end_off, sizeof(offset), 1, file);
+            fwrite(&trash_off, sizeof(offset), 1, file);
+            fclose(file);
+        }
 
+        void open_file() {
+            file = fopen(filename, "rb+");
+            if (!file) {
+                file = fopen(filename, "wb+");
+                root_off = trash_off = invalid_off;
+                end_off = bptree_byte;
+
+                fwrite(&root_off, sizeof(offset), 1, file);
+                fwrite(&end_off, sizeof(offset), 1, file);
+                fwrite(&trash_off, sizeof(offset), 1, file);
+            }
+            else {
+                fread(&root_off, sizeof(offset), 1, file);
+                fread(&end_off, sizeof(offset), 1, file);
+                fread(&trash_off, sizeof(offset), 1, file);
+            }
+        }
+
+#endif
         void clear_file() {
             file = fopen(filename, "wb+");
             root_off = trash_off = invalid_off;
             end_off = bptree_byte;
 
-            fwrite(&root_off, sizeof(offset), 1, file);
-            fwrite(&end_off, sizeof(offset), 1, file);
-            fwrite(&trash_off, sizeof(offset), 1, file);
+//            fwrite(&root_off, sizeof(offset), 1, file);
+//            fwrite(&end_off, sizeof(offset), 1, file);
+//            fwrite(&trash_off, sizeof(offset), 1, file);
         }
 
         value_t find(const key_t &Key) {
