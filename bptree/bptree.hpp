@@ -439,7 +439,7 @@ namespace sjtu{
                 pair flag = insert_node(ch, Key, Value);
 
                 if (!flag.first) {
-                    return false;
+                    return pair(false, false);
                 }
 
                 if (ch.isLeaf) {
@@ -523,7 +523,7 @@ namespace sjtu{
                 if (ch.isLeaf) {
                     if (ch.keySize >= (leaf_max + 1) / 2) {
                         write_block(ch);
-                        return pair(true, true);
+                        return pair(true, false);
                     }
                     else {
                         Node sbl;
@@ -614,7 +614,7 @@ namespace sjtu{
                         if (flag.second) {
                             write_block(ch);
                         }
-                        return true;
+                        return pair(true, false);
                     }
                     else {
                         Node sbl;

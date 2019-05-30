@@ -14,7 +14,7 @@ sjtu::bptree<int, long long> tree("aaa");
 std::map<int, int> mp;
 std::vector<int> v1;
 std::vector<int> v2;
-const int n = 200000;
+const int n = 1000;
 
 long long aa = 13131, bb = 5353, MOD = (long long) (1e9 + 7), now = 1;
 
@@ -44,7 +44,7 @@ void test_insert() {
 
 void test_insert_random() {
     puts("Test: insert randomly");
-    for (int i = 1; i <= n; ++i) {
+    for (int i = n; i >= 1; --i) {
         tree.insert(v1[i], v2[i]);
         mp[v1[i]] = v2[i];
 //        tree.view_root();
