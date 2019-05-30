@@ -56,14 +56,6 @@ namespace sjtu{
             ~Node() {
             }
 
-            void init(bool leaf = true) {
-                isLeaf = leaf;
-                addr = invalid_off;
-                next = invalid_off;
-                keySize = 0;
-                pointSize = 0;
-            }
-
 #define next_key_inner(ptr) ((key_t*) ((char *) ptr + sizeof(offset) + sizeof(key_t)))
 #define next_key_leaf(ptr)  ((key_t*) ((char *) ptr + sizeof(value_t) + sizeof(key_t)))
 
@@ -334,7 +326,6 @@ namespace sjtu{
         }
 
         void append_block(Node &ret, bool leaf) {
-            ret.init();
             if (trash_off == invalid_off) {
                 ret.addr = end_off;
                 end_off += blockSize;
