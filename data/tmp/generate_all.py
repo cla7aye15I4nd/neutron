@@ -1,0 +1,1 @@
+../8/generate_all.py

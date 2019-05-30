@@ -13,6 +13,40 @@ using std::endl;
 #define VIEW
 
 namespace sjtu{
+    template <typename key_t>
+    void copy(char* dest, char* src, size_t length, size_t step1) {
+        size_t i;
+        size_t step2 = step1 * 2, step3 = step1 * 3, step4 = step1 * 4;
+        for (i = 0; i + 4 < length; i += 4) {
+            *((key_t*) dest) = *((key_t*) src);
+            *((key_t*) (dest + step1)) = *((key_t*) (src + step1));
+            *((key_t*) (dest + step2)) = *((key_t*) (src + step2));
+            *((key_t*) (dest + step3)) = *((key_t*) (src + step3));
+            dest += step4; src += step4;
+        }
+        for (; i < length; ++i) {
+            *((key_t*) dest) = *((key_t*) src);
+            dest += step1; src += step1;
+        }
+    }
+
+    template <typename key_t>
+    void rcopy(char* dest, char* src, size_t length, size_t step1) {
+        size_t i;
+        size_t step2 = step1 * 2, step3 = step1 * 3, step4 = step1 * 4;
+        for (i = 0; i + 4 < length; i += 4) {
+            *((key_t*) dest) = *((key_t*) src);
+            *((key_t*) (dest - step1)) = *((key_t*) (src - step1));
+            *((key_t*) (dest - step2)) = *((key_t*) (src - step2));
+            *((key_t*) (dest - step3)) = *((key_t*) (src - step3));
+            dest -= step4; src -= step4;
+        }
+        for (; i < length; ++i) {
+            *((key_t*) dest) = *((key_t*) src);
+            dest -= step1; src -= step1;
+        }
+    }
+
     typedef short Rank;
     typedef int offset;
 
@@ -59,8 +93,12 @@ namespace sjtu{
                 pointSize = 0;
             }
 
-#define next_key_inner(ptr) ((key_t*) ((char *) ptr + sizeof(offset) + sizeof(key_t)))
-#define next_key_leaf(ptr)  ((key_t*) ((char *) ptr + sizeof(value_t) + sizeof(key_t)))
+#define LEAF_STEP  (sizeof(value_t) + sizeof(key_t))
+#define INNER_STEP (sizeof(offset) + sizeof(key_t))
+#define CHILD_STEP (sizeof(offset) + sizeof(key_t))
+#define VALUE_STEP (sizeof(value_t) + sizeof(key_t))
+#define next_key_inner(ptr) ((key_t*) ((char *) ptr + INNER_STEP))
+#define next_key_leaf(ptr)  ((key_t*) ((char *) ptr + LEAF_STEP))
 
         key_t* key_inner(Rank n) {
             return (key_t *)(info + (sizeof(offset) + sizeof(key_t)) * n + sizeof(offset));
@@ -155,61 +193,46 @@ namespace sjtu{
             }
 
             void insert_key_leaf(Rank idx, const key_t &Key) {
-                for (Rank i = keySize; i > idx; --i)
-                    *key_leaf(i) = *key_leaf(i - 1);
+                rcopy<key_t>((char*) key_leaf(keySize), (char*) key_leaf(keySize - 1), keySize - idx + 1, LEAF_STEP);
                 *key_leaf(idx) = Key;
                 keySize++;
             }
 
             void insert_value(Rank idx, const value_t &Value) {
-                for (Rank i = pointSize; i > idx; --i)
-                    *value(i) = *value(i - 1);
-
+                rcopy<value_t>((char*) value(pointSize), (char*) value(pointSize - 1), pointSize - idx + 1, VALUE_STEP);
                 *value(idx) = Value;
                 pointSize++;
             }
 
             void insert_key_inner(Rank idx, const key_t &Key) {
-                for (Rank i = keySize; i > idx; --i)
-                    *key_inner(i) = *key_inner(i - 1);
-
+                rcopy<key_t>((char*) key_inner(keySize), (char*) key_inner(keySize - 1), keySize - idx + 1, INNER_STEP);
                 *key_inner(idx) = Key;
                 keySize++;
             }
 
             void insert_child(Rank idx, const offset &off) {
-                for (Rank i = pointSize; i > idx; --i)
-                    *child(i) = *child(i - 1);
-
-                *child(idx) = off;
+                rcopy<offset>((char*) child(pointSize), (char*) child(pointSize - 1), pointSize - idx + 1, CHILD_STEP);
+                *child(idx) = off; 
                 pointSize++;
             }
 
             void erase_key_leaf(Rank idx) {
-                for (Rank i = idx + 1; i < keySize; ++i)
-                    *key_leaf(i - 1) = *key_leaf(i);
-
+                copy<key_t>((char*) key_leaf(idx), (char*) key_leaf(idx + 1), keySize - idx, LEAF_STEP);
                 keySize--;
             }
 
             void erase_value(Rank idx) {
-                for (Rank i = idx + 1; i < pointSize; ++i)
-                    *value(i - 1) = *value(i);
-
+                copy<value_t>((char*) value(idx), (char*) value(idx + 1), pointSize - idx, VALUE_STEP);
                 pointSize--;
             }
 
             void erase_key_inner(Rank idx) {
-                for (Rank i = idx + 1; i < keySize; ++i)
-                    *key_inner(i - 1) = *key_inner(i);
-
+                copy<key_t>((char*) key_inner(idx), (char*) key_inner(idx + 1), keySize - idx, INNER_STEP);
                 keySize--;
             }
 
             void erase_child(Rank idx) {
-                for (Rank i = idx + 1; i < pointSize; ++i)
-                    *child(i - 1) = *child(i);
-
+                copy<offset>((char*) child(idx), (char*) child(idx + 1), pointSize - idx, CHILD_STEP);
                 pointSize--;
             }
 
