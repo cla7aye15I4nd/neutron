@@ -4,9 +4,9 @@
 #include <cctype>
 #include <cstdio>
 #include <cstring>
+#include <cassert>
 #include <unistd.h>
 #include <fcntl.h>
-#include <cassert>
 
 #ifdef __linux__
 #define putchar putchar_unlocked
@@ -17,7 +17,7 @@
 #define ln() putchar('\n')
 
 #define BLOCK_SIZE 4096
-#define PRIV_BLOCK_SIZE (131072)
+#define PRIV_BLOCK_SIZE (125000)
 #define USER_INFO_SIZE 128
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
@@ -57,8 +57,8 @@ public:
     ~UserSystem () {
         lseek(fd, 0, SEEK_SET);
 
-        for (int i = 0; i < PRIV_BLOCK_SIZE; i += BLOCK_SIZE, dirty >>= 1) {
-            if (dirty & 1) 
+        for (int i = 0; dirty; i += BLOCK_SIZE, dirty >>= 1) {
+            if (dirty & 1)
                 write(fd, priviege + i, BLOCK_SIZE);
             else
                 lseek(fd, BLOCK_SIZE, SEEK_CUR);
@@ -67,7 +67,7 @@ public:
     }
 
     void append() {
-        register char *ptr = info;
+        char *ptr = info;
         for (*ptr = getchar(); isspace(*ptr); *ptr = getchar());
         for (*++ptr = getchar();  *ptr != '\n'; *++ptr = getchar());
         *ptr = 0;
@@ -79,7 +79,7 @@ public:
     
     void modify_profile() {
         int id;
-        read(id);
+        scanf("%d", &id);
 
         char *ptr = info;
         for (*ptr = getchar(); isspace(*ptr); *ptr = getchar());
@@ -127,7 +127,7 @@ public:
 
     void xor_privilege(int id) {
         id = id - 2019;
-        dirty |= 1 << (id >> 12);
+        dirty |= 1 << (id >> 15);
         priviege[id >> 3] ^= (1 << (id & 7));
     }
     
@@ -147,7 +147,7 @@ public:
     }
 
     void query_profile() {
-        int id; read(id);
+        int id; scanf("%d", &id);
         if (id < 2019 || id >= userID) puts("0");
         else {
             lseek(fd, OFFSET(id), SEEK_SET);
@@ -172,9 +172,9 @@ public:
     
 private:
     int userID, fd;
-
+    
     unsigned int dirty;
-    char passwd[25];
+    char passwd[32];
     char info[USER_INFO_SIZE];
     char priviege[PRIV_BLOCK_SIZE];
 };
