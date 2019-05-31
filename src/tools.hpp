@@ -34,6 +34,7 @@ void printDouble(int x, bool sign = false) {
         printf("%s%d", ch, x / 1000);
     else
         printf("%d", x / 1000);
+    
     x = x % 1000;
     if (x == 0) ;
     else if (x % 100 == 0) printf(".%d", x / 100);

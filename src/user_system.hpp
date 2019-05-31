@@ -7,6 +7,7 @@
 #include <cassert>
 #include <unistd.h>
 #include <fcntl.h>
+//#define PERFECT
 
 #ifdef __linux__
 #define putchar putchar_unlocked
@@ -16,9 +17,11 @@
 #define sp() putchar(' ')
 #define ln() putchar('\n')
 
-#define BLOCK_SIZE 4096
-#define PRIV_BLOCK_SIZE (125000)
+#define BUF_COUNT 64
 #define USER_INFO_SIZE 64
+#define BLOCK_SIZE (BUF_COUNT * USER_INFO_SIZE)
+#define PRIV_BLOCK_SIZE (125000)
+
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
 template<class K> inline void read(K& x) {
@@ -50,30 +53,45 @@ public:
             read(fd, priviege, PRIV_BLOCK_SIZE);
         }
 
-        dirty = 0;
+        dirty = 0; info = pool;
         userID = (lseek(fd, 0, SEEK_END) - PRIV_BLOCK_SIZE) / USER_INFO_SIZE + 2019;
     }
 
+    void refresh() {
+        lseek(fd, 0, SEEK_END);
+        write(fd, pool, info - pool);
+        info = pool;
+    }
+    
     ~UserSystem () {
         lseek(fd, 0, SEEK_SET);
-
+        
         for (int i = 0; dirty; i += BLOCK_SIZE, dirty >>= 1) {
             if (dirty & 1)
                 write(fd, priviege + i, BLOCK_SIZE);
             else
                 lseek(fd, BLOCK_SIZE, SEEK_CUR);
         }
+
+        refresh();
         close(fd);
     }
-
+    
     void append() {
         char *ptr = info;
         for (*ptr = getchar(); isspace(*ptr); *ptr = getchar());
         for (*++ptr = getchar();  *ptr != '\n'; *++ptr = getchar());
         *ptr = 0;
-        
+
+        //#ifdef PERFECT
         lseek(fd, 0, SEEK_END);
-        write(fd, info, USER_INFO_SIZE);
+        //#endif
+        
+        info += USER_INFO_SIZE;
+        if (info == pool + BLOCK_SIZE) {
+            write(fd, pool, BLOCK_SIZE);
+            info = pool;
+        }
         printf("%d\n", userID++);
     }
     
@@ -88,8 +106,9 @@ public:
         
         if (id < 2019 || id >= userID) puts("0");
         else {
+            if (pool != info) refresh();
             lseek(fd, OFFSET(id), SEEK_SET);
-            write(fd, info, ptr - info + 1);
+            write(fd, info, USER_INFO_SIZE);
             puts("1");
         }
     }
@@ -101,6 +120,7 @@ public:
 
         if (id < 2019 || id >= userID) puts("0");
         else {
+            if (pool != info) refresh();
             lseek(fd, OFFSET(id), SEEK_SET);
             read(fd, info, USER_INFO_SIZE);
 
@@ -150,6 +170,7 @@ public:
         int id; scanf("%d", &id);
         if (id < 2019 || id >= userID) puts("0");
         else {
+            if (pool != info) refresh();
             lseek(fd, OFFSET(id), SEEK_SET);
             read(fd, info, USER_INFO_SIZE);
 
@@ -175,7 +196,7 @@ private:
     
     unsigned int dirty;
     char passwd[32];
-    char info[USER_INFO_SIZE];
+    char pool[BLOCK_SIZE], *info;
     char priviege[PRIV_BLOCK_SIZE];
 };
 
