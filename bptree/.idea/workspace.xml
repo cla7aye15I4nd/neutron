@@ -35,13 +35,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bptree.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="10" selection-start-column="10" selection-end-column="10" />
+            <state relative-caret-position="-648">
+              <caret line="46" column="71" lean-forward="true" selection-start-line="46" selection-start-column="71" selection-end-line="46" selection-end-column="71" />
               <folding>
                 <element signature="e#37#56#0" expanded="true" />
-                <element signature="e#24433#25343#0" expanded="true" />
-                <element signature="e#27605#27718#0" expanded="true" />
-                <element signature="e#28206#28268#0" expanded="true" />
+                <element signature="e#619#647#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -50,8 +48,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="192" column="1" lean-forward="true" selection-start-line="192" selection-start-column="1" selection-end-line="192" selection-end-column="1" />
+            <state relative-caret-position="717">
+              <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -63,7 +61,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>insert_in_leaf</find>
       <find>insert_node</find>
       <find>next_iterator</find>
       <find>erase_node</find>
@@ -81,7 +78,6 @@
       <find>trash_off</find>
       <find>get_trash</find>
       <find>fwrite</find>
-      <find>bptree(</find>
       <find>buf</find>
       <find>stack</find>
       <find>cnt</find>
@@ -93,6 +89,8 @@
       <find>pair(true, fa</find>
       <find>bool insert</find>
       <find>clear_file</find>
+      <find>info_byte</find>
+      <find>bptree(</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -180,12 +178,13 @@
       <workItem from="1559192561251" duration="306000" />
       <workItem from="1559196279069" duration="1065000" />
       <workItem from="1559202096127" duration="855000" />
-      <workItem from="1559213550203" duration="1009000" />
+      <workItem from="1559213550203" duration="1068000" />
+      <workItem from="1559274924313" duration="520000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59104000" />
+    <option name="totallyTimeSpent" value="59683000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -197,7 +196,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="800" extended-state="6" />
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.20516963" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24959612" />
@@ -417,23 +417,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///Library/Developer/CommandLineTools/usr/include/c++/v1/algorithm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="2624" selection-start-line="2624" selection-end-line="2624" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bptree.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="10" selection-start-column="10" selection-end-column="10" />
+        <state relative-caret-position="-648">
+          <caret line="46" column="71" lean-forward="true" selection-start-line="46" selection-start-column="71" selection-end-line="46" selection-end-column="71" />
           <folding>
             <element signature="e#37#56#0" expanded="true" />
-            <element signature="e#24433#25343#0" expanded="true" />
-            <element signature="e#27605#27718#0" expanded="true" />
-            <element signature="e#28206#28268#0" expanded="true" />
+            <element signature="e#619#647#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="192" column="1" lean-forward="true" selection-start-line="192" selection-start-column="1" selection-end-line="192" selection-end-column="1" />
+        <state relative-caret-position="717">
+          <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

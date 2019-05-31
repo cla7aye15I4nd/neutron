@@ -44,7 +44,7 @@ namespace sjtu{
 
             bool isLeaf;
 
-            char info[info_byte];
+            char info[info_byte + sizeof(key_t) + sizeof(value_t) + 4];
 
             Node(bool leaf = true) {
                 isLeaf = leaf;
@@ -707,19 +707,14 @@ namespace sjtu{
     public:
         bptree(const char *fname) {
             strcpy(filename, fname);
-            //先开小一点，免得出问题
-            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t)) - 1;
-            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset)) - 1;
+            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t));
+            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset));
 
             file = fopen(filename, "rb+");
             if (!file) {
                 file = fopen(filename, "wb+");
                 root_off = trash_off = invalid_off;
                 end_off = bptree_byte;
-
-                fwrite(&root_off, sizeof(offset), 1, file);
-                fwrite(&end_off, sizeof(offset), 1, file);
-                fwrite(&trash_off, sizeof(offset), 1, file);
             }
             else {
                 fread(&root_off, sizeof(offset), 1, file);
@@ -767,10 +762,6 @@ namespace sjtu{
             file = fopen(filename, "wb+");
             root_off = trash_off = invalid_off;
             end_off = bptree_byte;
-
-//            fwrite(&root_off, sizeof(offset), 1, file);
-//            fwrite(&end_off, sizeof(offset), 1, file);
-//            fwrite(&trash_off, sizeof(offset), 1, file);
         }
 
         value_t find(const key_t &Key) {

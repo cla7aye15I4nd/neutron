@@ -14,7 +14,7 @@ sjtu::bptree<int, long long> tree("aaa");
 std::map<int, int> mp;
 std::vector<int> v1;
 std::vector<int> v2;
-const int n = 200000;
+const int n = 500000;
 
 long long aa = 13131, bb = 5353, MOD = (long long) (1e9 + 7), now = 1;
 
@@ -187,7 +187,7 @@ int main() {
     tree.clear_file();
     tree.tree_info();
 //    test_insert();
-//    test1();
+    test1();
 
     test2();
 }
