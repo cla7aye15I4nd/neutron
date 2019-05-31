@@ -398,8 +398,6 @@ namespace sjtu{
         void split_leaf(Node &n, Node &n2) {
             Rank mid = (leaf_max + 1) / 2;
 
-            key_t midKey = *(n.key_leaf(mid - 1));
-
             for (Rank i = mid; i < n.keySize; ++i) {
                 *(n2.key_leaf(i - mid)) = *(n.key_leaf(i));
             }

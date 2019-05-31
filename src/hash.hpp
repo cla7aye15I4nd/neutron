@@ -10,14 +10,14 @@
 //train p = 12281 size = 12288
 
 class hashCity {
-	const int P = 4093;
-	const char STR[9] = "hashCity";
-	int nameToNum[4096];
-	str<20> numToName[2750];
-	FILE *file;
+    const int P = 4093;
+    const char STR[9] = "hashCity";
+    int nameToNum[4096];
+    str<20> numToName[2750];
+    FILE *file;
 public:
-	int used = 0;
-	hashCity() {
+    int used = 0;
+    void init() {
 #ifdef IO
         file = fopen(STR, "rb");
         if (file == nullptr) {
@@ -33,8 +33,9 @@ public:
             fclose(file);
         }
 #endif
-	}
-	~hashCity() {
+    }
+
+    void write_back() {
 #ifdef IO
         file = fopen(STR, "wb");
         fwrite(&used, sizeof(int), 1, file);
@@ -42,47 +43,47 @@ public:
         fwrite(numToName, sizeof(str<20>), 2750, file);
         fclose(file);
 #endif
-	}
-	int calc(str<20> &s) {//city
-		int ret = 0;
-		for (int i = 0; s[i] != '\0'; i++)
-			ret = ret * 109 - s[i];
-		return (ret % P + P) % P;
-	}
-	bool count(str<20> &s) {
-		int p = calc(s);
-		while (nameToNum[p] != -1) {
-			if (numToName[nameToNum[p]] == s) return true;
-			if (++p == P) p = 0;
-		}
-		return false;
-	}
-	void insert(str<20> &s) {
-		int p = calc(s);
-		while (nameToNum[p] != -1)
-			if (++p == P) p = 0;
-		numToName[used] = s;
-		nameToNum[p] = used++;
-	}
-	int operator [] (str<20> &s) {
-		int p = calc(s);
-		while (nameToNum[p] != -1) {
-			if (numToName[nameToNum[p]] == s) return nameToNum[p];
-			if (++p == P) p = 0;
-		}
-		return -1;
-	}
-	str<20> operator [] (int k) {
-		return numToName[k];
-	}
-	void list() {
-		for (int i = 0; i < used; i++)
-			printf("%s\n", numToName[i].ch);
-	}
-	void clear() {
-		memset(nameToNum, -1, sizeof(nameToNum));
-		used = 0;
-	}
+    }
+    int calc(str<20> &s) {//city
+        int ret = 0;
+        for (int i = 0; s[i] != '\0'; i++)
+            ret = ret * 109 - s[i];
+        return (ret % P + P) % P;
+    }
+    bool count(str<20> &s) {
+        int p = calc(s);
+        while (nameToNum[p] != -1) {
+            if (numToName[nameToNum[p]] == s) return true;
+            if (++p == P) p = 0;
+        }
+        return false;
+    }
+    void insert(str<20> &s) {
+        int p = calc(s);
+        while (nameToNum[p] != -1)
+            if (++p == P) p = 0;
+        numToName[used] = s;
+        nameToNum[p] = used++;
+    }
+    int operator [] (str<20> &s) {
+        int p = calc(s);
+        while (nameToNum[p] != -1) {
+            if (numToName[nameToNum[p]] == s) return nameToNum[p];
+            if (++p == P) p = 0;
+        }
+        return -1;
+    }
+    str<20> operator [] (int k) {
+        return numToName[k];
+    }
+    void list() {
+        for (int i = 0; i < used; i++)
+            printf("%s\n", numToName[i].ch);
+    }
+    void clear() {
+        memset(nameToNum, -1, sizeof(nameToNum));
+        used = 0;
+    }
 };
 
 class hashTrain {
@@ -93,7 +94,7 @@ class hashTrain {
     FILE *file;
 public:
     int used = 0;
-    hashTrain() {
+    void init() {
 #ifdef IO
         file = fopen(STR, "rb");
         if (file == nullptr) {
@@ -110,7 +111,7 @@ public:
         }
 #endif
     }
-    ~hashTrain() {
+    void write_back () {
 #ifdef IO
         file = fopen(STR, "wb");
         fwrite(&used, sizeof(int), 1, file);

@@ -18,7 +18,7 @@
 
 #define BLOCK_SIZE 4096
 #define PRIV_BLOCK_SIZE (125000)
-#define USER_INFO_SIZE 128
+#define USER_INFO_SIZE 64
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
 template<class K> inline void read(K& x) {

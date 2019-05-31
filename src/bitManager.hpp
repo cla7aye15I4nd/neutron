@@ -1,4 +1,3 @@
-#pragma warning(disable:4996)
 #ifndef BITMANAGER_HPP
 #define BITMANAGER_HPP
 
@@ -9,10 +8,10 @@ extern hashCity hashC;
 extern hashTrain hashT;
 
 class bitManager {
-	bitset b[2750];
-	FILE *file;
+    bitset b[2750];
+    FILE *file;
 public:
-    bitManager() {
+    void init() {
 #ifdef IO
         file = fopen("cityBitset", "rb");
         if (file == nullptr) {
@@ -25,22 +24,22 @@ public:
         }
 #endif
     }
-    ~bitManager() {
+    void write_back() {
 #ifdef IO
         file = fopen("cityBitset", "wb");
         fwrite(b, sizeof(bitset), 2750, file);
         fclose(file);
 #endif
     }
-	//add a newLine to a city
-	void add(int city, int newLine) {
-	    //fprintf(stderr, "City %d has added a new line %d\n", city, newLine);
-		b[city].to1(newLine);
-	}
-	//return bitset of train-intersection between two cities
-	bitset intersection(int city1, int city2) {
-		return b[city1] & b[city2];
-	}
+    //add a newLine to a city
+    void add(int city, int newLine) {
+        //fprintf(stderr, "City %d has added a new line %d\n", city, newLine);
+        b[city].to1(newLine);
+    }
+    //return bitset of train-intersection between two cities
+    bitset intersection(int city1, int city2) {
+        return b[city1] & b[city2];
+    }
 
 };
 
