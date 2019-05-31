@@ -34,8 +34,14 @@ class train {
         }
     }
 public:
-    train() :trainInfo("trainDatabase"), ticketInfo("ticketDatabase") {}
-    ~train() {}
+    void init() {
+        trainInfo.init("train.db");
+        ticketInfo.init("ticket.db");
+    }
+    void write_back() {
+        trainInfo.write_back();
+        ticketInfo.write_back();
+    }
     bool add() {
         trainID.read();
         if (hashT.count(trainID)) {

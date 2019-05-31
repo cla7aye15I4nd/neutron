@@ -730,7 +730,7 @@ namespace sjtu{
         }
 
     public:
-        bptree(const char *fname) {
+        void init(const char *fname) {
             strcpy(filename, fname);
             //先开小一点，免得出问题
             leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t)) - 1;
@@ -753,7 +753,7 @@ namespace sjtu{
             }
         }
 
-        ~bptree() {
+        void write_back() {
             fseek(file, 0, SEEK_SET);
             fwrite(&root_off, sizeof(offset), 1, file);
             fwrite(&end_off, sizeof(offset), 1, file);

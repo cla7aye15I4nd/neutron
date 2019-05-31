@@ -42,6 +42,7 @@ public:
             hashC.init();
             hashT.init();
             bitMgr.init();
+            train_system.init();
         }
         switch (op) {
         case 5: train_system.qryDirect(); break;
@@ -88,6 +89,7 @@ public:
                     hashC.write_back();
                     hashT.write_back();
                     bitMgr.write_back();
+                    train_system.write_back();
                 }
                 exit(0);
             default:
