@@ -45,7 +45,7 @@ struct bitset {
     
     bitset() { memset(block, 0, sizeof(block)); }
     
-    void to1(int k) { block[k >> 6] |= 1ull << (k & 63); }
+    void set(int k) { block[k >> 6] |= 1ull << (k & 63); }
     bool operator [] (int k) {
         return block[k >> 6] & (1ull << (k & 63));
     }

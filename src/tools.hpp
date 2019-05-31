@@ -6,7 +6,7 @@
 #include <iostream>
 #include "str.hpp"
 #include "hash.hpp"
-#include "bitManager.hpp"
+#include "bitmgr.hpp"
 
 extern hashCity hashC;
 extern hashTrain hashT;

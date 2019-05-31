@@ -3,7 +3,7 @@
 
 #include "train.hpp"
 #include "hash.hpp"
-#include "bitManager.hpp"
+#include "bitmgr.hpp"
 #include "user_system.hpp"
 
 hashCity hashC;
