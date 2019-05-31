@@ -40,25 +40,6 @@ void printDouble(int x, bool sign = false) {
     else if (x % 10 == 0) printf(".%02d", x / 10);
 }
 
-//store single user's data
-struct userData {
-    int id;
-    str<40> name;
-    str<20> password, email, phone;
-    int priv;
-    
-    userData() {}
-    userData(int _id, str<40> &_name, str<20> &_password, str<20> &_email, str<20> &_phone, int _priv)
-        :id(_id), name(_name), password(_password), email(_email), phone(_phone), priv(_priv) {};
-    ~userData() {}
-    bool log(str<20> pw) {
-        return password == pw;
-    }
-    void print() {
-        printf("%s %s %s %d\n", name.ch, email.ch, phone.ch, priv);
-    }
-};
-
 //store infomation about one stop station
 struct stopInfo {
     int loc, t[3], left[31][5], sumPrice[5];
