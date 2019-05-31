@@ -93,8 +93,11 @@ public:
 		end = hashC[loc2];
 		can = bitMgr.intersection(start, end);
 		int cnt = 0;
-		for (int i = 0; i < 5953; i++)
-			if (can[i]) {
+		for (int j = 0; j < 5953; j += 64) {
+                    if (!can.block[j >> 6]) continue;
+                    ull x = can.block[j >> 6];
+                    for (int i = j; x; ++i, x >>= 1)
+			if (x & 1) {
 				idArray[cnt] = i;
 				if (!trainInfo.count(i)) {
 				    printf("fuck\n");
@@ -105,6 +108,7 @@ public:
                 //printf("can i = %d s = %s\n", i, tmp.trainID.ch);
 				if (t.order(start, end) && in(t.catalog[0], catalog)) cnt++;
 			}
+                }
 		//TODO: optimize the damn sort
 		for (int i = 0; i < cnt; i++)
 			for (int j = i + 1; j < cnt; j++)
