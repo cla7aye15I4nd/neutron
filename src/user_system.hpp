@@ -83,9 +83,9 @@ public:
         for (*++ptr = getchar();  *ptr != '\n'; *++ptr = getchar());
         *ptr = 0;
 
-        //#ifdef PERFECT
+#ifdef PERFECT
         lseek(fd, 0, SEEK_END);
-        //#endif
+#endif
         
         info += USER_INFO_SIZE;
         if (info == pool + BLOCK_SIZE) {
