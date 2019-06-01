@@ -2,13 +2,15 @@
 #define TERM_HPP
 
 #include "train.hpp"
-#include "hash.hpp"
+#include "hash_train.hpp"
 #include "bitmgr.hpp"
 #include "user_system.hpp"
 
 hashCity hashC;
 hashTrain hashT;
 bitManager bitMgr;
+ticketnum_manager ticketMgr;
+
 int bridgeN = 0;
 ticketData bridge[100];
 char bin[20];
@@ -43,6 +45,7 @@ public:
             hashT.init();
             bitMgr.init();
             train_system.init();
+            ticketMgr.init();
         }
         switch (op) {
         case 5: train_system.qryDirect(); break;
@@ -77,11 +80,14 @@ public:
             case 15:
                 puts("1");
                 user_system.clear();
+                //TODO
                 if (load_train_system) {
                     train_system.clear();
+                    ticketMgr.clear();
                     hashT.clear();
                     hashC.clear();
                 }
+                
                 break;
             case 16:
                 puts("BYE");
@@ -90,6 +96,7 @@ public:
                     hashT.write_back();
                     bitMgr.write_back();
                     train_system.write_back();
+                    ticketMgr.write_back();
                 }
                 exit(0);
             default:
