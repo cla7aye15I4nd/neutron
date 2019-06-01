@@ -57,6 +57,12 @@ namespace sjtu{
             ~Node() {
             }
 
+            void init(bool leaf = true) {
+                keySize = 0;
+                pointSize = 0;
+            }
+
+
 #define next_key_inner(ptr) ((key_t*) ((char *) ptr + sizeof(offset) + sizeof(key_t)))
 #define next_key_leaf(ptr)  ((key_t*) ((char *) ptr + sizeof(value_t) + sizeof(key_t)))
 
@@ -707,8 +713,8 @@ namespace sjtu{
     public:
         bptree(const char *fname) {
             strcpy(filename, fname);
-            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t));
-            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset));
+            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t)) - 1;
+            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset)) - 1;
 
             file = fopen(filename, "rb+");
             if (!file) {
@@ -958,6 +964,145 @@ namespace sjtu{
             }
         }
 
+        void build(key_t keys[], value_t values[], int len) {
+            int newLen = 0;
+            int rank = 0;
+
+            key_t newKeys[len / leaf_max + 1];
+            offset newChilds[len / leaf_max + 1];
+
+            Node ret;
+            while (len > 2 * leaf_max) {
+                ret.init();
+                append_block(ret, true);
+                newKeys[newLen] = keys[rank];
+                newChilds[newLen++] = ret.addr;
+
+                while (ret.keySize <= leaf_max) {
+                    ret.push_back_key_leaf(keys[rank]);
+                    ret.push_back_value(values[rank++]);
+                    len--;
+                }
+                ret.next = end_off;
+//                ret.view();
+                write_block(ret);
+            }
+
+            Rank mid = (len + 1) / 2;
+            ret.init();
+            append_block(ret, true);
+            newKeys[newLen] = keys[rank];
+            newChilds[newLen++] = ret.addr;
+            for (Rank i = 0; i < mid; ++i) {
+                ret.push_back_key_leaf(keys[rank]);
+                ret.push_back_value(values[rank++]);
+            }
+            //ret keysize is (len + 1) / 2 >= leaf_max
+            ret.next = end_off;
+            write_block(ret);
+
+            ret.init();
+            append_block(ret, true);
+            newKeys[newLen] = keys[rank];
+            newChilds[newLen++] = ret.addr;
+
+            for (Rank i = mid; i < len; ++i) {
+                ret.push_back_key_leaf(keys[rank]);
+                ret.push_back_value(values[rank++]);
+            }
+
+            ret.next = invalid_off;
+            write_block(ret);
+
+//#define DEBUG3
+#ifdef DEBUG3
+            offset beg = 12;
+            while (beg != invalid_off) {
+                get_block(beg, ret);
+                cout << '(' << *(ret.key_leaf(0)) << ',' << beg << ',' <<*(ret.value(0)) << ')' << endl;
+                beg = ret.next;
+//                if (ret.next == invalid_off)
+                    ret.view();
+            }
+
+            for (int i = 0; i < newLen; ++i) {
+                cout << '(' << newKeys[i] << ',' << newChilds[i] << ')' << endl;
+            }
+#endif
+
+            build_parent(newKeys, newChilds, newLen);
+        }
+
+    private:
+
+        void build_parent(key_t keys[], offset childs[], int len) {
+            Node ret;
+            int rank = 0;
+
+            //if parent is root
+            if (len <= nonleaf_max) {
+                append_block(ret, false);
+                ret.push_back_child(childs[rank++]);
+                while (ret.pointSize < len) {
+                    ret.push_back_key_inner(keys[rank]);
+                    ret.push_back_child(childs[rank++]);
+                }
+                root_off = ret.addr;
+                write_block(ret);
+                return;
+            }
+
+            int newLen = 0;
+            key_t newKeys[len / nonleaf_max + 1];
+            offset newChilds[len / nonleaf_max + 1];
+
+            while (len > 2 * nonleaf_max) {
+                ret.init();
+                append_block(ret, false);
+
+                newKeys[newLen] = keys[rank];
+                newChilds[newLen++] = ret.addr;
+
+                ret.push_back_child(childs[rank++]);
+                len--;
+                while (ret.pointSize <= nonleaf_max) {
+                    ret.push_back_key_inner(keys[rank]);
+                    ret.push_back_child(childs[rank++]);
+                    len--;
+                }
+                write_block(ret);
+            }
+
+            Rank mid = (len + 1) / 2;
+            ret.init();
+            append_block(ret, false);
+            newKeys[newLen] = keys[rank];
+            newChilds[newLen++] = ret.addr;
+
+            ret.push_back_child(childs[rank++]);
+            for (Rank i = 1; i < mid; ++i) {
+                ret.push_back_key_inner(keys[rank]);
+                ret.push_back_child(childs[rank++]);
+            }
+            write_block(ret);
+
+            ret.init();
+            append_block(ret, false);
+            newKeys[newLen] = keys[rank];
+            newChilds[newLen++] = ret.addr;
+
+            ret.push_back_child(childs[rank++]);
+            for (Rank i = mid + 1; i < len; ++i) {
+                ret.push_back_key_inner(keys[rank]);
+                ret.push_back_child(childs[rank++]);
+            }
+
+            write_block(ret);
+
+            build_parent(newKeys, newChilds, newLen);
+        }
+
+    public:
         class iterator {
             friend class bptree;
         private:
@@ -1084,7 +1229,7 @@ namespace sjtu{
         void traverse() {
             tree_info();
             if (root_off == invalid_off) {
-                puts("empyt");
+                puts("empty");
                 return;
             }
             que.push(node(root_off, 0));

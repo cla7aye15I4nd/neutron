@@ -14,7 +14,7 @@ sjtu::bptree<int, long long> tree("aaa");
 std::map<int, int> mp;
 std::vector<int> v1;
 std::vector<int> v2;
-const int n = 500000;
+const int n = 200000;
 
 long long aa = 13131, bb = 5353, MOD = (long long) (1e9 + 7), now = 1;
 
@@ -60,8 +60,7 @@ void test_find() {
     for (int i = 1; i <= n; ++i) {
 //        cout << i << endl;
         if (tree.find(i) != -i) {
-            cout << tree.find(i) << endl;
-            puts("find error!");
+            cerr << "find error in " << tree.find(i) << endl;
             return;
         }
     }
@@ -167,27 +166,36 @@ void test2() {
     puts("Random test over");
 }
 
+int keys[n + 1];
+long long vals[n + 1];
 
-void test_clear() {
-    puts("Test: clear");
+void make_array() {
     for (int i = 1; i <= n; ++i) {
-        tree.insert(i, -i);
+        keys[i] = i;
+        vals[i] = -i;
     }
-    tree.clear_file();
-    puts("clear");
-    for (int i = n + 1; i < 2 * n; ++i) {
-//        cout << i << endl;
-        tree.insert(i, -i);
-    }
+}
 
-    puts("test clear pass");
+void build_tree() {
+    tree.build(keys + 1, vals + 1, n);
+}
+
+void test3() {
+    make_array();
+    build_tree();
+    test_find();
+    test_erase();
+
 }
 
 int main() {
     tree.clear_file();
     tree.tree_info();
-//    test_insert();
-    test1();
 
-    test2();
+//    test1();
+
+//    test2();
+
+    test3();
+    tree.traverse();
 }
