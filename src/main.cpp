@@ -1,4 +1,4 @@
- #include "term.hpp"
+#include "term.hpp"
 
 term sys;
 int main() {
