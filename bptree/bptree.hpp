@@ -713,8 +713,8 @@ namespace sjtu{
     public:
         bptree(const char *fname) {
             strcpy(filename, fname);
-            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t)) - 1;
-            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset)) - 1;
+            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t));
+            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset));
 
             file = fopen(filename, "rb+");
             if (!file) {
@@ -978,7 +978,7 @@ namespace sjtu{
                 newKeys[newLen] = keys[rank];
                 newChilds[newLen++] = ret.addr;
 
-                while (ret.keySize <= leaf_max) {
+                while (ret.keySize < leaf_max) {
                     ret.push_back_key_leaf(keys[rank]);
                     ret.push_back_value(values[rank++]);
                     len--;
@@ -1065,7 +1065,7 @@ namespace sjtu{
 
                 ret.push_back_child(childs[rank++]);
                 len--;
-                while (ret.pointSize <= nonleaf_max) {
+                while (ret.pointSize < nonleaf_max) {
                     ret.push_back_key_inner(keys[rank]);
                     ret.push_back_child(childs[rank++]);
                     len--;
