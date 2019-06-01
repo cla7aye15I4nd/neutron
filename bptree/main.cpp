@@ -183,6 +183,7 @@ void build_tree() {
 void test3() {
     make_array();
     build_tree();
+//    tree.traverse();
     test_find();
     test_erase();
 

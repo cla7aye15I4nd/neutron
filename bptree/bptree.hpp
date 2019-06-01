@@ -20,7 +20,7 @@ namespace sjtu{
     typedef short Rank;
     typedef int offset;
 
-    const int blockSize = 4096;
+    const int blockSize = 64;
     const offset invalid_off = -1;
 
     //root_off + end_off + trash_off = 12 bytes
