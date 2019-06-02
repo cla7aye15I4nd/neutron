@@ -4,7 +4,7 @@ Cprocess = None
 
 def link_start():
     global Cprocess
-    Cprocess = Popen('D:\Files\#codes\database.exe',shell=True,stdin=PIPE,stdout=PIPE)
+    Cprocess = Popen('./database',shell=True,stdin=PIPE,stdout=PIPE)
 
 def link_command(s):
     global Cprocess
