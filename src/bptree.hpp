@@ -272,7 +272,7 @@ namespace sjtu{
         };
 
         int cnt;
-        Node pool[50];
+        Node pool[4];
         char buf[blockSize];
 
         Rank leaf_max;
