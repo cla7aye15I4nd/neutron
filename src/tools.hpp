@@ -14,6 +14,9 @@ extern bitManager bitMgr;
 extern char bin[20];
 extern ticketnum_manager ticketMgr;
 
+const ull cast = ((ull)1 << 11) - 1;
+const ull castAll = ((ull)1 << 55) - 1;
+
 void scanDouble(int &x) {
     scanf("%s", bin);
     int p = 0;
@@ -196,13 +199,19 @@ public:
 	void print_detailed(short start, short end, short date) {
 		int p = 0;
 		while (stop[p].loc != start) p++;
-		short *oc;
+		ull *oc;
 		ticketMgr.getTicketNum(trainID_h, oc);
 		int q = p, occupied[5] = {0, 0, 0, 0, 0};
+		ull tmp;
+		oc = oc + q * 30 + date - 1;
 		while (stop[q].loc != end) {
-			for (int i = 0; i < numPrice; i++)
-				if (oc[det(q, date, i)] > occupied[i])
-					occupied[i] = oc[det(q, date, i)];
+            tmp = oc[0];
+			for (int i = 0; i < numPrice; i++) {
+                if ((tmp & ((1 << 11) - 1)) > occupied[i])
+                    occupied[i] = (tmp & ((1 << 11) - 1));
+                tmp >>= 11;
+			}
+			oc = oc + 30;
 			q++;
 		}
 		printf("%s %s ", trainID.ch, hashC[start].ch);
@@ -236,17 +245,31 @@ public:
 		int p = 0;
 		while (stop[p].loc != start) p++;
 		int q = p;
-		short *oc;
-        ticketMgr.getTicketNum(trainID_h, oc);
+		ull *oc;
+        bool hiking = ticketMgr.getTicketNum(trainID_h, oc);
 		short occupied = 0;
-		while (stop[q].loc != end) {
-			if (oc[det(q, date, kind)] < occupied)
-				occupied = oc[det(q, date, kind)];
-			q++;
-		}
+        ull tmp;
+        oc = oc + q * 30 + (date - 1);
+        while (stop[q].loc != end) {
+            tmp = oc[0];
+            for (int i = 0; i < numPrice; i++) {
+                tmp >>= 11 * kind;
+                if ((tmp & ((1 << 11) - 1)) > occupied)
+                    occupied = (tmp & ((1 << 11) - 1));
+            }
+            oc = oc + 30;
+            q++;
+        }
 		if (occupied + num > 2000) return false;
-		for (int i = p; i < q; i++)
-			oc[det(i, date, kind)] += num;
+		oc = oc - q * 30;
+		for (int i = p; i < q; i++) {
+            //fprintf(stderr, "%lld %lld\n", ((oc[i * 30] & (cast << (kind * 11))) + (num << (kind * 11)) , oc[i * 30] & (castAll ^ (cast << (kind * 11)))));
+            //oc[i * 30] = (((oc[i * 30] & (cast << (kind * 11))) + (num << (kind * 11)) ^ (oc[i * 30] & (castAll ^ (cast << (kind * 11))))));
+		    ull &x = oc[i * 30];
+		    x ^= (x & (cast << (kind * 11))) ^ ((x & (cast << (kind * 11))) + ((ull)num << (kind * 11)));
+		    //fprintf(stderr, "!!!%lld %lld %lld %lld\n", x, cast, (x & (cast << (kind * 11))), (((ull)num << (kind * 11))));
+		}
+		if (hiking) ticketMgr.rectify(numStation);
 		bridgeN = 0;
 		bridge[0].start = start;
 		bridge[0].end = end;
@@ -268,10 +291,14 @@ public:
 		while (stop[p].loc != start) p++;
 		int q = p;
 		while (stop[q].loc != end) q++;
-		short *oc;
-        ticketMgr.getTicketNum(trainID_h, oc);
-		for (int i = p; i < q; i++)
-			oc[det(i, date, kind)] -= num;
+		ull *oc;
+        bool hiking = ticketMgr.getTicketNum(trainID_h, oc);
+        oc = oc + date - 1;
+        for (int i = p; i < q; i++) {
+            ull &x = oc[i * 30];
+            x ^= (x & (cast << (kind * 11))) ^ ((x & (cast << (kind * 11))) - ((ull)num << (kind * 11)));
+        }
+        if (hiking) ticketMgr.rectify(numStation);
 	}
 };
 #endif

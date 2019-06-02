@@ -15,7 +15,7 @@ bool equals(int *a, int *b, int length) {
 template <size_t length>
 class str {
 public:
-    char ch[length];
+    char ch[length+1];
     
     str(){ memset(ch, 0, sizeof(ch)); }
     
