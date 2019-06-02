@@ -38,15 +38,10 @@ def make_app():
         (r'/avatar', AvatarHandler),
         (r'/upload_avatar', UploadAvatarHandler),
         (r'/verify_code', VerifyHandler),
-<<<<<<< HEAD
         (r'/buyticket', TicketHandler),
         (r'/manage', ManageHandler),
         (r".*", BaseHandler)
-
-    ], **config.app_settings)
-=======
     ] + admin.route, **config.app_settings)
->>>>>>> master
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
