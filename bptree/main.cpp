@@ -185,6 +185,7 @@ void test3() {
     build_tree();
 //    tree.traverse();
     test_find();
+    test_iterator();
     test_erase();
 
 }
@@ -198,5 +199,5 @@ int main() {
 //    test2();
 
     test3();
-    tree.traverse();
+//    tree.traverse();
 }

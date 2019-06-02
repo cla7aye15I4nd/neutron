@@ -4,30 +4,59 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include <queue>
+#include "tools.hpp"
 
 using std::cout;
 using std::cin;
 using std::endl;
-using std::cerr;
-using std::queue;
-
 //#define DEBUG
 #define VIEW
 
 namespace sjtu{
+    template <typename key_t>
+    void copy(char* dest, char* src, size_t length, size_t step1) {
+        size_t i;
+        size_t step2 = step1 * 2, step3 = step1 * 3, step4 = step1 * 4;
+        for (i = 0; i + 4 < length; i += 4) {
+            *((key_t*) dest) = *((key_t*) src);
+            *((key_t*) (dest + step1)) = *((key_t*) (src + step1));
+            *((key_t*) (dest + step2)) = *((key_t*) (src + step2));
+            *((key_t*) (dest + step3)) = *((key_t*) (src + step3));
+            dest += step4; src += step4;
+        }
+        for (; i < length; ++i) {
+            *((key_t*) dest) = *((key_t*) src);
+            dest += step1; src += step1;
+        }
+    }
+
+    template <typename key_t>
+    void rcopy(char* dest, char* src, size_t length, size_t step1) {
+        size_t i;
+        size_t step2 = step1 * 2, step3 = step1 * 3, step4 = step1 * 4;
+        for (i = 0; i + 4 < length; i += 4) {
+            *((key_t*) dest) = *((key_t*) src);
+            *((key_t*) (dest - step1)) = *((key_t*) (src - step1));
+            *((key_t*) (dest - step2)) = *((key_t*) (src - step2));
+            *((key_t*) (dest - step3)) = *((key_t*) (src - step3));
+            dest -= step4; src -= step4;
+        }
+        for (; i < length; ++i) {
+            *((key_t*) dest) = *((key_t*) src);
+            dest -= step1; src -= step1;
+        }
+    }
+
     typedef short Rank;
     typedef int offset;
 
-    const int blockSize = 512;
+    const int blockSize = 4096;
     const offset invalid_off = -1;
 
     //root_off + end_off + trash_off = 12 bytes
-    const int bptree_byte = 12;
+    const offset bptree_byte = 12;
     //isLeaf + next + keySize + pointSize = 1 + 4 + 2 + 2 = 9 bytes
-    const int node_byte = 9;
-
-    const int info_byte = blockSize - node_byte;
+    const offset node_byte = 9;
 
     template <class key_t, class value_t>
     class bptree {
@@ -43,7 +72,7 @@ namespace sjtu{
 
             bool isLeaf;
 
-            char info[info_byte];
+            char info[blockSize - node_byte + sizeof(key_t) + sizeof(value_t) + 4];
 
             Node(bool leaf = true) {
                 isLeaf = leaf;
@@ -56,29 +85,25 @@ namespace sjtu{
             ~Node() {
             }
 
-            void init(bool leaf = true) {
-                isLeaf = leaf;
-                addr = invalid_off;
-                next = invalid_off;
-                keySize = 0;
-                pointSize = 0;
-            }
+#define LEAF_STEP  (sizeof(value_t) + sizeof(key_t))
+#define INNER_STEP (sizeof(offset) + sizeof(key_t))
+#define CHILD_STEP (sizeof(offset) + sizeof(key_t))
+#define VALUE_STEP (sizeof(value_t) + sizeof(key_t))
+#define next_key_inner(ptr) ((key_t*) ((char *) ptr + INNER_STEP))
+#define next_key_leaf(ptr)  ((key_t*) ((char *) ptr + LEAF_STEP))
 
-#define next_key_inner(ptr) ((key_t*) ((char *) ptr + sizeof(offset) + sizeof(key_t)))
-#define next_key_leaf(ptr)  ((key_t*) ((char *) ptr + sizeof(value_t) + sizeof(key_t)))
-
-            key_t* key_inner(Rank n) {
-                return (key_t *)(info + (sizeof(offset) + sizeof(key_t)) * n + sizeof(offset));
-            }
-            key_t* key_leaf(Rank n) {
-                return (key_t *)(info + (sizeof(value_t) + sizeof(key_t)) * n + sizeof(value_t));
-            }
-            value_t* value(Rank n) {
-                return (value_t *)(info + (sizeof(value_t) + sizeof(key_t)) * n);
-            }
-            offset* child(Rank n) {
-                return (offset *)(info + (sizeof(offset) + sizeof(key_t)) * n);
-            }
+        key_t* key_inner(Rank n) {
+            return (key_t *)(info + (sizeof(offset) + sizeof(key_t)) * n + sizeof(offset));
+        }
+        key_t* key_leaf(Rank n) {
+            return (key_t *)(info + (sizeof(value_t) + sizeof(key_t)) * n + sizeof(value_t));
+        }
+        value_t* value(Rank n) {
+            return (value_t *)(info + (sizeof(value_t) + sizeof(key_t)) * n);
+        }
+        offset* child(Rank n) {
+            return (offset *)(info + (sizeof(offset) + sizeof(key_t)) * n);
+        }
 
 #define BINARY_SEARCH_LOWER(statement, rejudge) do{                     \
                 Rank l = 0, r = keySize;                                \
@@ -160,61 +185,46 @@ namespace sjtu{
             }
 
             void insert_key_leaf(Rank idx, const key_t &Key) {
-                for (Rank i = keySize; i > idx; --i)
-                    *key_leaf(i) = *key_leaf(i - 1);
+                rcopy<key_t>((char*) key_leaf(keySize), (char*) key_leaf(keySize - 1), keySize - idx + 1, LEAF_STEP);
                 *key_leaf(idx) = Key;
                 keySize++;
             }
 
             void insert_value(Rank idx, const value_t &Value) {
-                for (Rank i = pointSize; i > idx; --i)
-                    *value(i) = *value(i - 1);
-
+                rcopy<value_t>((char*) value(pointSize), (char*) value(pointSize - 1), pointSize - idx + 1, VALUE_STEP);
                 *value(idx) = Value;
                 pointSize++;
             }
 
             void insert_key_inner(Rank idx, const key_t &Key) {
-                for (Rank i = keySize; i > idx; --i)
-                    *key_inner(i) = *key_inner(i - 1);
-
+                rcopy<key_t>((char*) key_inner(keySize), (char*) key_inner(keySize - 1), keySize - idx + 1, INNER_STEP);
                 *key_inner(idx) = Key;
                 keySize++;
             }
 
             void insert_child(Rank idx, const offset &off) {
-                for (Rank i = pointSize; i > idx; --i)
-                    *child(i) = *child(i - 1);
-
-                *child(idx) = off;
+                rcopy<offset>((char*) child(pointSize), (char*) child(pointSize - 1), pointSize - idx + 1, CHILD_STEP);
+                *child(idx) = off; 
                 pointSize++;
             }
 
             void erase_key_leaf(Rank idx) {
-                for (Rank i = idx + 1; i < keySize; ++i)
-                    *key_leaf(i - 1) = *key_leaf(i);
-
+                copy<key_t>((char*) key_leaf(idx), (char*) key_leaf(idx + 1), keySize - idx, LEAF_STEP);
                 keySize--;
             }
 
             void erase_value(Rank idx) {
-                for (Rank i = idx + 1; i < pointSize; ++i)
-                    *value(i - 1) = *value(i);
-
+                copy<value_t>((char*) value(idx), (char*) value(idx + 1), pointSize - idx, VALUE_STEP);
                 pointSize--;
             }
 
             void erase_key_inner(Rank idx) {
-                for (Rank i = idx + 1; i < keySize; ++i)
-                    *key_inner(i - 1) = *key_inner(i);
-
+                copy<key_t>((char*) key_inner(idx), (char*) key_inner(idx + 1), keySize - idx, INNER_STEP);
                 keySize--;
             }
 
             void erase_child(Rank idx) {
-                for (Rank i = idx + 1; i < pointSize; ++i)
-                    *child(i - 1) = *child(i);
-
+                copy<offset>((char*) child(idx), (char*) child(idx + 1), pointSize - idx, CHILD_STEP);
                 pointSize--;
             }
 
@@ -253,17 +263,7 @@ namespace sjtu{
 
         };
 
-        struct pair {
-            bool first;
-            bool second;
-
-            pair(bool a = true, bool b = true) : first(a), second(b) {}
-        };
-
-        int cnt;
-        Node stack[50];
         char buf[blockSize];
-//        offset buf_addr;
 
         Rank leaf_max;
         Rank nonleaf_max;
@@ -280,15 +280,15 @@ namespace sjtu{
 
     private:
         void get_block(offset off, Node &ret) {
-//            if (ret.addr == off)
-//                return;
+            if (ret.addr == off)
+                return;
             ret.addr = off;
             fseek(file, off, SEEK_SET);
 
+            fread(&ret.isLeaf, sizeof(bool), 1, file);
             fread(&ret.next, sizeof(offset), 1, file);
             fread(&ret.keySize, sizeof(Rank), 1, file);
             fread(&ret.pointSize, sizeof(Rank), 1, file);
-            fread(&ret.isLeaf, sizeof(bool), 1, file);
 
             if (ret.isLeaf) {
                 fread(ret.info, 1, sizeof(key_t) * ret.keySize + sizeof(value_t) * ret.pointSize, file);
@@ -310,10 +310,10 @@ namespace sjtu{
         void write_block(Node &cur) {
             fseek(file, cur.addr, SEEK_SET);
 
+            fwrite(&cur.isLeaf, sizeof(bool), 1, file);
             fwrite(&cur.next, sizeof(offset), 1, file);
             fwrite(&cur.keySize, sizeof(Rank), 1, file);
             fwrite(&cur.pointSize, sizeof(Rank), 1, file);
-            fwrite(&cur.isLeaf, sizeof(bool), 1, file);
 
             if (cur.isLeaf) {
                 fwrite(cur.info, 1, sizeof(key_t) * cur.keySize + sizeof(value_t) * cur.pointSize, file);
@@ -336,7 +336,6 @@ namespace sjtu{
         }
 
         void append_block(Node &ret, bool leaf) {
-            ret.init();
             if (trash_off == invalid_off) {
                 ret.addr = end_off;
                 end_off += blockSize;
@@ -400,8 +399,6 @@ namespace sjtu{
         void split_leaf(Node &n, Node &n2) {
             Rank mid = (leaf_max + 1) / 2;
 
-            key_t midKey = *(n.key_leaf(mid - 1));
-
             for (Rank i = mid; i < n.keySize; ++i) {
                 *(n2.key_leaf(i - mid)) = *(n.key_leaf(i));
             }
@@ -416,105 +413,107 @@ namespace sjtu{
             n.pointSize = mid;
         }
 
-        pair insert_node(Node &cur, const key_t &Key, const value_t &Value) {
-            if (cur.isLeaf) {
-                Rank idx = cur.search_upper_leaf(Key);
 
-                if (idx == -1) {
-                    //fail
-                    if (*(cur.key_leaf(cur.keySize - 1)) == Key)
-                        return pair(false, false);
-                    //success
-                    else {
-                        cur.push_back_key_leaf(Key);
-                        cur.push_back_value(Value);
-                        return pair(true, true);
-                    }
-                }
+        bool insert_in_leaf(Node &cur, const key_t &Key, const value_t &Value) {
+            Rank idx = cur.search_upper_leaf(Key);
+
+            if (idx == -1) {
+                if (*(cur.key_leaf(cur.keySize - 1)) == Key)
+                    return false;
                 else {
-                    //fail
-                    if (idx != 0 && *(cur.key_leaf(idx - 1)) == Key)
-                        return pair(false, false);
-                    //success
-                    else {
-                        cur.insert_key_leaf(idx, Key);
-                        cur.insert_value(idx, Value);
-                        return pair(true, true);
-                    }
+                    cur.push_back_key_leaf(Key);
+                    cur.push_back_value(Value);
+                    return true;
                 }
             }
             else {
-                Node &ch = stack[cnt++];
+                if (idx != 0 && *(cur.key_leaf(idx - 1)) == Key)
+                    return false;
+                else {
+                    cur.insert_key_leaf(idx, Key);
+                    cur.insert_value(idx, Value);
+                    return true;
+                }
+            }
+
+        }
+
+
+        bool insert_node(Node &cur, const key_t &Key, const value_t &Value) {
+            if (cur.isLeaf) {
+                bool flag = insert_in_leaf(cur, Key, Value);
+#ifdef DEBUG
+                puts("view current node");
+                cur.view();
+#endif
+                return flag;
+            }
+            else {
+                Node ch;
                 Rank chPos = find_child(Key, cur, ch);
 
-                pair flag = insert_node(ch, Key, Value);
+                bool flag = insert_node(ch, Key, Value);
 
-                if (!flag.first) {
-                    cnt--;
+                if (!flag) {
                     return false;
                 }
-
-                if (ch.isLeaf) {
-                    if (ch.keySize <= leaf_max) {
-                        write_block(ch);
-                        cnt--;
-                        return pair(true, false);
-                    }
-                    else {
-                        Node &newLeaf = stack[cnt++];
-                        append_block(newLeaf, true);
-
-                        newLeaf.next = ch.next;
-                        ch.next = newLeaf.addr;
-
-                        split_leaf(ch, newLeaf);
-
-                        cur.insert_key_inner(chPos, *(newLeaf.key_leaf(0)));
-                        cur.insert_child(chPos + 1, newLeaf.addr);
-
-                        write_block(ch);
-                        write_block(newLeaf);
-                        cnt -= 2;
-
-                        return pair(true, true);
-                    }
-                }
-                    // child is inner node
                 else {
-                    if (ch.pointSize <= nonleaf_max) {
-                        if (flag.second) {
+                    if (ch.isLeaf) {
+                        if (ch.keySize <= leaf_max) {
                             write_block(ch);
+                            return true;
                         }
-                        cnt--;
-                        return pair(true, false);
+                        else {
+                            Node newLeaf;
+                            append_block(newLeaf, true);
+
+                            newLeaf.next = ch.next;
+                            ch.next = newLeaf.addr;
+
+                            split_leaf(ch, newLeaf);
+
+                            cur.insert_key_inner(chPos, *(newLeaf.key_leaf(0)));
+                            cur.insert_child(chPos + 1, newLeaf.addr);
+
+                            write_block(ch);
+                            write_block(newLeaf);
+
+                            return true;
+                        }
                     }
+                        // child is inner node
                     else {
-                        key_t midKey;
+                        if (ch.pointSize <= nonleaf_max) {
+                            write_block(ch);
+                            return true;
+                        }
+                        else {
+                            key_t midKey;
 
-                        Node &newInner = stack[cnt++];
-                        append_block(newInner, false);
+                            Node newInner;
+                            append_block(newInner, false);
 
-                        midKey = split_nonleaf(ch, newInner);
+                            midKey = split_nonleaf(ch, newInner);
 
-                        cur.insert_key_inner(chPos, midKey);
-                        cur.insert_child(chPos + 1, newInner.addr);
+                            cur.insert_key_inner(chPos, midKey);
+                            cur.insert_child(chPos + 1, newInner.addr);
 
-                        write_block(ch);
-                        write_block(newInner);
-                        cnt -= 2;
+                            write_block(ch);
+                            write_block(newInner);
 
-                        return pair(true, true);
+                            return true;
+                        }
                     }
                 }
             }
         }
 
-        pair erase_node(Node &cur, const key_t &Key) {
+        bool erase_node(Node &cur, const key_t &Key) {
             if (cur.isLeaf) {
                 Rank delPos = cur.search_leaf(Key);
 
                 if (delPos == -1)
-                    return pair(false, false);
+                    return false;
                 else {
                     cur.erase_key_leaf(delPos);
                     cur.erase_value(delPos);
@@ -522,29 +521,27 @@ namespace sjtu{
 //                    puts("current node is a leaf node");
 //                    cur.view();
 //#endif
-                    return pair(true, true);
+                    return true;
                 }
             }
             else {
-                Node &ch = stack[cnt++];
+                Node ch;
 
                 Rank chPos = find_child(Key, cur, ch);
 
-                pair flag = erase_node(ch, Key);
+                bool flag = erase_node(ch, Key);
 
-                if (!flag.first) {
-                    cnt--;
-                    return pair(false, false);
+                if (!flag) {
+                    return false;
                 }
 
                 if (ch.isLeaf) {
                     if (ch.keySize >= (leaf_max + 1) / 2) {
                         write_block(ch);
-                        cnt--;
-                        return pair(true, true);
+                        return true;
                     }
                     else {
-                        Node &sbl = stack[cnt++];
+                        Node sbl;
                         Rank sblPos;
                         Rank keyPos;
 
@@ -585,9 +582,8 @@ namespace sjtu{
 
                             write_block(*leftNode);
                             write_trash(*rightNode);
-                            cnt -= 2;
 
-                            return pair(true, true);
+                            return true;
                         }
                         else {
                             if (sblPos < chPos) {
@@ -604,9 +600,8 @@ namespace sjtu{
 
                                 write_block(ch);
                                 write_block(sbl);
-                                cnt -= 2;
 
-                                return pair(true, true);
+                                return true;
                             }
                             else {
                                 key_t borrow_key = *(sbl.key_leaf(0));
@@ -622,9 +617,8 @@ namespace sjtu{
 
                                 write_block(ch);
                                 write_block(sbl);
-                                cnt -= 2;
 
-                                return pair(true, true);
+                                return true;
                             }
                         }
                     }
@@ -632,14 +626,11 @@ namespace sjtu{
                     // ch is inner node
                 else {
                     if (ch.pointSize >= (nonleaf_max + 1) / 2) {
-                        if (flag.second) {
-                            write_block(ch);
-                        }
-                        cnt--;
+                        write_block(ch);
                         return true;
                     }
                     else {
-                        Node &sbl = stack[cnt++];
+                        Node sbl;
                         Rank sblPos;
                         Rank keyPos;
 
@@ -681,9 +672,8 @@ namespace sjtu{
 
                             write_block(*leftNode);
                             write_trash(*rightNode);
-                            cnt -= 2;
 
-                            return pair(true, true);
+                            return true;
                         }
                         else {
                             if (sblPos < chPos) {
@@ -700,9 +690,8 @@ namespace sjtu{
 
                                 write_block(ch);
                                 write_block(sbl);
-                                cnt -= 2;
 
-                                return pair(true, true);
+                                return true;
                             }
                             else {
                                 key_t borrow_key = *(sbl.key_inner(0));
@@ -718,9 +707,8 @@ namespace sjtu{
 
                                 write_block(ch);
                                 write_block(sbl);
-                                cnt -= 2;
 
-                                return pair(true, true);
+                                return true;
                             }
                         }
                     }
@@ -729,21 +717,16 @@ namespace sjtu{
         }
 
     public:
-        bptree(const char *fname) {
+        void init(const char *fname) {
             strcpy(filename, fname);
-            //先开小一点，免得出问题
-            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t)) - 1;
-            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset)) - 1;
+            leaf_max = (blockSize -  node_byte) / (sizeof(key_t) + sizeof(value_t));
+            nonleaf_max = (blockSize - node_byte + sizeof(key_t)) / (sizeof(key_t) + sizeof(offset));
 
             file = fopen(filename, "rb+");
             if (!file) {
                 file = fopen(filename, "wb+");
                 root_off = trash_off = invalid_off;
                 end_off = bptree_byte;
-
-                fwrite(&root_off, sizeof(offset), 1, file);
-                fwrite(&end_off, sizeof(offset), 1, file);
-                fwrite(&trash_off, sizeof(offset), 1, file);
             }
             else {
                 fread(&root_off, sizeof(offset), 1, file);
@@ -752,7 +735,7 @@ namespace sjtu{
             }
         }
 
-        ~bptree() {
+        void write_back() {
             fseek(file, 0, SEEK_SET);
             fwrite(&root_off, sizeof(offset), 1, file);
             fwrite(&end_off, sizeof(offset), 1, file);
@@ -764,19 +747,14 @@ namespace sjtu{
             file = fopen(filename, "wb+");
             root_off = trash_off = invalid_off;
             end_off = bptree_byte;
-
-            fwrite(&root_off, sizeof(offset), 1, file);
-            fwrite(&end_off, sizeof(offset), 1, file);
-            fwrite(&trash_off, sizeof(offset), 1, file);
         }
 
         value_t find(const key_t &Key) {
-            Node &t = stack[cnt++];
+            Node t;
             find_leaf(Key, t);
 
             Rank idx = t.search_leaf(Key);
 
-            cnt--;
             if (idx == -1)
                 return value_t();
             else
@@ -784,11 +762,10 @@ namespace sjtu{
         }
 
         int count(const key_t &Key) {
-            Node &t = stack[cnt++];
+            Node t;
             find_leaf(Key, t);
 
             Rank idx = t.search_leaf(Key);
-            cnt--;
 
             if (idx == -1)
                 return 0;
@@ -797,11 +774,10 @@ namespace sjtu{
         }
 
         bool modify(const key_t &Key, const value_t &Value) {
-            Node &t = stack[cnt++];
+            Node t;
             find_leaf(Key, t);
 
             Rank idx = t.search_leaf(Key);
-            cnt--;
 
             if (idx == -1) {
                 return false;
@@ -814,7 +790,7 @@ namespace sjtu{
         }
 
         bool insert(const key_t &Key, const value_t &Value) {
-            Node &root = stack[cnt++];
+            Node root;
 
             if (root_off == invalid_off) {
                 append_block(root, true);
@@ -824,16 +800,14 @@ namespace sjtu{
 
                 root_off = root.addr;
                 write_block(root);
-                cnt--;
 
                 return true;
             }
 
             get_root(root);
-            pair flag = insert_node(root, Key, Value);
+            bool flag = insert_node(root, Key, Value);
 
-            if (!flag.first) {
-                cnt--;
+            if (!flag) {
                 return false;
             }
             else {
@@ -845,7 +819,7 @@ namespace sjtu{
 //                        puts("new root(leaf)");
 //                        cout << dbg1 << endl;
 //#endif
-                        Node &newLeaf = stack[cnt++];
+                        Node newLeaf;
                         append_block(newLeaf, true);
 
                         split_leaf(root, newLeaf);
@@ -857,7 +831,7 @@ namespace sjtu{
                         newLeaf.next = root.next;
                         root.next = newLeaf.addr;
 
-                        Node &newRoot = stack[cnt++];
+                        Node newRoot;
                         append_block(newRoot, false);
 
                         newRoot.push_back_key_inner(*(newLeaf.key_leaf(0)));
@@ -872,15 +846,10 @@ namespace sjtu{
                         write_block(newRoot);
                         write_block(root);
                         write_block(newLeaf);
-                        cnt -= 3;
-
                         return true;
                     }
                     else {
-                        if (flag.second) {
-                            write_block(root);
-                        }
-                        cnt--;
+                        write_block(root);
                         return true;
                     }
                 }
@@ -893,11 +862,11 @@ namespace sjtu{
 //                        cout << dbg2 << endl;
 //#endif
 
-                        Node &newInner = stack[cnt++];
+                        Node newInner;
                         append_block(newInner, false);
 
 
-                        Node &newRoot = stack[cnt++];
+                        Node newRoot;
                         append_block(newRoot, false);
 
                         key_t midKey = split_nonleaf(root, newInner);
@@ -910,15 +879,11 @@ namespace sjtu{
                         write_block(newRoot);
                         write_block(root);
                         write_block(newInner);
-                        cnt -= 3;
 
                         return true;
                     }
                     else {
-                        if (flag.second) {
-                            write_block(root);
-                        }
-                        cnt--;
+                        write_block(root);
                         return true;
                     }
                 }
@@ -929,13 +894,12 @@ namespace sjtu{
             if (root_off == invalid_off)
                 return false;
 
-            Node &root = stack[cnt++];
+            Node root;
             get_root(root);
 
-            pair flag = erase_node(root, Key);
+            bool flag = erase_node(root, Key);
 
-            if (!flag.first) {
-                cnt--;
+            if (!flag) {
                 return false;
             }
 
@@ -947,14 +911,10 @@ namespace sjtu{
                     trash_off = root.addr;
 
                     write_trash(root);
-                    cnt--;
                     return true;
                 }
                 else {
-                    if (flag.second) {
-                        write_block(root);
-                    }
-                    cnt--;
+                    write_block(root);
                     return true;
                 }
             }
@@ -965,15 +925,11 @@ namespace sjtu{
                     root.next = trash_off;
                     trash_off = root.addr;
 
-                    write_trash(root);
-                    cnt--;
+                    write_block(root);
                     return true;
                 }
                 else {
-                    if (flag.second) {
-                        write_block(root);
-                    }
-                    cnt--;
+                    write_block(root);
                     return true;
                 }
             }
@@ -999,17 +955,15 @@ namespace sjtu{
         };
 
         void next_iterator(iterator &it) {
-            if (it.addr == invalid_off)
-                return;
+            fseek(file, it.addr + 1, SEEK_SET);
+            fread(buf, sizeof(offset), 1, file);
+            offset nxt = *(offset *)(buf);
+            fread(buf, sizeof(Rank), 1, file);
+            Rank key_size = *(Rank *)(buf);
 
-            if (it.idx == *(Rank *)(buf + 4) - 1) {
-                offset nxt = *(offset *)(buf);
+            if (it.idx == key_size - 1) {
                 it.addr = nxt;
                 it.idx = 0;
-                if (nxt != invalid_off) {
-                    fseek(file, nxt, SEEK_SET);
-                    fread(buf, 1, blockSize, file);
-                }
             }
             else {
                 it.idx++;
@@ -1017,21 +971,21 @@ namespace sjtu{
         }
 
         key_t retKey(iterator it) {
-//            fseek(file, it.addr + node_byte + sizeof(value_t) * (it.idx + 1) + sizeof(key_t) * it.idx, SEEK_SET);
-//            fread(buf, sizeof(key_t), 1, file);
+            fseek(file, it.addr + node_byte + sizeof(value_t) * (it.idx + 1) + sizeof(key_t) * it.idx, SEEK_SET);
+            fread(buf, sizeof(key_t), 1, file);
 
-            return *(key_t *)(buf + node_byte + (sizeof(value_t) + sizeof(key_t)) * it.idx + sizeof(value_t));
+            return *(key_t *)(buf);
         }
 
         value_t retValue(iterator it) {
-//            fseek(file, it.addr + node_byte + sizeof(value_t) * it.idx + sizeof(key_t) * it.idx, SEEK_SET);
-//            fread(buf, sizeof(value_t), 1, file);
+            fseek(file, it.addr + node_byte + sizeof(value_t) * it.idx + sizeof(key_t) * it.idx, SEEK_SET);
+            fread(buf, sizeof(value_t), 1, file);
 
-            return *(value_t *)(buf + node_byte + (sizeof(value_t) + sizeof(key_t)) * it.idx);
+            return *(value_t *)(buf);
         }
 
         iterator lower_bound(const key_t &Key) {
-            Node &tmp = stack[cnt++];
+            Node tmp;
             find_leaf(Key, tmp);
 
             offset addr;
@@ -1044,13 +998,7 @@ namespace sjtu{
                 addr = tmp.addr;
             }
 
-            cnt--;
             iterator ret(addr, idx);
-            if (addr != invalid_off) {
-                fseek(file, addr, SEEK_SET);
-                fread(buf, 1, blockSize, file);
-            }
-//            buf_addr = addr;
             return ret;
         }
 
@@ -1062,12 +1010,12 @@ namespace sjtu{
         }
 
         void view_root() {
-            Node &root = stack[cnt];
+            Node root;
             get_root(root);
             puts("root");
             cout << "keysize = " << root.keySize << " pointsize = " << root.pointSize << endl;
             root.view();
-//            Node &ch = stack[cnt++];
+//            Node ch;
 //            if (!root.isLeaf) {
 //                for (Rank i = 0; i < root.pointSize; ++i) {
 //                    get_block(*(root.child(i)), ch);
@@ -1082,7 +1030,7 @@ namespace sjtu{
             if (addr == invalid_off)
                 return;
 
-            Node &t = stack[cnt++];
+            Node t;
             get_block(addr, t);
             cout << "keysize = " << t.keySize << " pointsize = " << t.pointSize << endl;
             t.view();
@@ -1092,15 +1040,7 @@ namespace sjtu{
                     view(*(t.child(i)));
                 }
             }
-            cnt--;
         }
-
-        //todo
-        queue<offset> que;
-        void traverse() {
-
-        }
-
 #endif
 
     };
