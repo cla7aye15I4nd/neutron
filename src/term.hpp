@@ -87,20 +87,21 @@ public:
             case 15:
                 puts("1");
                 user_system.clear();
-                //TODO
-                if (!load_train_system) {
-                    hashC.init();
-                    hashT.init();
-                    bitMgr.init();
-                    train_system.init();
-                    ticketMgr.init();
-                    load_train_system = true;
-                }
-                train_system.clear();
-                ticketMgr.clear();
-                hashT.clear();
-                hashC.clear();
 
+                // if (!load_train_system) {
+                //     hashC.init();
+                //     hashT.init();
+                //     bitMgr.init();
+                //     train_system.init();
+                //     ticketMgr.init();
+                //     load_train_system = true;
+                // }
+                if (load_train_system) {
+                    train_system.clear();
+                    ticketMgr.clear();
+                    hashT.clear();
+                    hashC.clear();
+                }
                 break;
             case 16:
                 puts("BYE");

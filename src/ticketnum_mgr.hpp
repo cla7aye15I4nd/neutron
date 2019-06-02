@@ -10,8 +10,7 @@
 typedef unsigned long long ull;
 
 const int trainN = 5940;
-const int stopN = 50150;
-const int bound = 20000 * 30;
+const int bound = 40000 * 30;
 
 class ticketnum_manager{
     const char STR[14] = "ticket_mgr.db";
