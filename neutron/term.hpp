@@ -25,13 +25,14 @@ ticketData bridge[100];
 char bin[20];
 trainData temp;
 
-static const int orderN = 19;
+static const int orderN = 23;
 
 const std::string operators[] = {
 	"register", "login", "query_profile", "modify_profile", "modify_privilege",
 	"query_ticket", "query_transfer", "buy_ticket", "query_order", "refund_ticket",
 	"add_train", "sale_train", "query_train", "delete_train", "modify_train",
-	"clean", "exit", "query_order_all", "query_station", "query_ticket_all"
+	"clean", "exit", "query_order_all", "query_station", "query_ticket_all",
+	"query_ticket_available", "query_ticket_transfer","query_ticket_transfer_available"
 };
 
 class term {
@@ -118,8 +119,9 @@ public:
 					bitMgr.write_back();
 					train_system.write_back();
 					ticketMgr.write_back();
+					user_system.write_back();
 				}
-				exit(0);
+				return;
 			default:
 				run_train(op);
 			}

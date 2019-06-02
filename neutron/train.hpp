@@ -96,7 +96,7 @@ public:
 		date_s.read();
 		catalog.read();
 		date = (date_s[8] - '0') * 10 + (date_s[9] - '0');
-		if (!hashC.count(loc1) || !hashC.count(loc2)) { printf("-1\n"); return; }
+		if (!hashC.count(loc1) || !hashC.count(loc2)) { printf("0\n"); return; }
 		start = hashC[loc1];
 		end = hashC[loc2];
 		can = bitMgr.intersection(start, end);

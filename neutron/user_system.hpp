@@ -1,15 +1,10 @@
 #ifndef USER_SYSTEM_HPP
 #define USER_SYSTEM_HPP
 
-#include "unistd.h"
-
 #include <cctype>
 #include <cstdio>
 #include <cstring>
-#include <cassert>
-
-#include <fcntl.h>
-//#define PERFECT
+#include <sys/stat.h>
 
 #ifdef __linux__
 #define putchar putchar_unlocked
@@ -19,11 +14,9 @@
 #define sp() putchar(' ')
 #define ln() putchar('\n')
 
-#define BUF_COUNT 64
-#define USER_INFO_SIZE 64
-#define BLOCK_SIZE (BUF_COUNT * USER_INFO_SIZE)
-#define PRIV_BLOCK_SIZE (125000)
-
+#define PRIV_BLOCK_SIZE (131072)
+#define USER_INFO_SIZE 128
+#define USER_DB "user.db"
 #define OFFSET(ID) (PRIV_BLOCK_SIZE + (ID - 2019) * USER_INFO_SIZE)
 
 template<class K> inline void read(K& x) {
@@ -39,45 +32,28 @@ template<class K> inline void write(K x) {
 	while (top) putchar(fout[--top] + '0');
 }
 
-const char* USER_DB = "user.db";
-
 class UserSystem {
 public:
 	UserSystem() {
-		fd = open(USER_DB, O_RDWR);
-		if (fd == -1) {
-			fclose(fopen(USER_DB, "a+"));
+		file = fopen(USER_DB, "rb+");
+		if (!file) {
+			file = fopen(USER_DB, "wb+");
 			memset(priviege, 0, sizeof priviege);
-			priviege[0] = 1;
-			fd = open(USER_DB, O_RDWR);
-			write(fd, priviege, PRIV_BLOCK_SIZE);
+			xor_privilege(2019);
+			fwrite(priviege, PRIV_BLOCK_SIZE, 1, file);
 		}
 		else {
-			read(fd, priviege, PRIV_BLOCK_SIZE);
+			fread(priviege, PRIV_BLOCK_SIZE, 1, file);
 		}
 
-		dirty = 0; info = pool;
-		userID = (lseek(fd, 0, SEEK_END) - PRIV_BLOCK_SIZE) / USER_INFO_SIZE + 2019;
+		fseek(file, 0, SEEK_END);
+		userID = (ftell(file) - PRIV_BLOCK_SIZE) / USER_INFO_SIZE + 2019;
 	}
 
-	void refresh() {
-		lseek(fd, 0, SEEK_END);
-		write(fd, pool, info - pool);
-		info = pool;
-	}
-
-	~UserSystem() {
-		lseek(fd, 0, SEEK_SET);
-
-		for (int i = 0; dirty; i += BLOCK_SIZE, dirty >>= 1) {
-			if (dirty & 1)
-				write(fd, priviege + i, BLOCK_SIZE);
-			else
-				lseek(fd, BLOCK_SIZE, SEEK_CUR);
-		}
-
-		refresh();
-		close(fd);
+	void write_back() {
+		fseek(file, 0, SEEK_SET);
+		fwrite(priviege, PRIV_BLOCK_SIZE, 1, file);
+		fclose(file);
 	}
 
 	void append() {
@@ -86,21 +62,14 @@ public:
 		for (*++ptr = getchar(); *ptr != '\n'; *++ptr = getchar());
 		*ptr = 0;
 
-#ifdef PERFECT
-		lseek(fd, 0, SEEK_END);
-#endif
-
-		info += USER_INFO_SIZE;
-		if (info == pool + BLOCK_SIZE) {
-			write(fd, pool, BLOCK_SIZE);
-			info = pool;
-		}
+		fseek(file, 0, SEEK_END);
+		fwrite(info, 1, USER_INFO_SIZE, file);
 		printf("%d\n", userID++);
 	}
 
 	void modify_profile() {
 		int id;
-		scanf("%d", &id);
+		read(id);
 
 		char *ptr = info;
 		for (*ptr = getchar(); isspace(*ptr); *ptr = getchar());
@@ -109,9 +78,8 @@ public:
 
 		if (id < 2019 || id >= userID) puts("0");
 		else {
-			if (pool != info) refresh();
-			lseek(fd, OFFSET(id), SEEK_SET);
-			write(fd, info, USER_INFO_SIZE);
+			fseek(file, OFFSET(id), SEEK_SET);
+			fwrite(info, ptr - info + 1, 1, file);
 			puts("1");
 		}
 	}
@@ -123,9 +91,8 @@ public:
 
 		if (id < 2019 || id >= userID) puts("0");
 		else {
-			if (pool != info) refresh();
-			lseek(fd, OFFSET(id), SEEK_SET);
-			read(fd, info, USER_INFO_SIZE);
+			fseek(file, OFFSET(id), SEEK_SET);
+			fread(info, USER_INFO_SIZE, 1, file);
 
 			for (int i = 0, cnt = 0; i < USER_INFO_SIZE; ++i) {
 				if (cnt == 1) {
@@ -150,7 +117,6 @@ public:
 
 	void xor_privilege(int id) {
 		id = id - 2019;
-		dirty |= 1 << (id >> 15);
 		priviege[id >> 3] ^= (1 << (id & 7));
 	}
 
@@ -170,12 +136,11 @@ public:
 	}
 
 	void query_profile() {
-		int id; scanf("%d", &id);
+		int id; read(id);
 		if (id < 2019 || id >= userID) puts("0");
 		else {
-			if (pool != info) refresh();
-			lseek(fd, OFFSET(id), SEEK_SET);
-			read(fd, info, USER_INFO_SIZE);
+			fseek(file, OFFSET(id), SEEK_SET);
+			fread(info, USER_INFO_SIZE, 1, file);
 
 			for (int i = 0, cnt = 0; i < USER_INFO_SIZE && info[i]; ++i) {
 				cnt += info[i] == ' ';
@@ -187,20 +152,19 @@ public:
 	}
 
 	void clear() {
-		close(fd);
-		fclose(fopen(USER_DB, "wb+"));
-		fd = open(USER_DB, O_RDWR);
+		fclose(file);
+		file = fopen(USER_DB, "wb+");
 		memset(priviege, 0, sizeof priviege);
-		*priviege = 1;
-		write(fd, priviege, PRIV_BLOCK_SIZE);
+		xor_privilege(2019);
+		fwrite(priviege, PRIV_BLOCK_SIZE, 1, file);
 	}
 
 private:
-	int userID, fd;
+	int userID;
+	FILE* file;
 
-	unsigned int dirty;
-	char passwd[32];
-	char pool[BLOCK_SIZE], *info;
+	char passwd[25];
+	char info[USER_INFO_SIZE];
 	char priviege[PRIV_BLOCK_SIZE];
 };
 
