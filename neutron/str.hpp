@@ -3,100 +3,48 @@
 
 #include <iostream>
 #include <sstream>
+#include <cstring>
+#include "tools.hpp"
 
-//string with fixed length
-template <size_t len>
+bool equals(int *a, int *b, int length) {
+	for (int i = 0; i < length; ++i, ++a, ++b)
+		if (*a != *b) return false;
+	return true;
+}
+
+template <size_t length>
 class str {
 public:
-	char ch[len + 1];
-	int used = 0;
-	str(){
-		ch[0] = '\0';
+	char ch[length + 1];
+
+	str() { memset(ch, 0, sizeof(ch)); }
+
+	char operator[] (int k) const { return ch[k]; }
+
+	bool operator== (const str &rhs) {
+		return equals((int*)ch, (int*)rhs.ch, length >> 2);
 	}
-	str(int k) {
-		sprintf(ch, "%d", k);
+	bool operator!= (const str &rhs) {
+		return !(*this == rhs);
 	}
-	str(double k) {
-		sprintf(ch, "%.5f", k);
-	}
-	/*str(std::string &s) {
-		for (int i = 0; i < s.length(); i++)
-			ch[i] = s[i];
-		ch[s.length()] = '\0';
-	}*/
-	char& operator [] (int k) {
-		return ch[k];
-	}
-	/*operator const char* (){
-		return ch;
-	}*/
-	bool operator ==(const str &other) {
-		for (int i = 0; i < len; i++) {
-			if (ch[i] == '\0' && other.ch[i] == '\0') return true;
-			if (ch[i] != other.ch[i]) return false;
+	bool operator <(const str &rhs) {
+		for (size_t i = 0; i < length; ++i) {
+			if (ch[i] < rhs[i]) return true;
+			if (ch[i] > rhs[i]) return false;
 		}
+		return false;
 	}
-	bool operator !=(const str &other) {
-		return !(*this == other);
-	}
-	bool operator <(const str &other) {
-		for (int i = 0; i <= len; i++) {
-			if (ch[i] == '\0' && other.ch[i] == '\0') return false;
-			if (ch[i] == '\0') return true;
-			if (other.ch[i] == '\0') return false;
-			if (ch[i] < other.ch[i]) return true;
-			if (ch[i] > other.ch[i]) return false;
-		}
-	}
+
 	str& operator =(const std::string &s) {
-		for (int i = 0; i < s.length(); i++)
+		for (size_t i = 0; i < s.length(); ++i)
 			ch[i] = s[i];
-		ch[s.length()] = '\0';
 		return *this;
 	}
-	template <size_t Len>
-	str& operator =(const str<Len> &other) {
-		if (Len > len) throw int();
-		for (int i = 0; i < Len; i++)
-			ch[i] = other.ch[i];
-		return *this;
+
+	void read() {
+		memset(ch, 0, sizeof ch);
+		scanf("%s", ch);
 	}
-	template <size_t Len>
-	void append(const str<Len> &other) {
-		while (ch[used] != '\0') used++;
-		ch[used++] = ' ';
-		for (int i = 0; i < other.used; i++)
-			ch[used + i] = other.ch[i];
-		used += other.used;
-	}
-	/*operator std::string() const {
-		return this->toString();
-	}
-	std::string toString() const {
-		std::stringstream ss;
-		std::string s;
-		ss << ch;
-		ss >> s;
-		return s;
-	}*/
 };
-/*template <size_t len>
-std::istream& operator >> (std::istream &is, str<len> &obj) {
-	std::string s;
-	is >> s;
-	obj = s;
-	return is;
-}
 
-//something to string
-template <typename T>
-std::string toString(T &x) {
-	std::stringstream ss;
-	std::string s;
-	ss << x;
-	ss >> s;
-	return s;
-}
-*/
-
-#endif // !STR_HPP
+#endif

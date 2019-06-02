@@ -115,23 +115,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="alloc.hpp" />
-    <ClInclude Include="bitManager.hpp" />
+    <ClInclude Include="bitmgr.hpp" />
     <ClInclude Include="bitset.hpp" />
     <ClInclude Include="bptree.hpp" />
     <ClInclude Include="constant.hpp" />
-    <ClInclude Include="exceptions.hpp" />
-    <ClInclude Include="hash.hpp" />
-    <ClInclude Include="myVector.hpp" />
-    <ClInclude Include="saleSystem.hpp" />
+    <ClInclude Include="hash_city.hpp" />
+    <ClInclude Include="hash_train.hpp" />
     <ClInclude Include="str.hpp" />
-    <ClInclude Include="tools.h" />
+    <ClInclude Include="term.hpp" />
+    <ClInclude Include="ticketnum_mgr.hpp" />
+    <ClInclude Include="tools.hpp" />
     <ClInclude Include="train.hpp" />
-    <ClInclude Include="user.hpp" />
+    <ClInclude Include="unistd.h" />
+    <ClInclude Include="user_system.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="后端设计思路.md" />

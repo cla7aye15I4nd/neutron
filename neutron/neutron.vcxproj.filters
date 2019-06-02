@@ -15,31 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="myVector.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="exceptions.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="user.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="saleSystem.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="hash.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="bitset.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="train.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="bitManager.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="tools.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="str.hpp">
@@ -48,18 +27,36 @@
     <ClInclude Include="constant.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="alloc.hpp">
+    <ClInclude Include="bptree.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="bptree.hpp">
+    <ClInclude Include="bitmgr.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="hash_city.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="hash_train.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="term.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="user_system.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="unistd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ticketnum_mgr.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="tools.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

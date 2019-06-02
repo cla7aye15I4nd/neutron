@@ -1,10 +1,9 @@
 #pragma warning(disable:4996)
-#include "saleSystem.hpp"
+#include "term.hpp"
 
-saleSystem sys;
+term sys;
 int main() {
-	freopen("all.in", "r", stdin);
-	freopen("all.out", "w", stdout);
-	sys.processing();
+	//freopen("all.in", "r", stdin);
+	sys.run();
 	return 0;
 }

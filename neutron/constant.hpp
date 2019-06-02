@@ -7,4 +7,5 @@ namespace sjtu {
 
 	const int blockSize = 8;
 }
+
 #endif //LCK_CONSTANT_HPP
