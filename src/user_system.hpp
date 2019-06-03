@@ -185,6 +185,7 @@ public:
 
     void clear() {
         close(fd);
+        fclose(fopen(USER_DB, "wb+"));
         fd = open(USER_DB, O_RDWR);
         memset(priviege, 0, sizeof priviege);
         *priviege = 1;

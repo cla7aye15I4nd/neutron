@@ -2,7 +2,7 @@
 #define _BITSET_HPP
 
 #include <cstring>
-#define BLOCKSIZE (96)
+#define BLOCKSIZE (93)
 #define BLOCK4    (24)
 #define BLOCK8    (12)
 
@@ -51,7 +51,7 @@ struct bitset {
     }
     bitset operator & (bitset &other) {
         bitset ret;
-        fast_and4(block, other.block, ret.block);
+        normal_and(block, other.block, ret.block);
         return ret;
     }
 };

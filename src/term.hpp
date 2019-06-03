@@ -2,13 +2,22 @@
 #define TERM_HPP
 
 #include "train.hpp"
-#include "hash.hpp"
+#include "hash_train.hpp"
 #include "bitmgr.hpp"
 #include "user_system.hpp"
+#include <string>
+#include <fstream>
+
+std::string procStatus() {
+    std::ifstream t("/proc/self/status");
+    return std::string(std::istreambuf_iterator<char>(t), std::istreambuf_iterator<char>());
+}
 
 hashCity hashC;
 hashTrain hashT;
 bitManager bitMgr;
+ticketnum_manager ticketMgr;
+
 int bridgeN = 0;
 ticketData bridge[100];
 char bin[20];
@@ -43,6 +52,7 @@ public:
             hashT.init();
             bitMgr.init();
             train_system.init();
+            ticketMgr.init();
         }
         switch (op) {
         case 5: train_system.qryDirect(); break;
@@ -77,8 +87,18 @@ public:
             case 15:
                 puts("1");
                 user_system.clear();
+
+                // if (!load_train_system) {
+                //     hashC.init();
+                //     hashT.init();
+                //     bitMgr.init();
+                //     train_system.init();
+                //     ticketMgr.init();
+                //     load_train_system = true;
+                // }
                 if (load_train_system) {
                     train_system.clear();
+                    ticketMgr.clear();
                     hashT.clear();
                     hashC.clear();
                 }
@@ -90,6 +110,7 @@ public:
                     hashT.write_back();
                     bitMgr.write_back();
                     train_system.write_back();
+                    ticketMgr.write_back();
                 }
                 exit(0);
             default:
