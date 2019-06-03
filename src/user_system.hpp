@@ -9,10 +9,10 @@
 #include <fcntl.h>
 //#define PERFECT
 
-#ifdef __linux__
-#define putchar putchar_unlocked
-#define getchar getchar_unlocked
-#endif
+// #ifdef __linux__
+// #define putchar putchar_unlocked
+// #define getchar getchar_unlocked
+// #endif
 
 #define sp() putchar(' ')
 #define ln() putchar('\n')
