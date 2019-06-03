@@ -413,9 +413,9 @@ namespace sjtu{
             n.pointSize = mid;
         }
 
-
-        bool insert_in_leaf(Node &cur, const key_t &Key, const value_t &Value) {
-            Rank idx = cur.search_upper_leaf(Key);
+        bool insert_node(Node &cur, const key_t &Key, const value_t &Value) {
+            if (cur.isLeaf) {
+                Rank idx = cur.search_upper_leaf(Key);
 
             if (idx == -1) {
                 if (*(cur.key_leaf(cur.keySize - 1)) == Key)
@@ -435,18 +435,10 @@ namespace sjtu{
                     return true;
                 }
             }
-
-        }
-
-
-        bool insert_node(Node &cur, const key_t &Key, const value_t &Value) {
-            if (cur.isLeaf) {
-                bool flag = insert_in_leaf(cur, Key, Value);
 #ifdef DEBUG
                 puts("view current node");
                 cur.view();
 #endif
-                return flag;
             }
             else {
                 Node ch;
