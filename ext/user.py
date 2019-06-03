@@ -53,7 +53,7 @@ class SettingHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.render('setting.html', title="setting", user=self.current_user,
-                    info=UserSystem.queryById(self.current_user.decode()).fetchone())
+                    info=UserSystem.queryById(self.current_user.decode()).fetchone(),verify=UserSystem.isverify(self))
 
     @tornado.gen.coroutine
     @tornado.web.authenticated
@@ -103,3 +103,28 @@ class UploadAvatarHandler(BaseHandler):
         with open(file, 'wb') as f:
             f.write(meta['body'])
 
+class EmailHandler(BaseHandler):
+    @tornado.gen.coroutine
+    @tornado.web.authenticated
+    def get(self):
+        self.render('emailverify.html', title="email verify", user=self.current_user,
+                    info=UserSystem.queryById(self.current_user.decode()).fetchone())
+
+    @tornado.gen.coroutine
+    @tornado.web.authenticated
+    def post(self):
+        form = self.request.arguments
+        retval = {'errors': 'Failed'}
+        case=int(self.request.arguments['case'][0].decode())
+        if(case==0):
+            code=self.request.arguments['code'][0].decode()
+            if(UserSystem.checkverify(self,code)):
+                retval["errors"]="Success"
+            else:
+                retval["code"]="Wrong! Check again"
+        else:
+            if(UserSystem.resendemail(self)):
+                retval["errors"]="Success"
+
+        self.set_header("Content-Type", "application/json")
+        yield self.write(json.dumps(retval))

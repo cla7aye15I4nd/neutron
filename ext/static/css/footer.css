@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+    /* 等于footer的高度 */
+    margin-bottom: -50px;
+}
+
+.footer,
+.push {
+    height: 50px;
+}

@@ -21,17 +21,22 @@ class TrainHandler(BaseHandler):
     def post(self):
         errors = "Failed"
         form = SearchForm(self.request.arguments)
+        if(self.request.arguments['type'][0].decode() == ''):
+            errors = "Nothing"
+            retval = form.errors
+            self.set_header("Content-Type","application/json")
+            retval['errors'] = errors
+            yield self.write(json.dumps(retval))
+            return
+
 
         if form.validate():
             errors = "Nothing"
             retval = form.errors
 
-            require = self.request.arguments['froms'][0].decode() + ' ' + self.request.arguments['arrival'][0].decode() + ' ' + self.request.arguments['date'][0].decode()
-            if(self.request.arguments['type'][0].decode() == ''):
-                require+=" 0"
-            else:
-                require+=" 1 "
-                require+=self.request.arguments['type'][0].decode()
+            require = self.request.arguments['froms'][0].decode() + ' ' + self.request.arguments['arrival'][0].decode() + ' ' + self.request.arguments['date'][0].decode() + ' '
+            
+            require+=self.request.arguments['type'][0].decode()
             command = require
 
             if(self.request.arguments['available'][0].decode() == "true" and self.request.arguments['change'][0].decode() == "true"):
@@ -49,7 +54,7 @@ class TrainHandler(BaseHandler):
 
             n = int(link_read())
             
-            if(n):
+            if(n>0):
                 errors = "Success"
                 #retval["user"] = self.current_user.decode()
                 retval["cnt"] = n
@@ -101,6 +106,9 @@ class TicketHandler(BaseHandler):
     @tornado.gen.coroutine
     def post(self):
         command = self.request.arguments['command'][0].decode()
+        list = command.split()
+        if(command!="" and list[0]=="buy_ticket"):
+            line=command[10:]
         print(command)
         link_command(command)
         link_read();

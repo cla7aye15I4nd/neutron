@@ -1,0 +1,42 @@
+﻿{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top: 10px">
+    <div class="row">
+        {% raw xsrf_form_html() %}
+        <div class="col-md-3">
+            {% include leftbar.html %}
+        </div>
+        <div class="col-md-9">
+            <div id="updhint" class="d-none" role="alert"> Resend Email Successful! </div>
+            <div class="card card-body text-left" style="background: rgba(255, 255, 255, 0.85)">
+                <h2> Verify your email </h2>
+                <hr><br />
+                <div class="form">
+                    <label><b>Fill in your CAPTCHA</b></label>
+                    <input class="form-control" name="code" placeholder="Check your email box to get your CAPTCHA">
+                    <span name="code" style="color :red"></span>
+                </div>
+                
+                <br /><br />
+                      <div class="row">
+                          <div class="col-md-6"></div>
+                          <div class="col-md-3">
+                              <button id="resend" class="btn btn-raised btn-warning">
+                                  Resend a Email
+                              </button>
+                          </div>
+                          <div class="col-md-3">
+                              <button id="check" class="btn btn-raised btn-success">
+                                  Submit
+                              </button>
+                          </div>
+                      </div>
+                <script src='/static/js/emailverify.js'></script>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}

@@ -8,11 +8,14 @@ $(document).ready(function () {
             code    : $("input[name='code']").val()
         },
             function (data, state) {
-                if (data["errors"] == "Success") {
+                if (data["errors"] == "Success" || data["errors"] == "Noverify") {
                     var prevUrl = document.referrer;
                     if (prevUrl == '' || /.*\/login.*/.test(prevUrl) || /.*\/register.*/.test(prevUrl) || /.*\/reset-password.*/.test(prevUrl)) {
                         prevUrl = '/';
                     };
+                    if (data["errors"] == "Noverify") {
+                        prevUrl="/email"
+                    }
                     window.location.href = prevUrl;
                 } else {
                     htmlcode = ["<div class=\"alert alert-warning alert-dismissible\" role=\"alert\">",

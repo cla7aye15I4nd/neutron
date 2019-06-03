@@ -13,7 +13,7 @@
             <div id="updhint" class="d-none" role="alert"> Change Password Successful! </div>
             <div class="card card-body text-left" style="background: rgba(255, 255, 255, 0.85)">
                 <h2> Change Password </h2>
-                <hr><br/>
+                <hr><br />
                 <div class="form">
                     <label><b>Old password</b></label>
                     <input type="password" class="form-control" name="oldpassword" placeholder="Old password">
@@ -33,15 +33,25 @@
                 </div>
                 <br /><br />
                 <div class="row">
-                    <div class="col-md-9"></div>
                     <div class="col-md-3">
-                        <button id="update" class="btn btn-block" style="background: #a880e4; color:white">Update
-                            Password</button>
+                        <button id="update" class="btn btn-block" style="background: #a880e4; color:white">
+                            Update
+                            Password
+                        </button>
+                    </div>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-3">
+                        {% if verify != True %}
+                        <button class="btn btn-raised btn-warning" onclick="window.location.href = '/email'">
+                            Verify your email
+                        </button>
+                        {% end %}
                     </div>
                 </div>
-                <script src='/static/js/setting.min.js'></script>
+                <script src='/static/js/setting.js'></script>
             </div>
         </div>
     </div>
+
 </div>
-{% end %}
+    {% end %}

@@ -7,11 +7,11 @@ import tornado.ioloop
 from tornado.options import define, options
 
 import config
-import admin
 from auth import BaseHandler, LoginHandler, LogoutHandler, RegisterHandler, VerifyHandler
-from user import ProfileHandler, SettingHandler, AvatarHandler, UploadAvatarHandler
+from user import ProfileHandler, SettingHandler, AvatarHandler, UploadAvatarHandler, EmailHandler
 from query import TrainHandler, TicketHandler, BookingHandler
-from manage import ManageHandler
+from manage import ManageHandler, ExitHandler
+from extra import AboutHandler, HelpHandler
 from link import link_start
 
 define("port", **config.global_settings)
@@ -40,8 +40,13 @@ def make_app():
         (r'/verify_code', VerifyHandler),
         (r'/buyticket', TicketHandler),
         (r'/manage', ManageHandler),
+        (r'/about', AboutHandler),
+        (r'/help', HelpHandler),
+        (r'/email', EmailHandler),
+        (r'/exit', ExitHandler),
         (r".*", BaseHandler)
-    ] + admin.route, **config.app_settings)
+
+    ], **config.app_settings)
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()

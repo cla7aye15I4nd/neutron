@@ -1,0 +1,27 @@
+﻿{% extends "base.html" %}
+{% block content %}
+
+{% raw xsrf_form_html() %}
+
+<div class="container" style="background: rgba(255, 255, 255, 0.85); padding-top : 30px">
+
+    <div class="row">
+        <div class='col-sm-12'>
+            <p>Power by Dataisland and Ulita, using tornado and bootstrap.</p>
+            <p>Special thank:</p>
+            <p><a href="http://glyphicons.com/">Glyphicons</a></p>
+            <p><a href="https://github.com/weareoutman/clockpicker">weareoutman</a></p>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class='col-sm-12'>
+            <iframe id="video" width="1061" height="615" src="//player.bilibili.com/player.html?aid=48788630&cid=85436034&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+
+    {% end %}

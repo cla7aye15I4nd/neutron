@@ -24,6 +24,7 @@ class LoginHandler(BaseHandler):
         username = self.get_argument("username", None)
         form = LoginForm(self.request.arguments)
         errors = "Wrong username or password."
+        
         if form.validate():
             code = self.get_argument("code", None)
             if code is None or unpack(self.get_secure_cookie("code")).decode() != code:
@@ -32,6 +33,8 @@ class LoginHandler(BaseHandler):
                 users = UserSystem.queryByUsername(username).fetchone()
                 self.set_current_user(users[0])
                 errors = "Success"
+                if(UserSystem.isverify(self)==False):
+                    errors = "Noverify"
 
         self.set_header("Content-Type","application/json")
         yield self.write(json.dumps({"errors" : errors}))

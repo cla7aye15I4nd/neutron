@@ -1,13 +1,21 @@
 var profile = ['froms', 'arrival', 'date' , 'type']
-
+var types = ['T','Z','O','G','D','K','C']
 $(document).ready(function () {
     $("#search").click(function () {
+        var codes = "";
+        for (var id in types) {
+            key = types[id];
+            if ($("#" + key).is(':checked')) {
+                codes += key;
+            }
+        }
+
         $.post("trains", {
             _xsrf: $("input[name='_xsrf']").val(),
             froms: $("input[name='froms']").val(),
             arrival: $("input[name='arrival']").val(),
             date: $("input[name='date']").val(),
-            type: $("input[name='type']").val(),
+            type: codes,
             available: $('#available').is(':checked'),
             change: $('#change').is(':checked')
 

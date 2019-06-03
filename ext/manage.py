@@ -12,9 +12,6 @@ from forms import SearchForm2
 from database import UserSystem
 from link import link_command, link_read
 
-def judge(blocks):
-
-    return "Empty"
 
 
 class ManageHandler(BaseHandler):
@@ -152,3 +149,15 @@ class ManageHandler(BaseHandler):
 
         retval['errors'] = errors
         yield self.write(json.dumps(retval))
+
+
+class ExitHandler(BaseHandler):
+    @tornado.gen.coroutine
+    def get(self):
+        if(self.current_user == None or self.current_user.decode() != "2019"):
+            BaseHandler.get(self)
+        else:
+            link_command("exit")
+            BaseHandler.get(self)
+        
+        #yield self.render('manage.html', title = 'manage', user = self.current_user)

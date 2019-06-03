@@ -4,7 +4,7 @@ Cprocess = None
 
 def link_start():
     global Cprocess
-    Cprocess = Popen('./database',shell=True,stdin=PIPE,stdout=PIPE)
+    Cprocess = Popen('./main',shell=False,stdin=PIPE,stdout=PIPE)
 
 def link_command(s):
     global Cprocess
@@ -14,7 +14,9 @@ def link_command(s):
 
 def link_read():
     global Cprocess
-    s=Cprocess.stdout.readline().decode('cp936')
+    s=Cprocess.stdout.readline()
+    print(s)
+    s=s.decode('cp936')
     
     if(s=="Invalid"):
         raise Exception("Invalid!")

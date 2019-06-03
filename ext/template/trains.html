@@ -6,103 +6,152 @@
       rel="stylesheet">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="//webresource.english.c-ctrip.com/resaresenglish/ibu/ibucommon/stylesheets/global.ce32b2fd.css" rel="Stylesheet" type="text/css" media="all" />
-  <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R5/CSS/v3/trains.css?2019_04_02_15_58_22" rel="stylesheet" type="text/css" media="all" />
-  <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R5/CSS/v3/flight-logo-domastic-28.css?2019_04_02_15_58_22" rel="stylesheet" type="text/css" media="all" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="//webresource.english.c-ctrip.com/resaresenglish/ibu/ibucommon/stylesheets/global.ce32b2fd.css" rel="Stylesheet" type="text/css" media="all" />
+    <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R5/CSS/v3/trains.css?2019_04_02_15_58_22" rel="stylesheet" type="text/css" media="all" />
+    <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R5/CSS/v3/flight-logo-domastic-28.css?2019_04_02_15_58_22" rel="stylesheet" type="text/css" media="all" />
 </head>
 
 
 <style>
-  .light-text {
-  font-weight: 0;
-  font-size: 11px;
-  }
+    .light-text {
+        font-weight: 0;
+        font-size: 11px;
+    }
 </style>
 <div class="container" style="margin-top: 15px; background: rgba(255, 255, 255, 0.85);">
-  {% raw xsrf_form_html() %}
-  <div class="row light-text">
-    <div class='col-md-2'>
-      <div class="form-group">
-        <label> From </label>
-        <input type='text' class="form-control" name="froms" placeholder="Where to start." />
-        <span name="froms" style="color :red"></span>
-      </div>
-    </div>
-    <div class='col-md-2'>
-      <div class="form-group">
-        <label> To </label>
-        <input type='text' class="form-control" name="arrival" placeholder="Where to go." />
-        <span name="arrival" style="color :red"></span>
-      </div>
-    </div>
-    <div class='col-sm-2'>
-      <div class="form-group">
-        <label> Depart </label>
-        <div class='input-group date' id='datetimepicker'>
-          <input type='date' class="form-control" name="date" />
+    {% raw xsrf_form_html() %}
+    <div class="row light-text">
+        <div class='col-sm-3'>
+            <div class="form-group">
+                <label> From </label>
+                <input type='text' class="form-control" name="froms" placeholder="Where to start." />
+                <span name="froms" style="color :red"></span>
+            </div>
         </div>
-        <span name="date" style="color :red"></span>
-      </div>
-    </div>
-    <div class='col-sm-2'>
-      <div class="form-group">
-        <label> Train type.(optional) </label>
-        <input type='text' class="form-control" name="type" placeholder="Type of train." />
-        <span name="type" style="color :red"></span>
-      </div>
-      
-    </div>
-    <div class='col-sm-1'>
-      <button type="button" id="search" value="SHITE" class="btn btn-raised btn-success" style="margin-top:20px">Search</button>
-      <script src="../static/js/search.js"></script>
-    </div>
+        <div class='col-sm-3'>
+            <div class="form-group">
+                <label> To </label>
+                <input type='text' class="form-control" name="arrival" placeholder="Where to go." />
+                <span name="arrival" style="color :red"></span>
+            </div>
+        </div>
+        <div class='col-sm-3'>
+            <div class="form-group">
+                <label> Depart </label>
+                <div class='input-group date' id='datetimepicker'>
+                    <input type='date' class="form-control" name="date" />
+                </div>
+                <span name="date" style="color :red"></span>
+            </div>
+        </div>
+
+        <div class='col-sm-1'>
+            <button type="button" id="search" value="SHITE" class="btn btn-raised btn-success" style="margin-top:20px">Search</button>
+            <script src="../static/js/search.js"></script>
+        </div>
 
 
 
-  </div>
+    </div>
 </div>
 <li id="userid" value="{{user}}"></li>
-
 <div class="container" style="background: rgba(255, 255, 255, 0.85); padding-top : 30px">
-  <div class="row">
-    <div class='col-md-12'>
-      <div class="container-fluid">
+    <div class="container">
         <div class="row">
-          <div class='col-md-3'>
-            <h3 style="margin-bottom: 20px"> Filter </h3>
-            <div style="padding-top: 0px">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="available" id="available" value="1"> Available trains
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="change" id="change" value="2"> Allow to change trains
-                </label>
-              </div>
-              <hr />
+            <div class='col-md-3'>
+                <h3 style="margin-bottom: 20px"> Filter </h3>
+                <div style="padding-top: 0px">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="available" id="available" value="1"> Available trains
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="change" id="change" value="2"> Allow to change trains
+                        </label>
+                    </div>
+                    <hr />
+                </div>
+                <hr />
+                <h5> Train type. </h5>
+                <hr />
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="T" checked> T(特快)
+                            </label>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="Z" checked> Z(直达)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="G" checked> G(高铁)
+                            </label>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="O" checked> O(普通)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="D" checked> D(动车)
+                            </label>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="K" checked> K(快车)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="C" checked> C(城际)
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h5> Departure Time </h5>
-            <hr />
-            <h5> Arrival Time </h5>
-            <hr />
-            <h5> Departure Station </h5>
-            <hr />
-            <h5> Arrival Station </h5>
-            <hr>
-          </div>
-          <div class='col-md-9'>              
-            <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
-                  rel="stylesheet" type="text/css" media="all">           
-            <div id="trainlist">
+            <div class='col-md-9'>
+
+                <link href="//webresource.english.c-ctrip.com/resibutrainsenglish/R4/CSS/v3/trains.css"
+                      rel="stylesheet" type="text/css" media="all">
+
+                <div id="trainlist">
+
+
+
+                </div>
+
             </div>
-          </div>
+
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
+
 
 {% end %}

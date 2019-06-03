@@ -16,6 +16,5 @@ app_settings = {
     "debug"         : True
 }
 
-admin = [('admin', 'X#QS*4vz')]
-admin_name = [user[0] for user in admin]
+thread_count   = 1
 default_avatar = os.path.join(os.path.dirname(__file__), "private", "img", 'avatar')
